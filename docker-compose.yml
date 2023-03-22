@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  api:
+    container_name: palmosimaapi
+    image: palmosimaapi
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+      - frontend
+  db:
+    image: postgres
+    ports:
+      - "8001:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - backend
+
+  
+volumes:
+  postgres_data:
+
+networks:
+  backend:
+  frontend:
