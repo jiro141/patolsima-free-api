@@ -1,5 +1,5 @@
 FROM python:3.10-alpine
-LABEL Name=palmosimaapi
+LABEL Name=patolsimaapi
 
 RUN apk add libpq-dev make gcc musl-dev
 

@@ -2,8 +2,8 @@ version: '3.9'
 
 services:
   api:
-    container_name: palmosimaapi
-    image: palmosimaapi
+    container_name: patolsimaapi
+    image: patolsimaapi
     build:
       context: .
       dockerfile: ./Dockerfile
