@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",  # <-- Here
     # Local Apps (Your project's apps)
-    "patolsima",
+    "patolsima_api.apps.core",
 ]
 
 MIDDLEWARE = [
