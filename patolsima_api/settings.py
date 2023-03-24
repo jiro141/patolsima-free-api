@@ -39,9 +39,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Third-Party Apps
+    "softdelete",
+    "simple_history",
     "rest_framework",
     "rest_framework_simplejwt",
-    "simple_history",
     # Local Apps (Your project's apps)
     "patolsima_api.apps.core",
     "patolsima_api.apps.s3_management",
@@ -65,7 +66,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [],
-        "APP_DIRS": True,
+        # "APP_DIRS": True, Set casually to false, but I have to review this change later
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
@@ -73,6 +74,10 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
             ],
+            "loaders": (
+                "django.template.loaders.filesystem.Loader",
+                "django.template.loaders.app_directories.Loader",
+            ),
         },
     },
 ]

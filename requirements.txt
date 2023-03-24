@@ -6,6 +6,7 @@ dj-database-url==1.2.0
 Django==4.1.7
 django-filter==22.1
 django-simple-history==3.3.0
+django-softdelete==0.10.5
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.2
 exceptiongroup==1.1.1
