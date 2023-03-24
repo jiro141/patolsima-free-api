@@ -1,9 +1,10 @@
 from django.db import models
 from datetime import date
 from simple_history.models import HistoricalRecords
+from patolsima_api.utils.auditable_model import AuditableModel
 
 
-class Paciente(models.Model):
+class Paciente(AuditableModel):
     ci = models.IntegerField(primary_key=True)
     nombres = models.CharField(max_length=255)
     apellidos = models.CharField(max_length=255)
@@ -12,6 +13,7 @@ class Paciente(models.Model):
     email = models.CharField(max_length=255, null=True, blank=True)
     telefono_fijo = models.CharField(max_length=255, null=True, blank=True)
     telefono_celular = models.CharField(max_length=255, null=True, blank=True)
+
     history = HistoricalRecords()
 
     @property
