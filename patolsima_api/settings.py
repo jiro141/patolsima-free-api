@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "simple_history",
     # Local Apps (Your project's apps)
     "patolsima_api.apps.core",
+    "patolsima_api.apps.s3_management",
 ]
 
 MIDDLEWARE = [
