@@ -1,6 +1,8 @@
-from django.urls import path
-from myapi.core import views
+from rest_framework import routers
 
-urlpatterns = [
-    path("hello/", views.HelloView.as_view(), name="hello"),
-]
+from patolsima_api.apps.core.views import PacienteViewSet
+
+router = routers.DefaultRouter()
+router.register(r"pacientes", PacienteViewSet, basename="paciente")
+urlpatterns = router.urls
+print(urlpatterns)
