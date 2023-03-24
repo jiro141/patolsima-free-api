@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # Third-Party Apps
     "rest_framework",
     "rest_framework_simplejwt",
+    "simple_history",
     # Local Apps (Your project's apps)
     "patolsima_api.apps.core",
 ]
@@ -53,6 +54,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # simple_history
+    "simple_history.middleware.HistoryRequestMiddleware",
 ]
 
 ROOT_URLCONF = "patolsima_api.urls"
