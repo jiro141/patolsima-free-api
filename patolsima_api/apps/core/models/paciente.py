@@ -1,18 +1,12 @@
 from django.db import models
 from datetime import date
 from simple_history.models import HistoricalRecords
-from patolsima_api.utils.auditable_model import AuditableModel
+from patolsima_api.utils.models import AuditableMixin, PersonalInfoMixin
 
 
-class Paciente(AuditableModel):
+class Paciente(AuditableMixin, PersonalInfoMixin):
     ci = models.IntegerField(primary_key=True)
-    nombres = models.CharField(max_length=255)
-    apellidos = models.CharField(max_length=255)
     fecha_nacimiento = models.DateField(null=True)
-    direccion = models.CharField(max_length=255, null=True, blank=True)
-    email = models.CharField(max_length=255, null=True, blank=True)
-    telefono_fijo = models.CharField(max_length=255, null=True, blank=True)
-    telefono_celular = models.CharField(max_length=255, null=True, blank=True)
 
     history = HistoricalRecords()
 
