@@ -15,6 +15,8 @@ class EstudioSerializer(serializers.ModelSerializer):
             "adjuntos",
             "codigo",
             "notas",
+            "prioridad",
+            "tipo",
             "created_at",
             "updated_at",
             "deleted_at",
@@ -34,4 +36,5 @@ class EstudioListSerializer(serializers.ModelSerializer):
             "patologo",
             "codigo",
             "tipo",
+            "prioridad",
         ]
