@@ -1,34 +1,31 @@
 from rest_framework import serializers
+from patolsima_api.apps.core.models import MedicoTratante
 
 
-from patolsima_api.apps.core.models import Paciente
-
-
-class PacienteSerializer(serializers.ModelSerializer):
+class MedicoTratanteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Paciente
+        model = MedicoTratante
         fields = [
             "ci",
             "nombres",
             "apellidos",
-            "fecha_nacimiento",
             "direccion",
             "email",
             "telefono_fijo",
             "telefono_celular",
+            "ncomed",
+            "especialidad",
             "created_at",
             "updated_at",
             "deleted_at",
         ]
 
 
-class PacienteListSerializer(serializers.ModelSerializer):
+class MedicoTratanteListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Paciente
+        model = MedicoTratante
         fields = [
-            "ci",
             "nombres",
             "apellidos",
-            "email",
-            "telefono_celular",
+            "especialidad",
         ]
