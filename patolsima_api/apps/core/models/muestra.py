@@ -5,7 +5,9 @@ from patolsima_api.apps.core.models.estudio import Estudio
 
 
 class Muestra(AuditableMixin):
-    estudio = models.ForeignKey(Estudio, on_delete=models.CASCADE)
+    estudio = models.ForeignKey(
+        Estudio, on_delete=models.CASCADE, related_name="muestras"
+    )
     tipo_de_muestra = models.CharField(max_length=255)
     descripcion = models.CharField(max_length=512, null=True, blank=True)
     notas = models.TextField(null=True, blank=True)

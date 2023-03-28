@@ -8,7 +8,7 @@ from patolsima_api.apps.core.serializers import (
 )
 
 
-class PatologoViewSet(viewsets.ModelViewSet):
+class PatologoViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Patologo.objects.all()
     serializer_class = PatologoSerializer
     permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
