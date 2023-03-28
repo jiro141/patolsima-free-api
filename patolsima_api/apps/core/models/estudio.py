@@ -9,28 +9,18 @@ from patolsima_api.apps.core.models.patologo import Patologo
 from patolsima_api.apps.core.models.paciente import Paciente
 
 
-class PrioridadEstudioEnum(enum.Enum):
-    ALTA = "ALTA"
-    MEDIA = "MEDIA"
-    BAJA = "BAJA"
-
-    @classmethod
-    def choices(cls):
-        return tuple((i.name, i.value) for i in cls)
-
-
-class TipoEstudioEnum(enum.Enum):
-    BIOPSIA = "BIOPSIA"
-    CITOLOGIA = "CITOLOGIA"
-    CITOLOGIA_ESPECIAL = "CITOLOGIA_ESPECIAL"
-    INMUNOSTOQUIMICA = "INMUNOSTOQUIMICA"
-
-    @classmethod
-    def choices(cls):
-        return tuple((i.name, i.value) for i in cls)
-
-
 class Estudio(AuditableMixin):
+    class TipoEstudio(models.TextChoices):
+        BIOPSIA = "BIOPSIA"
+        CITOLOGIA = "CITOLOGIA"
+        CITOLOGIA_ESPECIAL = "CITOLOGIA_ESPECIAL"
+        INMUNOSTOQUIMICA = "INMUNOSTOQUIMICA"
+
+    class Prioridad(models.TextChoices):
+        ALTA = "ALTA"
+        MEDIA = "MEDIA"
+        BAJA = "BAJA"
+
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     medico_tratante = models.ForeignKey(MedicoTratante, on_delete=models.DO_NOTHING)
     patologo = models.ForeignKey(Patologo, on_delete=models.DO_NOTHING, null=True)
@@ -39,12 +29,13 @@ class Estudio(AuditableMixin):
     notas = models.TextField(null=True, blank=True)
     prioridad = models.CharField(
         max_length=5,
-        choices=PrioridadEstudioEnum.choices(),
-        default=PrioridadEstudioEnum.BAJA,
+        choices=Prioridad.choices,
+        default=Prioridad.BAJA,
     )
     tipo = models.CharField(
         max_length=18,
-        choices=TipoEstudioEnum.choices(),
+        choices=TipoEstudio.choices,
+        default=TipoEstudio.CITOLOGIA,
     )
 
     history = HistoricalRecords()

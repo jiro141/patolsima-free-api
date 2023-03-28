@@ -5,13 +5,13 @@ from patolsima_api.utils.models import AuditableMixin, PersonalInfoMixin
 
 
 class Paciente(AuditableMixin, PersonalInfoMixin):
-    ci = models.IntegerField(primary_key=True)
+    ci = models.PositiveIntegerField(primary_key=True)
     fecha_nacimiento = models.DateField(null=True)
 
     history = HistoricalRecords()
 
     @property
-    def age(self):
+    def edad(self):
         today = date.today()
         return (
             today.year

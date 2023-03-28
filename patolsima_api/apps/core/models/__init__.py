@@ -6,4 +6,8 @@ from .patologo import Patologo
 
 __all__ = [
     Paciente,
+    Estudio,
+    MedicoTratante,
+    Muestra,
+    Patologo,
 ]
