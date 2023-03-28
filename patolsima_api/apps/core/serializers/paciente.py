@@ -12,6 +12,7 @@ class PacienteSerializer(serializers.ModelSerializer):
             "nombres",
             "apellidos",
             "fecha_nacimiento",
+            "edad",
             "direccion",
             "email",
             "telefono_fijo",
