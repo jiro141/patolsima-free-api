@@ -6,6 +6,7 @@ class MuestraSerializer(serializers.ModelSerializer):
     class Meta:
         model = Muestra
         fields = [
+            "id",
             "estudio",
             "tipo_de_muestra",
             "descripcion",

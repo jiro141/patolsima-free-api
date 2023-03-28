@@ -6,9 +6,14 @@ from .patologo import PatologoListSerializer
 
 
 class EstudioSerializer(serializers.ModelSerializer):
+    paciente = PacienteListSerializer(read_only=True)
+    medico_tratante = MedicoTratanteListSerializer(read_only=True)
+    patologo = PatologoListSerializer(read_only=True)
+
     class Meta:
         model = Estudio
         fields = [
+            "id",
             "paciente",
             "medico_tratante",
             "patologo",
@@ -31,6 +36,7 @@ class EstudioListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Estudio
         fields = [
+            "id",
             "paciente",
             "medico_tratante",
             "patologo",

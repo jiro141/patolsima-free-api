@@ -6,6 +6,7 @@ class MedicoTratanteSerializer(serializers.ModelSerializer):
     class Meta:
         model = MedicoTratante
         fields = [
+            "id",
             "ci",
             "nombres",
             "apellidos",
@@ -25,6 +26,7 @@ class MedicoTratanteListSerializer(serializers.ModelSerializer):
     class Meta:
         model = MedicoTratante
         fields = [
+            "id",
             "nombres",
             "apellidos",
             "especialidad",

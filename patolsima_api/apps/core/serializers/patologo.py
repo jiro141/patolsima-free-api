@@ -6,6 +6,7 @@ class PatologoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patologo
         fields = [
+            "id",
             "ncomed",
             "firma",
             "nombres",
@@ -20,6 +21,7 @@ class PatologoListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patologo
         fields = [
+            "id",
             "nombres",
             "apellidos",
         ]
