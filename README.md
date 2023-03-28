@@ -25,4 +25,5 @@ Puede ser ejecutado usando Docker (recomendado) o como un servidor comun y silve
 3. Ahora ejecute `docker compose up`
 4. Si no hay errores en el paso anterior, abra otra terminal y ejecute `docker compose run api make migrate` para correr las migraciones sobre la base de datos.
 5. Luego de aplicar las migraciones, ejecute `docker compose run api make tests` para correr los tests.
-6. Ahora agregue la data de prueba utilizando `docker compose run api make addtestdata`.
+6. Agregue un superusuario con `docker compose run api python manage.py createsuperuser`.
+7. Ahora agregue la data de prueba utilizando `docker compose run api make addtestdata`.

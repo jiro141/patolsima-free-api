@@ -11,3 +11,6 @@ makemigrations:
 appmigrations:
 	python manage.py makemigrations $(APP)
 	echo $(APP)
+
+addtestdata:
+	python manage.py create_default_data_core
