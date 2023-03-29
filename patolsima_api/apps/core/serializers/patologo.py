@@ -22,6 +22,7 @@ class PatologoListSerializer(serializers.ModelSerializer):
         model = Patologo
         fields = [
             "id",
+            "ncomed",
             "nombres",
             "apellidos",
         ]

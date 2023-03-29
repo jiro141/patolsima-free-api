@@ -27,6 +27,7 @@ class MedicoTratanteListSerializer(serializers.ModelSerializer):
         model = MedicoTratante
         fields = [
             "id",
+            "ncomed",
             "nombres",
             "apellidos",
             "especialidad",

@@ -15,4 +15,3 @@ router.register(r"patologos", PatologoViewSet, basename="patologo")
 router.register(r"estudios", EstudioViewSet, basename="estudio")
 router.register(r"muestras", MuestraViewSet, basename="muestra")
 urlpatterns = router.urls
-print(urlpatterns)
