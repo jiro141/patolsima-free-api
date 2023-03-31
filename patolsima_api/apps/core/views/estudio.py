@@ -17,4 +17,14 @@ class EstudioViewSet(viewsets.ModelViewSet):
 
     def list(self, *args, **kwargs):
         self.serializer_class = EstudioListSerializer
+        request = args[0]
+        params = request.query_params
+        if (
+            params
+            and "prioridad" in params
+            and isinstance(params["prioridad"], str)
+            and params["prioridad"].upper() in Estudio.Prioridad
+        ):
+            self.queryset = Estudio.add_priority_to_list_queryset(self.get_queryset())
+            self.queryset = self.queryset.filter(prioridad=params["prioridad"].upper())
         return viewsets.ModelViewSet.list(self, *args, **kwargs)

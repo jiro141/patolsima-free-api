@@ -11,6 +11,7 @@ class EstudioSerializer(serializers.ModelSerializer):
     medico_tratante = MedicoTratanteListSerializer(read_only=True)
     patologo = PatologoListSerializer(read_only=True)
     muestras = MuestraSerializer(read_only=True, many=True)
+    prioridad = serializers.ReadOnlyField(source="prioridad_calculada")
 
     class Meta:
         model = Estudio
@@ -24,6 +25,7 @@ class EstudioSerializer(serializers.ModelSerializer):
             "notas",
             "urgente",
             "envio_digital",
+            "prioridad",
             "tipo",
             "muestras",
             "created_at",
@@ -36,6 +38,7 @@ class EstudioListSerializer(serializers.ModelSerializer):
     paciente = PacienteListSerializer(read_only=True)
     medico_tratante = MedicoTratanteListSerializer(read_only=True)
     patologo = PatologoListSerializer(read_only=True)
+    prioridad = serializers.ReadOnlyField()
 
     class Meta:
         model = Estudio
@@ -46,4 +49,5 @@ class EstudioListSerializer(serializers.ModelSerializer):
             "patologo",
             "codigo",
             "tipo",
+            "prioridad",
         ]

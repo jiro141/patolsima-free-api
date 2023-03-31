@@ -1,6 +1,6 @@
-import enum
-from enum import Enum
+from datetime import datetime, timedelta
 from django.db import models
+from django.utils.timezone import make_aware
 from simple_history.models import HistoricalRecords
 from patolsima_api.utils.models import AuditableMixin
 from patolsima_api.apps.s3_management.models import S3File
@@ -34,5 +34,31 @@ class Estudio(AuditableMixin):
         choices=TipoEstudio.choices,
         default=TipoEstudio.CITOLOGIA,
     )
+
+    @property
+    def prioridad_calculada(self):
+        if self.urgente:
+            return self.Prioridad.ALTA
+
+        return (
+            self.Prioridad.BAJA
+            if (make_aware(datetime.now()) - self.created_at).days < 7
+            else self.Prioridad.MEDIA
+        )
+
+    @classmethod
+    def add_priority_to_list_queryset(
+        cls, queryset: models.QuerySet
+    ) -> models.QuerySet:
+        return queryset.annotate(
+            prioridad=models.Case(
+                models.When(urgente=True, then=models.Value(Estudio.Prioridad.ALTA)),
+                models.When(
+                    created_at__lt=(make_aware(datetime.now())) - timedelta(days=7),
+                    then=models.Value(Estudio.Prioridad.MEDIA),
+                ),
+                default=models.Value(Estudio.Prioridad.BAJA),
+            )
+        )
 
     history = HistoricalRecords()
