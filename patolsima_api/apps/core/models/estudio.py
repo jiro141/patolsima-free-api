@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from django.db import models
+from django.db.models.signals import post_save
 from django.utils.timezone import make_aware
 from simple_history.models import HistoricalRecords
 from patolsima_api.utils.models import AuditableMixin
@@ -7,6 +8,20 @@ from patolsima_api.apps.s3_management.models import S3File
 from patolsima_api.apps.core.models.medico_tratante import MedicoTratante
 from patolsima_api.apps.core.models.patologo import Patologo
 from patolsima_api.apps.core.models.paciente import Paciente
+
+
+class EstudiosManager(models.Manager):
+    def with_prioridad(self):
+        return self.annotate(
+            prioridad=models.Case(
+                models.When(urgente=True, then=models.Value(Estudio.Prioridad.ALTA)),
+                models.When(
+                    created_at__lt=(make_aware(datetime.now())) - timedelta(days=7),
+                    then=models.Value(Estudio.Prioridad.MEDIA),
+                ),
+                default=models.Value(Estudio.Prioridad.BAJA),
+            )
+        )
 
 
 class Estudio(AuditableMixin):
@@ -35,30 +50,25 @@ class Estudio(AuditableMixin):
         default=TipoEstudio.CITOLOGIA,
     )
 
-    @property
-    def prioridad_calculada(self):
-        if self.urgente:
-            return self.Prioridad.ALTA
-
-        return (
-            self.Prioridad.BAJA
-            if (make_aware(datetime.now()) - self.created_at).days < 7
-            else self.Prioridad.MEDIA
-        )
+    history = HistoricalRecords()
+    objects = EstudiosManager()
 
     @classmethod
-    def add_priority_to_list_queryset(
-        cls, queryset: models.QuerySet
-    ) -> models.QuerySet:
-        return queryset.annotate(
-            prioridad=models.Case(
-                models.When(urgente=True, then=models.Value(Estudio.Prioridad.ALTA)),
-                models.When(
-                    created_at__lt=(make_aware(datetime.now())) - timedelta(days=7),
-                    then=models.Value(Estudio.Prioridad.MEDIA),
-                ),
-                default=models.Value(Estudio.Prioridad.BAJA),
-            )
-        )
+    def post_create(cls, sender, instance, created, *args, **kwargs):
+        if not created:
+            return
 
-    history = HistoricalRecords()
+        prefixes = {
+            cls.TipoEstudio.BIOPSIA: "B",
+            cls.TipoEstudio.CITOLOGIA: "CE",
+            cls.TipoEstudio.CITOLOGIA_ESPECIAL: "CG",
+            cls.TipoEstudio.INMUNOSTOQUIMICA: "IHQ",
+        }
+        year = datetime.now().year
+        count_estudios = cls.objects.filter(
+            tipo=instance.tipo, created_at__gte=make_aware(datetime(year, 1, 1))
+        ).count()
+        return f"{prefixes[instance.tipo]}:{(count_estudios+1)}-{year}"
+
+
+post_save.connect(Estudio.post_create, sender=Estudio)

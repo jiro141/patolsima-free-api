@@ -8,7 +8,7 @@ from patolsima_api.apps.core.serializers import EstudioSerializer, EstudioListSe
 
 
 class EstudioViewSet(viewsets.ModelViewSet):
-    queryset = Estudio.objects.all()
+    queryset = Estudio.objects.with_prioridad()
     serializer_class = EstudioSerializer
     permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
     filter_backends = (SearchFilter, DjangoFilterBackend)
@@ -25,6 +25,5 @@ class EstudioViewSet(viewsets.ModelViewSet):
             and isinstance(params["prioridad"], str)
             and params["prioridad"].upper() in Estudio.Prioridad
         ):
-            self.queryset = Estudio.add_priority_to_list_queryset(self.get_queryset())
             self.queryset = self.queryset.filter(prioridad=params["prioridad"].upper())
         return viewsets.ModelViewSet.list(self, *args, **kwargs)
