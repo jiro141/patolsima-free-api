@@ -22,7 +22,8 @@ class EstudioSerializer(serializers.ModelSerializer):
             "adjuntos",
             "codigo",
             "notas",
-            "prioridad",
+            "urgente",
+            "envio_digital",
             "tipo",
             "muestras",
             "created_at",
@@ -45,5 +46,4 @@ class EstudioListSerializer(serializers.ModelSerializer):
             "patologo",
             "codigo",
             "tipo",
-            "prioridad",
         ]

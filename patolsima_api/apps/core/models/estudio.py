@@ -27,11 +27,8 @@ class Estudio(AuditableMixin):
     adjuntos = models.ManyToManyField(S3File)
     codigo = models.CharField(max_length=32, unique=True, db_index=True)
     notas = models.TextField(null=True, blank=True)
-    prioridad = models.CharField(
-        max_length=5,
-        choices=Prioridad.choices,
-        default=Prioridad.BAJA,
-    )
+    urgente = models.BooleanField(default=False)
+    envio_digital = models.BooleanField(default=True)
     tipo = models.CharField(
         max_length=18,
         choices=TipoEstudio.choices,
