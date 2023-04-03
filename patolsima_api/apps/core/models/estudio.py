@@ -27,7 +27,7 @@ class EstudiosManager(models.Manager):
 class Estudio(AuditableMixin):
     class TipoEstudio(models.TextChoices):
         BIOPSIA = "BIOPSIA"
-        CITOLOGIA = "CITOLOGIA"
+        CITOLOGIA_GINECOLOGICA = "CITOLOGIA_GINECOLOGICA"
         CITOLOGIA_ESPECIAL = "CITOLOGIA_ESPECIAL"
         INMUNOSTOQUIMICA = "INMUNOSTOQUIMICA"
 
@@ -45,9 +45,9 @@ class Estudio(AuditableMixin):
     urgente = models.BooleanField(default=False)
     envio_digital = models.BooleanField(default=True)
     tipo = models.CharField(
-        max_length=18,
+        max_length=32,
         choices=TipoEstudio.choices,
-        default=TipoEstudio.CITOLOGIA,
+        default=TipoEstudio.BIOPSIA,
     )
 
     history = HistoricalRecords()
@@ -60,15 +60,16 @@ class Estudio(AuditableMixin):
 
         prefixes = {
             cls.TipoEstudio.BIOPSIA: "B",
-            cls.TipoEstudio.CITOLOGIA: "CE",
-            cls.TipoEstudio.CITOLOGIA_ESPECIAL: "CG",
+            cls.TipoEstudio.CITOLOGIA_GINECOLOGICA: "CG",
+            cls.TipoEstudio.CITOLOGIA_ESPECIAL: "CE",
             cls.TipoEstudio.INMUNOSTOQUIMICA: "IHQ",
         }
         year = datetime.now().year
         count_estudios = cls.objects.filter(
             tipo=instance.tipo, created_at__gte=make_aware(datetime(year, 1, 1))
         ).count()
-        return f"{prefixes[instance.tipo]}:{(count_estudios+1)}-{year}"
+        instance.codigo = f"{prefixes[instance.tipo]}:{count_estudios}-{year}"
+        instance.save()
 
 
 post_save.connect(Estudio.post_create, sender=Estudio)

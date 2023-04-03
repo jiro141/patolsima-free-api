@@ -67,7 +67,7 @@ class Command(BaseCommand):
             codigo="ashkgd2",
             notas="El paciente jode mucho 2",
             prioridad=Estudio.Prioridad.ALTA,
-            tipo=Estudio.TipoEstudio.CITOLOGIA,
+            tipo=Estudio.TipoEstudio.CITOLOGIA_ESPECIAL,
         )
 
         muestra1 = Muestra.objects.create(

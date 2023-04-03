@@ -4,7 +4,11 @@ from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
 from patolsima_api.apps.core.models import Estudio
-from patolsima_api.apps.core.serializers import EstudioSerializer, EstudioListSerializer
+from patolsima_api.apps.core.serializers import (
+    EstudioSerializer,
+    EstudioListSerializer,
+    EstudioCreateUpdateSerializer,
+)
 
 
 class EstudioViewSet(viewsets.ModelViewSet):
@@ -26,4 +30,8 @@ class EstudioViewSet(viewsets.ModelViewSet):
             and params["prioridad"].upper() in Estudio.Prioridad
         ):
             self.queryset = self.queryset.filter(prioridad=params["prioridad"].upper())
-        return viewsets.ModelViewSet.list(self, *args, **kwargs)
+        return super().list(self, *args, **kwargs)
+
+    def create(self, request, *args, **kwargs):
+        self.serializer_class = EstudioCreateUpdateSerializer
+        return super().create(request, *args, **kwargs)

@@ -13,5 +13,6 @@ __all__ = [
     MedicoTratanteSerializer,
     EstudioSerializer,
     EstudioListSerializer,
+    EstudioCreateUpdateSerializer,
     MuestraSerializer,
 ]
