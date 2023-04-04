@@ -73,7 +73,9 @@ class Estudio(AuditableMixin):
         count_estudios = (
             cls.objects.filter(**filter_) | cls.objects.deleted_set().filter(**filter_)
         ).count()
-        instance.codigo = f"{prefixes[instance.tipo]}:{count_estudios}-{year}"
+        instance.codigo = (
+            f"{prefixes[instance.tipo]}:{str(count_estudios).zfill(3)}-{year}"
+        )
         instance.save()
 
 
