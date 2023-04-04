@@ -76,7 +76,7 @@ class EstudioCreateUpdateSerializer(serializers.Serializer):
         return estudio
 
     def update(self, instance, validated_data):
-
+        pass
 
     @property
     def data(self):

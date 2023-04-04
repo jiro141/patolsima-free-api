@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.utils.timezone import make_aware
 from simple_history.models import HistoricalRecords
+from softdelete.models import SoftDeleteManager
 from patolsima_api.utils.models import AuditableMixin
 from patolsima_api.apps.s3_management.models import S3File
 from patolsima_api.apps.core.models.medico_tratante import MedicoTratante
@@ -10,7 +11,7 @@ from patolsima_api.apps.core.models.patologo import Patologo
 from patolsima_api.apps.core.models.paciente import Paciente
 
 
-class EstudiosManager(models.Manager):
+class EstudiosManager(SoftDeleteManager):
     def with_prioridad(self):
         return self.annotate(
             prioridad=models.Case(
@@ -65,8 +66,12 @@ class Estudio(AuditableMixin):
             cls.TipoEstudio.INMUNOSTOQUIMICA: "IHQ",
         }
         year = datetime.now().year
-        count_estudios = cls.objects.filter(
-            tipo=instance.tipo, created_at__gte=make_aware(datetime(year, 1, 1))
+        filter_ = {
+            "tipo": instance.tipo,
+            "created_at__gte": make_aware(datetime(year, 1, 1)),
+        }
+        count_estudios = (
+            cls.objects.filter(**filter_) | cls.objects.deleted_set().filter(**filter_)
         ).count()
         instance.codigo = f"{prefixes[instance.tipo]}:{count_estudios}-{year}"
         instance.save()
