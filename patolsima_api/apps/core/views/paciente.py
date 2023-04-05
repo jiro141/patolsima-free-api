@@ -9,7 +9,7 @@ from patolsima_api.apps.core.serializers import (
 
 
 class PacienteViewSet(viewsets.ModelViewSet):
-    queryset = Paciente.objects.all()
+    queryset = Paciente.objects.all().order_by("-created_at")
     serializer_class = PacienteSerializer
     permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
 

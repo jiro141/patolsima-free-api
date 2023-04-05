@@ -112,8 +112,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "patolsima_api.utils.pagination.PatolsimaPaginationDefault",
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.BasicAuthentication",
