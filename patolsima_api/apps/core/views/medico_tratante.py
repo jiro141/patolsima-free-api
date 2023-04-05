@@ -10,7 +10,7 @@ from patolsima_api.apps.core.serializers import (
 
 
 class MedicoTratanteViewSet(viewsets.ModelViewSet):
-    queryset = MedicoTratante.objects.all()
+    queryset = MedicoTratante.objects.all().order_by("-created_at")
     serializer_class = MedicoTratanteSerializer
     permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
     filter_backends = (SearchFilter,)
