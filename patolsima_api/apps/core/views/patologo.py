@@ -10,7 +10,7 @@ from patolsima_api.apps.core.serializers import (
 
 
 class PatologoViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Patologo.objects.all()
+    queryset = Patologo.objects.all().order_by("-created_at")
     serializer_class = PatologoSerializer
     permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
     filter_backends = (SearchFilter,)
