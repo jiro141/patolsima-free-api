@@ -7,7 +7,7 @@ from patolsima_api.apps.core.serializers import MuestraSerializer
 
 
 class MuestraViewSet(viewsets.ModelViewSet):
-    queryset = Muestra.objects.all()
+    queryset = Muestra.objects.all().order_by("-estudio_id", "id")
     serializer_class = MuestraSerializer
     permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
     filter_backends = (SearchFilter,)
