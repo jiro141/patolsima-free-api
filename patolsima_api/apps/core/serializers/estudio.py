@@ -30,6 +30,27 @@ class EstudioCreateUpdateSerializer(serializers.Serializer):
     envio_digital = serializers.BooleanField(write_only=True)
     tipo = serializers.ChoiceField(Estudio.TipoEstudio, write_only=True)
 
+    def _get_fk_objects(self, validated_data):
+        paciente_ci, medico_tratante_id, patologo_id = (
+            validated_data.pop("paciente_ci"),
+            validated_data.pop("medico_tratante_id"),
+            validated_data.pop("patologo_id"),
+        )
+        try:
+            paciente = Paciente.objects.get(ci=paciente_ci)
+            medico_tratante = MedicoTratante.objects.get(id=medico_tratante_id)
+            patologo = Patologo.objects.get(id=patologo_id)
+        except Paciente.DoesNotExist:
+            raise serializers.ValidationError(f"paciente {paciente_ci} not found.")
+        except MedicoTratante.DoesNotExist:
+            raise serializers.ValidationError(
+                f"medico tratante {medico_tratante_id} not found."
+            )
+        except Patologo.DoesNotExist:
+            raise serializers.ValidationError(f"patologo {patologo_id} not found.")
+
+        return paciente, medico_tratante, patologo
+
     def create(self, validated_data):
         match validated_data:
             case {
@@ -37,28 +58,9 @@ class EstudioCreateUpdateSerializer(serializers.Serializer):
                 "medico_tratante_id": medico_tratante_id,
                 "patologo_id": patologo_id,
             }:
-                try:
-                    paciente = Paciente.objects.get(
-                        ci=validated_data.get("paciente_ci")
-                    )
-                    medico_tratante = MedicoTratante.objects.get(
-                        id=validated_data.get("medico_tratante_id")
-                    )
-                    patologo = Patologo.objects.get(
-                        id=validated_data.get("patologo_id")
-                    )
-                except Paciente.DoesNotExist:
-                    raise serializers.ValidationError(
-                        f"paciente {paciente_ci} not found."
-                    )
-                except MedicoTratante.DoesNotExist:
-                    raise serializers.ValidationError(
-                        f"medico tratante {medico_tratante_id} not found."
-                    )
-                except Patologo.DoesNotExist:
-                    raise serializers.ValidationError(
-                        f"patologo {patologo_id} not found."
-                    )
+                paciente, medico_tratante, patologo = self._get_fk_objects(
+                    validated_data
+                )
             case _:
                 raise serializers.ValidationError(
                     "Fields paciente_id, medico_tratante_id and patologo_id needed to create an Estudio instance."
@@ -76,7 +78,33 @@ class EstudioCreateUpdateSerializer(serializers.Serializer):
         return estudio
 
     def update(self, instance, validated_data):
-        pass
+        """
+        :param instance: Estudio record that's going to be modified
+        :param validated_data: Validated dict containing the keys that comes from the endpoint
+        :return: instance but modified
+        """
+
+        validated_data["paciente_ci"] = validated_data.pop(
+            "paciente_ci", instance.paciente.ci
+        )
+        validated_data["medico_tratante_id"] = validated_data.pop(
+            "medico_tratante_id", instance.medico_tratante.id
+        )
+        validated_data["patologo_id"] = validated_data.pop(
+            "patologo_id", instance.patologo.id
+        )
+
+        paciente, medico_tratante, patologo = self._get_fk_objects(validated_data)
+
+        for field_name, field_value in validated_data.items():
+            setattr(instance, field_name, field_value)
+
+        instance.paciente = paciente
+        instance.medico_tratante = medico_tratante
+        instance.patologo = patologo
+        instance.save()
+
+        return instance
 
     @property
     def data(self):

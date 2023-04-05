@@ -35,3 +35,7 @@ class EstudioViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         self.serializer_class = EstudioCreateUpdateSerializer
         return super().create(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        self.serializer_class = EstudioCreateUpdateSerializer
+        return super().update(request, *args, **kwargs)
