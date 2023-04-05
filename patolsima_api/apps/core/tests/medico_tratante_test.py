@@ -4,34 +4,14 @@ from django.contrib.auth.hashers import make_password
 from django.urls import include, path, reverse
 from rest_framework.test import APIClient, APITestCase
 from patolsima_api.apps.core.models import MedicoTratante
+from .mocks import create_medico_tratante, authenticate
 
 
 # Create your tests here.
 class MedicoTratanteTests(APITestCase):
     def setUp(self) -> None:
-        self.medico_tratante = MedicoTratante.objects.create(
-            ci=1,
-            nombres="medico",
-            apellidos="apellidos medico",
-            ncomed="12635",
-            especialidad="mondacologia",
-        )
-        self.UserModel = get_user_model()
-        self.user = self.UserModel.objects.create(
-            username="asd",
-            email="asd@asd.asd",
-            first_name="ASD",
-            last_name="asd",
-            password=make_password("asd"),
-            is_active=True,
-            is_staff=True,
-            is_superuser=True,
-        )
-        self.token = self.client.post(
-            reverse("login"),
-            {"username": self.user.username, "password": "asd"},
-            format="json",
-        ).json()["access"]
+        self.medico_tratante = create_medico_tratante()
+        self.user, self.token = authenticate(self.client)
 
     def test_get_medico(self):
         self.client.credentials()  # Clears credentials / Removes authentication HTTP headers

@@ -1,38 +1,17 @@
-from functools import reduce
-from random import randint
 from datetime import datetime, date
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.urls import include, path, reverse
 from rest_framework.test import APIClient, APITestCase
 from patolsima_api.apps.core.models import Paciente
+from .mocks import create_paciente, authenticate
 
 
 # Create your tests here.
 class PacienteTests(APITestCase):
     def setUp(self) -> None:
-        self.paciente = Paciente.objects.create(
-            ci=1,
-            nombres="paciente",
-            apellidos="apellidos paciente",
-            fecha_nacimiento=datetime(1990, 1, 1),
-        )
-        self.UserModel = get_user_model()
-        self.user = self.UserModel.objects.create(
-            username="asd",
-            email="asd@asd.asd",
-            first_name="ASD",
-            last_name="asd",
-            password=make_password("asd"),
-            is_active=True,
-            is_staff=True,
-            is_superuser=True,
-        )
-        self.token = self.client.post(
-            reverse("login"),
-            {"username": self.user.username, "password": "asd"},
-            format="json",
-        ).json()["access"]
+        self.paciente = create_paciente()
+        self.user, self.token = authenticate(self.client)
 
     def test_get_paciente(self):
         self.client.credentials()  # Clears credentials / Removes authentication HTTP headers
@@ -61,7 +40,7 @@ class PacienteTests(APITestCase):
                 assert apellidos == self.paciente.apellidos
                 assert (
                     date.fromisoformat(fecha_nacimiento)
-                    == self.paciente.fecha_nacimiento.date()
+                    == self.paciente.fecha_nacimiento
                 )
             case _:
                 assert False, "Missing fields in payload"
@@ -148,7 +127,7 @@ class PacienteTests(APITestCase):
                 assert apellidos == self.paciente.apellidos
                 assert (
                     date.fromisoformat(fecha_nacimiento)
-                    == self.paciente.fecha_nacimiento.date()
+                    == self.paciente.fecha_nacimiento
                 )
             case _:
                 assert False, "Missing fields in payload"
