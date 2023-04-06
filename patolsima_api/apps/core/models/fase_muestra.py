@@ -14,3 +14,15 @@ class FaseMuestra(AuditableMixin):
     adjuntos = models.ManyToManyField(S3File)
 
     history = HistoricalRecords()
+
+    @classmethod
+    def post_create(cls, sender, instance, created, *args, **kwargs):
+        if not created:
+            return
+        muestra = instance.muestra
+        if muestra.estado != instance.estado:
+            muestra.estado = instance.estado
+            muestra.save()
+
+
+models.signals.post_save.connect(FaseMuestra.post_create, FaseMuestra)
