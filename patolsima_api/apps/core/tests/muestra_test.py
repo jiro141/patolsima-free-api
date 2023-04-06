@@ -64,11 +64,13 @@ class MuestraTests(APITestCase):
                 "tipo_de_muestra": tipo_de_muestra,
                 "descripcion": descripcion,
                 "notas": notas,
+                "estado": estado,
             }:
                 assert estudio == creation_data["estudio"]
                 assert tipo_de_muestra == creation_data["tipo_de_muestra"]
                 assert descripcion == creation_data["descripcion"]
                 assert notas == creation_data["notas"]
+                assert estado == Muestra.Estados.RECIBIDA
             case _:
                 assert False, "Missing fields in payload"
 
@@ -79,6 +81,7 @@ class MuestraTests(APITestCase):
             "id": self.muestra.id,
             "estudio": self.muestra.estudio_id,
             "tipo_de_muestra": "nuevotipo",
+            "estado": Muestra.Estados.ALMACENAMIENTO,
         }
         old_tm = self.muestra.tipo_de_muestra
         assert Muestra.objects.count() == 1  # Only our testing record in DB
@@ -105,6 +108,7 @@ class MuestraTests(APITestCase):
                 "tipo_de_muestra": tipo_de_muestra,
                 "descripcion": descripcion,
                 "notas": notas,
+                "estado": estado,
             }:
                 assert id == self.muestra.id
                 assert estudio == self.muestra.estudio.id
@@ -112,12 +116,14 @@ class MuestraTests(APITestCase):
                 assert tipo_de_muestra == update_data["tipo_de_muestra"]
                 assert descripcion == self.muestra.descripcion
                 assert notas == self.muestra.notas
+                assert estado == Muestra.Estados.ALMACENAMIENTO
             case _:
                 assert False, "Missing fields in payload"
 
         instance = Muestra.objects.first()
         assert instance.tipo_de_muestra != old_tm
         assert instance.tipo_de_muestra == update_data["tipo_de_muestra"]
+        assert instance.estado == Muestra.Estados.ALMACENAMIENTO
 
     def test_delete_muestra(self):
         self.client.credentials()  # Clears credentials / Removes authentication HTTP headers
