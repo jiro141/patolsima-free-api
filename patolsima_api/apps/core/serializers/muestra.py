@@ -11,6 +11,7 @@ class MuestraSerializer(serializers.ModelSerializer):
             "tipo_de_muestra",
             "descripcion",
             "notas",
+            "estado",
             "created_at",
             "updated_at",
             "deleted_at",

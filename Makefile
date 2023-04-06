@@ -14,3 +14,6 @@ appmigrations:
 
 addtestdata:
 	python manage.py create_default_data_core
+
+test:
+	python manage.py test
