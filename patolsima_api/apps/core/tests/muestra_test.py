@@ -14,6 +14,16 @@ class MuestraTests(APITestCase):
     def setUp(self) -> None:
         self.estudio = create_estudio()
         self.muestra = create_muestra(self.estudio)
+        self.assertEqual(
+            self.muestra.fases.count(),
+            1,
+            "Muestra instances must have 1 default FaseMuestra object attached after creation.",
+        )
+        self.assertEqual(
+            self.muestra.fases.firt().estado,
+            Muestra.Estados.RECIBIDA,
+            "On create item must be in RECIBIDA status.",
+        )
         self.user, self.token = authenticate(self.client)
 
     def test_get_muestra(self):
