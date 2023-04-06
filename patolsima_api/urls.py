@@ -30,3 +30,4 @@ urlpatterns = [
     path("v1/core/", include("patolsima_api.apps.core.urls")),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
 ]
+# print(urlpatterns)

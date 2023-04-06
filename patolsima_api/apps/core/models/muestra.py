@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.signals import post_save
 from simple_history.models import HistoricalRecords
 from patolsima_api.utils.models import AuditableMixin
 from patolsima_api.apps.core.models.estudio import Estudio
@@ -25,7 +26,17 @@ class Muestra(AuditableMixin):
     descripcion = models.CharField(max_length=512, null=True, blank=True)
     notas = models.TextField(null=True, blank=True)
     estado = models.CharField(
-        max_length=32, choices=Estados.choices, default=Estados.RECIBIDA
+        max_length=32, choices=Estados.choices, default=Estados.RECIBIDA, db_index=True
     )
 
     history = HistoricalRecords()
+
+    @classmethod
+    def post_create(cls, sender, instance, created, *args, **kwargs):
+        if not created:
+            return
+
+        instance.fases.create(muestra=instance, notas="")
+
+
+post_save.connect(Muestra.post_create, Muestra)
