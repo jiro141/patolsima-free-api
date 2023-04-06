@@ -3,7 +3,7 @@ from rest_framework.permissions import DjangoModelPermissions, DjangoObjectPermi
 from rest_framework.filters import SearchFilter
 
 from patolsima_api.apps.core.models import Muestra
-from patolsima_api.apps.core.serializers import MuestraSerializer
+from patolsima_api.apps.core.serializers import MuestraSerializer, MuestraListSerializer
 
 
 class MuestraViewSet(viewsets.ModelViewSet):
@@ -12,3 +12,7 @@ class MuestraViewSet(viewsets.ModelViewSet):
     permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
     filter_backends = (SearchFilter,)
     search_fields = ["estudio__codigo"]
+
+    def list(self, *args, **kwargs):
+        self.serializer_class = MuestraListSerializer
+        return super().list(self, *args, **kwargs)

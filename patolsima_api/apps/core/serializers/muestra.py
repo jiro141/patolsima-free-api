@@ -15,7 +15,14 @@ class MuestraSerializer(serializers.ModelSerializer):
             "descripcion",
             "notas",
             "estado",
+            "fases",
             "created_at",
             "updated_at",
             "deleted_at",
         ]
+
+
+class MuestraListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Muestra
+        fields = ["id", "estudio", "estudio", "tipo_de_muestra", "estado"]
