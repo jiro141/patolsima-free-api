@@ -15,6 +15,7 @@ class EstudioSerializer(serializers.ModelSerializer):
     adjuntos = S3FileSerializer(read_only=True, many=True)
     prioridad = serializers.ReadOnlyField()
     codigo = serializers.ReadOnlyField()
+    estudio_asociado = serializers.ReadOnlyField()
 
     class Meta:
         model = Estudio
@@ -29,6 +30,7 @@ class EstudioCreateUpdateSerializer(serializers.Serializer):
     urgente = serializers.BooleanField(write_only=True)
     envio_digital = serializers.BooleanField(write_only=True)
     tipo = serializers.ChoiceField(Estudio.TipoEstudio, write_only=True)
+    estudio_asociado = serializers.CharField(write_only=True, required=False)
 
     def _get_fk_objects(self, validated_data):
         paciente_ci, medico_tratante_id, patologo_id = (
@@ -74,6 +76,7 @@ class EstudioCreateUpdateSerializer(serializers.Serializer):
             urgente=validated_data.get("urgente"),
             envio_digital=validated_data.get("envio_digital"),
             tipo=validated_data.get("tipo"),
+            estudio_asociado=validated_data.get("estudio_asociado"),
         )
         return estudio
 

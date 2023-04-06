@@ -50,6 +50,7 @@ class Estudio(AuditableMixin):
         choices=TipoEstudio.choices,
         default=TipoEstudio.BIOPSIA,
     )
+    estudio_asociado = models.CharField(max_length=32, null=True, blank=True)
 
     history = HistoricalRecords()
     objects = EstudiosManager()
