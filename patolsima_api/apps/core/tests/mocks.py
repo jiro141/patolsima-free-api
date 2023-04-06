@@ -88,3 +88,7 @@ def create_muestra(estudio):
         descripcion="carne de lomo",
         notas="huele como piche",
     )
+
+
+def add_fase_muestra(muestra, estado, descripcion):
+    pass

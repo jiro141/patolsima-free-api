@@ -20,7 +20,7 @@ class MuestraTests(APITestCase):
             "Muestra instances must have 1 default FaseMuestra object attached after creation.",
         )
         self.assertEqual(
-            self.muestra.fases.firt().estado,
+            self.muestra.fases.first().estado,
             Muestra.Estados.RECIBIDA,
             "On create item must be in RECIBIDA status.",
         )
@@ -106,7 +106,6 @@ class MuestraTests(APITestCase):
 
         self.client.credentials(HTTP_AUTHORIZATION="Bearer " + self.token)
         r = self.client.put(url, update_data)
-        print(r.data)
         self.assertEqual(r.status_code, 200)
         assert Muestra.objects.count() == 1  # Only our testing record in DB
         data = r.json()
@@ -171,12 +170,6 @@ class MuestraTests(APITestCase):
         assert all(
             map(
                 lambda x: x in data["results"][0],
-                [
-                    "id",
-                    "estudio",
-                    "tipo_de_muestra",
-                    "descripcion",
-                    "notas",
-                ],
+                ["id", "estudio", "tipo_de_muestra", "estado"],
             )
         )
