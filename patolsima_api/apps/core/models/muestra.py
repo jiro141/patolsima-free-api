@@ -25,7 +25,7 @@ class Muestra(AuditableMixin):
     descripcion = models.CharField(max_length=512, null=True, blank=True)
     notas = models.TextField(null=True, blank=True)
     estado = models.CharField(
-        max_length=32, choices=Estados.choices, default=Estados.RECIBIDA
+        max_length=32, choices=Estados.choices, default=Estados.RECIBIDA, db_index=True
     )
 
     history = HistoricalRecords()
