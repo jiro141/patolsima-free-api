@@ -23,6 +23,8 @@ class MuestraSerializer(serializers.ModelSerializer):
 
 
 class MuestraListSerializer(serializers.ModelSerializer):
+    estudio_codigo = serializers.CharField(source="estudio.codigo", read_only=True)
+
     class Meta:
         model = Muestra
-        fields = ["id", "estudio", "estudio", "tipo_de_muestra", "estado"]
+        fields = ["id", "estudio", "estudio_codigo", "tipo_de_muestra", "estado"]
