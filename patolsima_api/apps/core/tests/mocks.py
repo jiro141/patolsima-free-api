@@ -1,4 +1,5 @@
 from datetime import datetime, date
+from random import randint
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.urls import include, path, reverse
@@ -49,13 +50,21 @@ def create_patologo(nombres="patologo", apellidos="apellidos patologo", ncomed="
     )
 
 
-def create_medico_tratante():
+def create_medico_tratante(
+    ci=None,
+    nombres="medico",
+    apellidos="apellidos medico",
+    ncomed="12635",
+    especialidad="mondacologia",
+):
+    if not ci:
+        ci = randint(1000000, 30000000)
     return MedicoTratante.objects.create(
-        ci=1,
-        nombres="medico",
-        apellidos="apellidos medico",
-        ncomed="12635",
-        especialidad="mondacologia",
+        ci=ci,
+        nombres=nombres,
+        apellidos=apellidos,
+        ncomed=ncomed,
+        especialidad=especialidad,
     )
 
 
@@ -81,12 +90,17 @@ def create_estudio(paciente=None, medico=None, patologo=None, tipo_estudio=None)
     )
 
 
-def create_muestra(estudio):
+def create_muestra(
+    estudio,
+    tipo_de_muestra="carne de vaca",
+    descripcion="carne de lomo",
+    notas="huele como piche",
+):
     return Muestra.objects.create(
         estudio=estudio,
-        tipo_de_muestra="carne de vaca",
-        descripcion="carne de lomo",
-        notas="huele como piche",
+        tipo_de_muestra=tipo_de_muestra,
+        descripcion=descripcion,
+        notas=notas,
     )
 
 
