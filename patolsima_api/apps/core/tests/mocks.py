@@ -41,11 +41,11 @@ def create_paciente():
     )
 
 
-def create_patologo():
+def create_patologo(nombres="patologo", apellidos="apellidos patologo", ncomed="12635"):
     return Patologo.objects.create(
-        nombres="patologo",
-        apellidos="apellidos patologo",
-        ncomed="12635",
+        nombres=nombres,
+        apellidos=apellidos,
+        ncomed=ncomed,
     )
 
 

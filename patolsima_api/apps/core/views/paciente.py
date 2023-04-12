@@ -16,7 +16,7 @@ class PacienteViewSet(viewsets.ModelViewSet):
     permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
     filter_backends = (SearchFilter, DjangoFilterBackend)
     search_fields = ("ci", "nombres", "apellidos")
-    filterset_fields = ("ci", "patologo")
+    filterset_fields = ("ci", "email")
 
     def list(self, *args, **kwargs):
         self.serializer_class = PacienteListSerializer

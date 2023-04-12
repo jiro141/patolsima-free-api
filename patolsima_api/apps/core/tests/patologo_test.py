@@ -1,4 +1,5 @@
 from datetime import datetime, date
+from urllib.parse import urlencode
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.urls import include, path, reverse
@@ -123,7 +124,7 @@ class PatologoTests(APITestCase):
 
     def test_get_list_patologo(self):
         self.client.credentials()  # Clears credentials / Removes authentication HTTP headers
-
+        otro_patologo = create_patologo("bad", "bunny", "987")
         url = reverse("patologo-list")
         r = self.client.get(url)
         self.assertEqual(
@@ -136,11 +137,48 @@ class PatologoTests(APITestCase):
         r = self.client.get(url)
         self.assertEqual(r.status_code, 200)
         data = r.json()
-        assert data["count"] == 1
-        assert len(data["results"]) == 1
+        self.assertEqual(data["count"], 2)
+        self.assertEqual(len(data["results"]), 2)
         assert all(
-            map(
-                lambda x: x in data["results"][0],
-                ["id", "ncomed", "nombres", "apellidos"],
-            )
+            [
+                all(
+                    map(
+                        lambda x: x in result,
+                        ["id", "ncomed", "nombres", "apellidos"],
+                    )
+                )
+                for result in data["results"]
+            ]
         )
+
+    def test_get_list_search_filter(self):
+        def test_request(url, n_expected_records):
+            self.client.credentials(HTTP_AUTHORIZATION="Bearer " + self.token)
+            r = self.client.get(url)
+            self.assertEqual(r.status_code, 200)
+            data = r.json()
+            self.assertEqual(data["count"], n_expected_records)
+            self.assertEqual(len(data["results"]), n_expected_records)
+            if n_expected_records:
+                assert all(
+                    [
+                        all(
+                            map(
+                                lambda x: x in result,
+                                ["id", "ncomed", "nombres", "apellidos"],
+                            )
+                        )
+                        for result in data["results"]
+                    ]
+                )
+
+        otro_patologo = create_patologo("bad", "bunny", "987")
+        for url, n_expected_records in [
+            (reverse("patologo-list") + "?" + urlencode({"search": "bad"}), 1),
+            (reverse("patologo-list") + "?" + urlencode({"search": "bunny"}), 1),
+            (reverse("patologo-list") + "?" + urlencode({"search": "bad bunny"}), 1),
+            (reverse("patologo-list") + "?" + urlencode({"search": "bat bunny"}), 0),
+            (reverse("patologo-list") + "?" + urlencode({"search": "9"}), 1),
+            (reverse("patologo-list"), 2),
+        ]:
+            test_request(url, n_expected_records)
