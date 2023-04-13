@@ -33,12 +33,21 @@ def authenticate(client):
     return user, token
 
 
-def create_paciente():
+def create_paciente(
+    ci=None,
+    nombres="paciente",
+    apellidos="apellidos paciente",
+    fecha_nacimiento=date(1990, 1, 1),
+    **kwargs
+):
+    if not ci:
+        ci = randint(1, 40000000)
     return Paciente.objects.create(
-        ci=1,
-        nombres="paciente",
-        apellidos="apellidos paciente",
-        fecha_nacimiento=date(1990, 1, 1),
+        ci=ci,
+        nombres=nombres,
+        apellidos=apellidos,
+        fecha_nacimiento=fecha_nacimiento,
+        **kwargs
     )
 
 

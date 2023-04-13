@@ -1,4 +1,5 @@
 from datetime import datetime, date
+from urllib.parse import urlencode
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.urls import include, path, reverse
@@ -49,7 +50,7 @@ class PacienteTests(APITestCase):
         count_pacientes = Paciente.objects.count()
         self.client.credentials()  # Clears credentials / Removes authentication HTTP headers
         creation_data = {
-            "ci": 1,
+            "ci": self.paciente.ci,
             "nombres": "test",
             "apellidos": "test apellidos",
             "fecha_nacimiento": "1995-01-01",
@@ -70,7 +71,7 @@ class PacienteTests(APITestCase):
             "The request must be rejected because the CI already exists.",
         )
 
-        creation_data["ci"] = 2
+        creation_data["ci"] = self.paciente.ci + 1
         r = self.client.post(url, creation_data)
         self.assertEqual(r.status_code, 201, "Paciente created")
         data = r.json()
@@ -170,14 +171,93 @@ class PacienteTests(APITestCase):
         assert data["count"] == 1
         assert len(data["results"]) == 1
         assert all(
-            map(
-                lambda x: x in data["results"][0],
-                [
-                    "ci",
-                    "nombres",
-                    "apellidos",
-                    "email",
-                    "telefono_celular",
-                ],
-            )
+            [
+                all(
+                    map(
+                        lambda x: x in result,
+                        [
+                            "ci",
+                            "nombres",
+                            "apellidos",
+                            "email",
+                            "telefono_celular",
+                        ],
+                    )
+                )
+                for result in data["results"]
+            ]
         )
+
+    def test_get_list_paciente_search_filter(self):
+        def test_request(url, n_expected_records):
+            self.client.credentials(HTTP_AUTHORIZATION="Bearer " + self.token)
+            r = self.client.get(url)
+            self.assertEqual(r.status_code, 200)
+            data = r.json()
+            self.assertEqual(data["count"], n_expected_records, f"On request to {url}")
+            self.assertEqual(
+                len(data["results"]), n_expected_records, f"On request to {url}"
+            )
+            if n_expected_records:
+                self.assertTrue(
+                    all(
+                        [
+                            all(
+                                map(
+                                    lambda x: x in result,
+                                    [
+                                        "ci",
+                                        "nombres",
+                                        "apellidos",
+                                        "email",
+                                        "telefono_celular",
+                                    ],
+                                )
+                            )
+                            for result in data["results"]
+                        ]
+                    ),
+                    f"On request to {url}",
+                )
+
+        otro_paciente = create_paciente(
+            nombres="bad", apellidos="bunny", email="otro_paciente@patolsima.com"
+        )
+        for url, n_expected_records in [
+            (reverse("paciente-list") + "?" + urlencode({"search": "bad"}), 1),
+            (reverse("paciente-list") + "?" + urlencode({"search": "bunny"}), 1),
+            (
+                reverse("paciente-list") + "?" + urlencode({"search": "bad bunny"}),
+                1,
+            ),
+            (
+                reverse("paciente-list") + "?" + urlencode({"search": "bat bunny"}),
+                0,
+            ),
+            (
+                reverse("paciente-list")
+                + "?"
+                + urlencode({"search": f"{otro_paciente.ci}"}),
+                1,
+            ),
+            (
+                reverse("paciente-list")
+                + "?"
+                + urlencode({"email": otro_paciente.email}),
+                1,
+            ),
+            (
+                reverse("paciente-list")
+                + "?"
+                + urlencode({"ci": f"{self.paciente.ci}"}),
+                1,
+            ),
+            (
+                reverse("paciente-list")
+                + "?"
+                + urlencode({"ci": f"{otro_paciente.ci}"}),
+                1,
+            ),
+            (reverse("paciente-list"), 2),
+        ]:
+            test_request(url, n_expected_records)
