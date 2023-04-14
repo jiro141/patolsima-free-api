@@ -1,5 +1,8 @@
 from rest_framework import serializers
 from patolsima_api.apps.core.models import Estudio, Paciente, Patologo, MedicoTratante
+from patolsima_api.apps.core.utils.serializers import (
+    get_fk_objects_for_estudio_CU_serializers,
+)
 from patolsima_api.apps.s3_management.serializers import S3FileSerializer
 from .paciente import PacienteListSerializer
 from .medico_tratante import MedicoTratanteListSerializer
@@ -21,7 +24,7 @@ class EstudioSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class EstudioCreateUpdateSerializer(serializers.Serializer):
+class EstudioCreateSerializer(serializers.Serializer):
     paciente_ci = serializers.IntegerField(write_only=True)
     medico_tratante_id = serializers.IntegerField(write_only=True)
     patologo_id = serializers.IntegerField(write_only=True)
@@ -30,27 +33,6 @@ class EstudioCreateUpdateSerializer(serializers.Serializer):
     envio_digital = serializers.BooleanField(write_only=True)
     tipo = serializers.ChoiceField(Estudio.TipoEstudio, write_only=True)
 
-    def _get_fk_objects(self, validated_data):
-        paciente_ci, medico_tratante_id, patologo_id = (
-            validated_data.pop("paciente_ci"),
-            validated_data.pop("medico_tratante_id"),
-            validated_data.pop("patologo_id"),
-        )
-        try:
-            paciente = Paciente.objects.get(ci=paciente_ci)
-            medico_tratante = MedicoTratante.objects.get(id=medico_tratante_id)
-            patologo = Patologo.objects.get(id=patologo_id)
-        except Paciente.DoesNotExist:
-            raise serializers.ValidationError(f"paciente {paciente_ci} not found.")
-        except MedicoTratante.DoesNotExist:
-            raise serializers.ValidationError(
-                f"medico tratante {medico_tratante_id} not found."
-            )
-        except Patologo.DoesNotExist:
-            raise serializers.ValidationError(f"patologo {patologo_id} not found.")
-
-        return paciente, medico_tratante, patologo
-
     def create(self, validated_data):
         match validated_data:
             case {
@@ -58,9 +40,11 @@ class EstudioCreateUpdateSerializer(serializers.Serializer):
                 "medico_tratante_id": medico_tratante_id,
                 "patologo_id": patologo_id,
             }:
-                paciente, medico_tratante, patologo = self._get_fk_objects(
-                    validated_data
-                )
+                (
+                    paciente,
+                    medico_tratante,
+                    patologo,
+                ) = get_fk_objects_for_estudio_CU_serializers(validated_data)
             case _:
                 raise serializers.ValidationError(
                     "Fields paciente_id, medico_tratante_id and patologo_id needed to create an Estudio instance."
@@ -76,6 +60,20 @@ class EstudioCreateUpdateSerializer(serializers.Serializer):
             tipo=validated_data.get("tipo"),
         )
         return estudio
+
+    @property
+    def data(self):
+        return EstudioSerializer(self.instance).data
+
+
+class EstudioUpdateSerializer(serializers.Serializer):
+    paciente_ci = serializers.IntegerField(write_only=True, required=False)
+    medico_tratante_id = serializers.IntegerField(write_only=True, required=False)
+    patologo_id = serializers.IntegerField(write_only=True, required=False)
+    notas = serializers.CharField(write_only=True, required=False)
+    urgente = serializers.BooleanField(write_only=True, required=False)
+    envio_digital = serializers.BooleanField(write_only=True, required=False)
+    tipo = serializers.ChoiceField(Estudio.TipoEstudio, write_only=True, required=False)
 
     def update(self, instance, validated_data):
         """
@@ -94,7 +92,9 @@ class EstudioCreateUpdateSerializer(serializers.Serializer):
             "patologo_id", instance.patologo.id
         )
 
-        paciente, medico_tratante, patologo = self._get_fk_objects(validated_data)
+        paciente, medico_tratante, patologo = get_fk_objects_for_estudio_CU_serializers(
+            validated_data
+        )
 
         for field_name, field_value in validated_data.items():
             setattr(instance, field_name, field_value)
