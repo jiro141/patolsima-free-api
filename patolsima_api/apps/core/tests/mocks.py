@@ -1,4 +1,5 @@
 from datetime import datetime, date
+from random import randint
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 from django.urls import include, path, reverse
@@ -32,34 +33,57 @@ def authenticate(client):
     return user, token
 
 
-def create_paciente():
+def create_paciente(
+    ci=None,
+    nombres="paciente",
+    apellidos="apellidos paciente",
+    fecha_nacimiento=date(1990, 1, 1),
+    **kwargs
+):
+    if not ci:
+        ci = randint(1, 40000000)
     return Paciente.objects.create(
-        ci=1,
-        nombres="paciente",
-        apellidos="apellidos paciente",
-        fecha_nacimiento=date(1990, 1, 1),
+        ci=ci,
+        nombres=nombres,
+        apellidos=apellidos,
+        fecha_nacimiento=fecha_nacimiento,
+        **kwargs
     )
 
 
-def create_patologo():
+def create_patologo(nombres="patologo", apellidos="apellidos patologo", ncomed=None):
+    if not ncomed:
+        ncomed = str(randint(1000, 10000))
     return Patologo.objects.create(
-        nombres="patologo",
-        apellidos="apellidos patologo",
-        ncomed="12635",
+        nombres=nombres,
+        apellidos=apellidos,
+        ncomed=ncomed,
     )
 
 
-def create_medico_tratante():
+def create_medico_tratante(
+    ci=None,
+    nombres="medico",
+    apellidos="apellidos medico",
+    ncomed=None,
+    especialidad="mondacologia",
+):
+    if not ncomed:
+        ncomed = str(randint(1000, 10000))
+    if not ci:
+        ci = randint(1000000, 30000000)
     return MedicoTratante.objects.create(
-        ci=1,
-        nombres="medico",
-        apellidos="apellidos medico",
-        ncomed="12635",
-        especialidad="mondacologia",
+        ci=ci,
+        nombres=nombres,
+        apellidos=apellidos,
+        ncomed=ncomed,
+        especialidad=especialidad,
     )
 
 
-def create_estudio(paciente=None, medico=None, patologo=None, tipo_estudio=None):
+def create_estudio(
+    paciente=None, medico=None, patologo=None, tipo_estudio=None, **kwargs
+):
     if not paciente:
         paciente = create_paciente()
 
@@ -78,15 +102,23 @@ def create_estudio(paciente=None, medico=None, patologo=None, tipo_estudio=None)
         patologo=patologo,
         notas="Este pedazo de carne esta picha",
         tipo=tipo_estudio,
+        **kwargs
     )
 
 
-def create_muestra(estudio):
+def create_muestra(
+    estudio,
+    tipo_de_muestra="carne de vaca",
+    descripcion="carne de lomo",
+    notas="huele como piche",
+    **kwargs
+):
     return Muestra.objects.create(
         estudio=estudio,
-        tipo_de_muestra="carne de vaca",
-        descripcion="carne de lomo",
-        notas="huele como piche",
+        tipo_de_muestra=tipo_de_muestra,
+        descripcion=descripcion,
+        notas=notas,
+        **kwargs
     )
 
 

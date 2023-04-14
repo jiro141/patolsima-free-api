@@ -7,7 +7,8 @@ from patolsima_api.apps.core.models import Estudio
 from patolsima_api.apps.core.serializers import (
     EstudioSerializer,
     EstudioListSerializer,
-    EstudioCreateUpdateSerializer,
+    EstudioCreateSerializer,
+    EstudioUpdateSerializer,
 )
 
 
@@ -16,8 +17,8 @@ class EstudioViewSet(viewsets.ModelViewSet):
     serializer_class = EstudioSerializer
     permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
     filter_backends = (SearchFilter, DjangoFilterBackend)
-    search_fields = ["paciente__nombres", "paciente__apellidos"]
-    filter_fields = ["paciente__ci", "codigo", "tipo"]
+    search_fields = ["paciente__ci", "paciente__nombres", "paciente__apellidos"]
+    filterset_fields = ["paciente_id", "codigo", "tipo"]
 
     def list(self, *args, **kwargs):
         self.serializer_class = EstudioListSerializer
@@ -33,9 +34,9 @@ class EstudioViewSet(viewsets.ModelViewSet):
         return super().list(self, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
-        self.serializer_class = EstudioCreateUpdateSerializer
+        self.serializer_class = EstudioCreateSerializer
         return super().create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
-        self.serializer_class = EstudioCreateUpdateSerializer
+        self.serializer_class = EstudioUpdateSerializer
         return super().update(request, *args, **kwargs)

@@ -1,6 +1,7 @@
 from datetime import datetime, date
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
+from urllib.parse import urlencode
 from django.urls import include, path, reverse
 from rest_framework.test import APIClient, APITestCase
 from patolsima_api.apps.core.models import MedicoTratante
@@ -168,14 +169,72 @@ class MedicoTratanteTests(APITestCase):
         assert data["count"] == 1
         assert len(data["results"]) == 1
         assert all(
-            map(
-                lambda x: x in data["results"][0],
-                [
-                    "id",
-                    "ncomed",
-                    "nombres",
-                    "apellidos",
-                    "especialidad",
-                ],
-            )
+            [
+                all(
+                    map(
+                        lambda x: x in result,
+                        [
+                            "id",
+                            "ncomed",
+                            "nombres",
+                            "apellidos",
+                            "especialidad",
+                        ],
+                    )
+                )
+                for result in data["results"]
+            ]
         )
+
+    def test_get_list_medico_tratante_search_filter(self):
+        def test_request(url, n_expected_records):
+            self.client.credentials(HTTP_AUTHORIZATION="Bearer " + self.token)
+            r = self.client.get(url)
+            self.assertEqual(r.status_code, 200)
+            data = r.json()
+            self.assertEqual(data["count"], n_expected_records, url)
+            self.assertEqual(len(data["results"]), n_expected_records, url)
+            if n_expected_records:
+                assert all(
+                    [
+                        all(
+                            map(
+                                lambda x: x in result,
+                                [
+                                    "id",
+                                    "ncomed",
+                                    "nombres",
+                                    "apellidos",
+                                    "especialidad",
+                                ],
+                            )
+                        )
+                        for result in data["results"]
+                    ]
+                )
+
+        otro_medico = create_medico_tratante(
+            nombres="bad", apellidos="bunny", ncomed="987", especialidad="neurocirugia"
+        )
+        for url, n_expected_records in [
+            (reverse("medico-list") + "?" + urlencode({"search": "bad"}), 1),
+            (reverse("medico-list") + "?" + urlencode({"search": "bunny"}), 1),
+            (
+                reverse("medico-list") + "?" + urlencode({"search": "bad bunny"}),
+                1,
+            ),
+            (
+                reverse("medico-list") + "?" + urlencode({"search": "bat bunny"}),
+                0,
+            ),
+            (
+                reverse("medico-list")
+                + "?"
+                + urlencode({"search": otro_medico.ncomed}),
+                1,
+            ),
+            (reverse("medico-list") + "?" + urlencode({"search": "neuro"}), 1),
+            (reverse("medico-list") + "?" + urlencode({"search": "neurocirugia"}), 1),
+            (reverse("medico-list"), 2),
+        ]:
+            test_request(url, n_expected_records)
