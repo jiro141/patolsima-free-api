@@ -28,7 +28,9 @@ class InformeGenerado(AuditableMixin):
 
 
 class ResultadoInmunostoquimica(AuditableMixin):
-    informe = models.ForeignKey(Informe, on_delete=models.CASCADE)
+    informe = models.ForeignKey(
+        Informe, on_delete=models.CASCADE, related_name="resultadod_inmunostoquimica"
+    )
     procedimiento = models.CharField(max_length=256)
     reaccion = models.CharField(max_length=256)
     diagnostico_observaciones = models.TextField(max_length=1024, null=True, blank=True)
