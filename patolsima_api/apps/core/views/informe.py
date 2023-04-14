@@ -24,8 +24,8 @@ class InformeViewSet(viewsets.ModelViewSet):
 
 
 class InformeGeneradoViewSet(viewsets.ModelViewSet):
-    queryset = Informe.objects.all().order_by("-created_at")
-    serializer_class = InformeSerializer
+    queryset = InformeGenerado.objects.all()
+    serializer_class = InformeGeneradoSerializer
     permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
 
     def list(self, request, *args, **kwargs):
@@ -41,8 +41,8 @@ class InformeGeneradoViewSet(viewsets.ModelViewSet):
 
 
 class ResultadoInmunostoquimicaViewSet(viewsets.ModelViewSet):
-    queryset = Informe.objects.all().order_by("-created_at")
-    serializer_class = InformeSerializer
+    queryset = ResultadoInmunostoquimica.objects.all()
+    serializer_class = ResultadoInmunostoquimicaSerializer
     permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
 
     def list(self, request, *args, **kwargs):
