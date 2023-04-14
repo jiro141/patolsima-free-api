@@ -157,8 +157,8 @@ class PatologoTests(APITestCase):
             r = self.client.get(url)
             self.assertEqual(r.status_code, 200)
             data = r.json()
-            self.assertEqual(data["count"], n_expected_records)
-            self.assertEqual(len(data["results"]), n_expected_records)
+            self.assertEqual(data["count"], n_expected_records, url)
+            self.assertEqual(len(data["results"]), n_expected_records, url)
             if n_expected_records:
                 assert all(
                     [
@@ -178,7 +178,12 @@ class PatologoTests(APITestCase):
             (reverse("patologo-list") + "?" + urlencode({"search": "bunny"}), 1),
             (reverse("patologo-list") + "?" + urlencode({"search": "bad bunny"}), 1),
             (reverse("patologo-list") + "?" + urlencode({"search": "bat bunny"}), 0),
-            (reverse("patologo-list") + "?" + urlencode({"search": "9"}), 1),
+            (
+                reverse("patologo-list")
+                + "?"
+                + urlencode({"search": otro_patologo.ncomed}),
+                1,
+            ),
             (reverse("patologo-list"), 2),
         ]:
             test_request(url, n_expected_records)

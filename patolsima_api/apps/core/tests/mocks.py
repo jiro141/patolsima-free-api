@@ -51,7 +51,9 @@ def create_paciente(
     )
 
 
-def create_patologo(nombres="patologo", apellidos="apellidos patologo", ncomed="12635"):
+def create_patologo(nombres="patologo", apellidos="apellidos patologo", ncomed=None):
+    if not ncomed:
+        ncomed = str(randint(1000, 10000))
     return Patologo.objects.create(
         nombres=nombres,
         apellidos=apellidos,
@@ -63,9 +65,11 @@ def create_medico_tratante(
     ci=None,
     nombres="medico",
     apellidos="apellidos medico",
-    ncomed="12635",
+    ncomed=None,
     especialidad="mondacologia",
 ):
+    if not ncomed:
+        ncomed = str(randint(1000, 10000))
     if not ci:
         ci = randint(1000000, 30000000)
     return MedicoTratante.objects.create(
@@ -77,7 +81,9 @@ def create_medico_tratante(
     )
 
 
-def create_estudio(paciente=None, medico=None, patologo=None, tipo_estudio=None):
+def create_estudio(
+    paciente=None, medico=None, patologo=None, tipo_estudio=None, **kwargs
+):
     if not paciente:
         paciente = create_paciente()
 
@@ -96,6 +102,7 @@ def create_estudio(paciente=None, medico=None, patologo=None, tipo_estudio=None)
         patologo=patologo,
         notas="Este pedazo de carne esta picha",
         tipo=tipo_estudio,
+        **kwargs
     )
 
 
@@ -104,12 +111,14 @@ def create_muestra(
     tipo_de_muestra="carne de vaca",
     descripcion="carne de lomo",
     notas="huele como piche",
+    **kwargs
 ):
     return Muestra.objects.create(
         estudio=estudio,
         tipo_de_muestra=tipo_de_muestra,
         descripcion=descripcion,
         notas=notas,
+        **kwargs
     )
 
 

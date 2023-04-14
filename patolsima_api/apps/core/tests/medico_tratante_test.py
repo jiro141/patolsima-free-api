@@ -192,8 +192,8 @@ class MedicoTratanteTests(APITestCase):
             r = self.client.get(url)
             self.assertEqual(r.status_code, 200)
             data = r.json()
-            self.assertEqual(data["count"], n_expected_records)
-            self.assertEqual(len(data["results"]), n_expected_records)
+            self.assertEqual(data["count"], n_expected_records, url)
+            self.assertEqual(len(data["results"]), n_expected_records, url)
             if n_expected_records:
                 assert all(
                     [
@@ -227,7 +227,12 @@ class MedicoTratanteTests(APITestCase):
                 reverse("medico-list") + "?" + urlencode({"search": "bat bunny"}),
                 0,
             ),
-            (reverse("medico-list") + "?" + urlencode({"search": "9"}), 1),
+            (
+                reverse("medico-list")
+                + "?"
+                + urlencode({"search": otro_medico.ncomed}),
+                1,
+            ),
             (reverse("medico-list") + "?" + urlencode({"search": "neuro"}), 1),
             (reverse("medico-list") + "?" + urlencode({"search": "neurocirugia"}), 1),
             (reverse("medico-list"), 2),
