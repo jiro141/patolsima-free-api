@@ -1,5 +1,6 @@
-from rest_framework.serializers import ModelSerializer, ReadOnlyField
+from rest_framework.serializers import ModelSerializer, ReadOnlyField, ValidationError
 from patolsima_api.apps.core.models import (
+    Estudio,
     Informe,
     InformeGenerado,
     ResultadoInmunostoquimica,
@@ -16,6 +17,32 @@ class InformeGeneradoSerializer(ModelSerializer):
 
 
 class ResultadoInmunostoquimicaSerializer(ModelSerializer):
+    def create(self, validated_data):
+        informe = validated_data["informe"]
+        if informe.estudio.tipo != Estudio.TipoEstudio.INMUNOSTOQUIMICA:
+            raise ValidationError(
+                "Estudio.tipo must be Estudio.TipoEstudio.INMUNOSTOQUIMICA"
+            )
+
+        resultado_inmunostoquimica = ResultadoInmunostoquimica.objects.create(
+            informe=informe,
+            procedimiento=validated_data.get("procedimiento"),
+            reaccion=validated_data.get("reaccion"),
+            diagnostico_observaciones=validated_data.get("diagnostico_observaciones"),
+        )
+
+        return resultado_inmunostoquimica
+
+    def update(self, instance, validated_data):
+        validated_data.pop(
+            "informe", None
+        )  # Informe should be immutable after creating Inmunostoquimica rows
+
+        for field_name, field_value in validated_data.items():
+            setattr(instance, field_name, field_value)
+
+        return instance
+
     class Meta:
         model = ResultadoInmunostoquimica
         fields = "__all__"
