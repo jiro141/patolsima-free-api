@@ -70,7 +70,7 @@ class EstudioTests(APITestCase):
             create_patologo(),
         )
         creation_data = {
-            "paciente_ci": new_paciente.ci,
+            "paciente_id": new_paciente.id,
             "medico_tratante_id": new_medico.id,
             "patologo_id": new_patologo.id,
             "notas": "Esto es una nota",
@@ -102,8 +102,8 @@ class EstudioTests(APITestCase):
                 "envio_digital": envio_digital,
                 "muestras": muestras,
             }:
-                self.assertEquals(paciente["ci"], creation_data["paciente_ci"])
-                self.assertEquals(paciente["ci"], new_paciente.ci)
+                self.assertEquals(paciente["id"], creation_data["paciente_id"])
+                self.assertEquals(paciente["id"], new_paciente.id)
                 self.assertEquals(
                     medico_tratante["id"], creation_data["medico_tratante_id"]
                 )
@@ -123,7 +123,7 @@ class EstudioTests(APITestCase):
         self.client.credentials()  # Clears credentials / Removes authentication HTTP headers
 
         update_data = {
-            "paciente_ci": self.estudio.paciente.ci,
+            "paciente_id": self.estudio.paciente.id,
             "medico_tratante_id": self.estudio.medico_tratante.id,
             "patologo_id": self.estudio.patologo.id,
             "notas": "Otra nota",
@@ -155,7 +155,7 @@ class EstudioTests(APITestCase):
                 "envio_digital": envio_digital,
                 "muestras": muestras,
             }:
-                self.assertEquals(paciente["ci"], self.estudio.paciente.ci)
+                self.assertEquals(paciente["id"], self.estudio.paciente.id)
                 self.assertEquals(
                     medico_tratante["id"], self.estudio.medico_tratante.id
                 )
@@ -201,9 +201,6 @@ class EstudioTests(APITestCase):
         assert Estudio.objects.count()
         assert data["count"] == 1
         assert len(data["results"]) == 1
-        from pprint import pprint
-
-        pprint(data["results"])
         self.assertTrue(
             all(
                 [
@@ -278,13 +275,13 @@ class EstudioTests(APITestCase):
             (
                 reverse("estudio-list")
                 + "?"
-                + urlencode({"search": f"{otro_estudio.paciente.ci}"}),
+                + urlencode({"search": f"{otro_estudio.paciente.id}"}),
                 1,
             ),
             (
                 reverse("estudio-list")
                 + "?"
-                + urlencode({"paciente": f"{otro_estudio.paciente.ci}"}),
+                + urlencode({"paciente": f"{otro_estudio.paciente.id}"}),
                 1,
             ),
             (
