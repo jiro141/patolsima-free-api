@@ -4,6 +4,11 @@ from .muestra import MuestraViewSet
 from .patologo import PatologoViewSet
 from .medico_tratante import MedicoTratanteViewSet
 from .fase_muestra import FaseMuestraViewSet
+from .informe import (
+    InformeViewSet,
+    InformeGeneradoViewSet,
+    ResultadoInmunostoquimicaViewSet,
+)
 
 __all__ = [
     PacienteViewSet,
@@ -12,4 +17,7 @@ __all__ = [
     FaseMuestraViewSet,
     PatologoViewSet,
     MedicoTratanteViewSet,
+    InformeViewSet,
+    InformeGeneradoViewSet,
+    ResultadoInmunostoquimicaViewSet,
 ]

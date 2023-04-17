@@ -4,6 +4,7 @@ from .medico_tratante import *
 from .estudio import *
 from .muestra import *
 from .fase_muestra import *
+from .informe import *
 
 __all__ = [
     PacienteSerializer,
@@ -19,4 +20,7 @@ __all__ = [
     MuestraSerializer,
     MuestraListSerializer,
     FaseMuestraSerializer,
+    InformeSerializer,
+    InformeListSerializer,
+    ResultadoInmunostoquimica,
 ]
