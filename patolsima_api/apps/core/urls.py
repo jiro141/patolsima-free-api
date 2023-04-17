@@ -19,12 +19,12 @@ router.register(r"patologos", PatologoViewSet, basename="patologo")
 router.register(r"estudios", EstudioViewSet, basename="estudio")
 router.register(r"muestras", MuestraViewSet, basename="muestra")
 router.register(r"fasesmuestra", FaseMuestraViewSet, basename="fase-muestra")
-router.register(r"informe", InformeViewSet, basename="informe")
+router.register(r"informes", InformeViewSet, basename="informe")
 router.register(
-    r"informes-generado", InformeGeneradoViewSet, basename="informe-generado"
+    r"informes-generados", InformeGeneradoViewSet, basename="informe-generado"
 )
 router.register(
-    r"resultado-inmunostoquimica",
+    r"resultados-inmunostoquimica",
     ResultadoInmunostoquimicaViewSet,
     basename="resultados-inmunostoquimica",
 )
