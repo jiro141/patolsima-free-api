@@ -1,4 +1,5 @@
 from django.db import models
+from simple_history.models import HistoricalRecords
 from patolsima_api.utils.models import AuditableMixin
 from patolsima_api.apps.s3_management.models import S3File
 from .estudio import Estudio
@@ -21,6 +22,8 @@ class Informe(AuditableMixin):
     completado = models.BooleanField(default=False)
     aprobado = models.BooleanField(default=False)
 
+    history = HistoricalRecords()
+
 
 class InformeGenerado(AuditableMixin):
     s3_file = models.ForeignKey(S3File, on_delete=models.CASCADE)
@@ -34,3 +37,5 @@ class ResultadoInmunostoquimica(AuditableMixin):
     procedimiento = models.CharField(max_length=256)
     reaccion = models.CharField(max_length=256)
     diagnostico_observaciones = models.TextField(max_length=1024, null=True, blank=True)
+
+    history = HistoricalRecords()
