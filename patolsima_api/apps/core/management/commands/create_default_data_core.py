@@ -56,7 +56,7 @@ class Command(BaseCommand):
             patologo=patologo1,
             codigo="ashkgd",
             notas="El paciente jode mucho",
-            urgente=True,
+            urgente=False,
             tipo=Estudio.TipoEstudio.BIOPSIA,
         )
 
@@ -66,7 +66,8 @@ class Command(BaseCommand):
             patologo=patologo1,
             codigo="ashkgd2",
             notas="El paciente jode mucho 2",
-            prioridad=Estudio.Prioridad.ALTA,
+            envio_digital=True,
+            urgente=True,
             tipo=Estudio.TipoEstudio.CITOLOGIA_ESPECIAL,
         )
 
