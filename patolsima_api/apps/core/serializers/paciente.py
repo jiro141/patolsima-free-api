@@ -8,6 +8,7 @@ class PacienteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Paciente
         fields = [
+            "id",
             "ci",
             "nombres",
             "apellidos",
@@ -27,6 +28,7 @@ class PacienteListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Paciente
         fields = [
+            "id",
             "ci",
             "nombres",
             "apellidos",

@@ -5,7 +5,7 @@ from patolsima_api.utils.models import AuditableMixin, PersonalInfoMixin
 
 
 class Paciente(AuditableMixin, PersonalInfoMixin):
-    ci = models.PositiveIntegerField(primary_key=True)
+    ci = models.PositiveIntegerField(null=True, unique=True, db_index=True)
     fecha_nacimiento = models.DateField(null=True)
 
     history = HistoricalRecords()

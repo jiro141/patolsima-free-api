@@ -25,7 +25,7 @@ class EstudioSerializer(serializers.ModelSerializer):
 
 
 class EstudioCreateSerializer(serializers.Serializer):
-    paciente_ci = serializers.IntegerField(write_only=True)
+    paciente_id = serializers.IntegerField(write_only=True)
     medico_tratante_id = serializers.IntegerField(write_only=True)
     patologo_id = serializers.IntegerField(write_only=True)
     notas = serializers.CharField(write_only=True)
@@ -36,7 +36,7 @@ class EstudioCreateSerializer(serializers.Serializer):
     def create(self, validated_data):
         match validated_data:
             case {
-                "paciente_ci": paciente_ci,
+                "paciente_id": paciente_id,
                 "medico_tratante_id": medico_tratante_id,
                 "patologo_id": patologo_id,
             }:
@@ -67,7 +67,7 @@ class EstudioCreateSerializer(serializers.Serializer):
 
 
 class EstudioUpdateSerializer(serializers.Serializer):
-    paciente_ci = serializers.IntegerField(write_only=True, required=False)
+    paciente_id = serializers.IntegerField(write_only=True, required=False)
     medico_tratante_id = serializers.IntegerField(write_only=True, required=False)
     patologo_id = serializers.IntegerField(write_only=True, required=False)
     notas = serializers.CharField(write_only=True, required=False)
@@ -82,8 +82,8 @@ class EstudioUpdateSerializer(serializers.Serializer):
         :return: instance but modified
         """
 
-        validated_data["paciente_ci"] = validated_data.pop(
-            "paciente_ci", instance.paciente.ci
+        validated_data["paciente_id"] = validated_data.pop(
+            "paciente_id", instance.paciente.id
         )
         validated_data["medico_tratante_id"] = validated_data.pop(
             "medico_tratante_id", instance.medico_tratante.id

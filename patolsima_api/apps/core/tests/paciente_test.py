@@ -17,7 +17,7 @@ class PacienteTests(APITestCase):
     def test_get_paciente(self):
         self.client.credentials()  # Clears credentials / Removes authentication HTTP headers
 
-        url = reverse("paciente-detail", args=[self.paciente.ci])
+        url = reverse("paciente-detail", args=[self.paciente.id])
         r = self.client.get(url)
         self.assertEqual(
             r.status_code,
@@ -31,11 +31,13 @@ class PacienteTests(APITestCase):
         data = r.json()
         match data:
             case {
+                "id": id,
                 "ci": ci,
                 "nombres": nombres,
                 "apellidos": apellidos,
                 "fecha_nacimiento": fecha_nacimiento,
             }:
+                assert id == self.paciente.id
                 assert ci == self.paciente.ci
                 assert nombres == self.paciente.nombres
                 assert apellidos == self.paciente.apellidos
@@ -101,7 +103,7 @@ class PacienteTests(APITestCase):
         old_name = self.paciente.nombres
         assert Paciente.objects.count() == 1  # Only our testing record in DB
 
-        url = reverse("paciente-detail", args=[self.paciente.ci])
+        url = reverse("paciente-detail", args=[self.paciente.id])
         r = self.client.put(url, update_data)
         self.assertEqual(
             r.status_code,
@@ -117,11 +119,13 @@ class PacienteTests(APITestCase):
 
         match data:
             case {
+                "id": id,
                 "ci": ci,
                 "nombres": nombres,
                 "apellidos": apellidos,
                 "fecha_nacimiento": fecha_nacimiento,
             }:
+                assert id == self.paciente.id
                 assert ci == self.paciente.ci
                 assert nombres != self.paciente.nombres
                 assert nombres == update_data["nombres"]
@@ -140,7 +144,7 @@ class PacienteTests(APITestCase):
     def test_delete_paciente(self):
         self.client.credentials()  # Clears credentials / Removes authentication HTTP headers
         assert Paciente.objects.count() == 1
-        url = reverse("paciente-detail", args=[self.paciente.ci])
+        url = reverse("paciente-detail", args=[self.paciente.id])
         r = self.client.delete(url)
         self.assertEqual(
             r.status_code,
@@ -176,6 +180,7 @@ class PacienteTests(APITestCase):
                     map(
                         lambda x: x in result,
                         [
+                            "id",
                             "ci",
                             "nombres",
                             "apellidos",
@@ -206,6 +211,7 @@ class PacienteTests(APITestCase):
                                 map(
                                     lambda x: x in result,
                                     [
+                                        "id",
                                         "ci",
                                         "nombres",
                                         "apellidos",
