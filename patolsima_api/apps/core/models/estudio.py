@@ -12,15 +12,21 @@ from patolsima_api.apps.core.models.paciente import Paciente
 
 
 class EstudiosManager(SoftDeleteManager):
-    def with_prioridad(self):
-        return self.annotate(
-            prioridad=models.Case(
-                models.When(urgente=True, then=models.Value(Estudio.Prioridad.ALTA)),
-                models.When(
-                    created_at__lt=(make_aware(datetime.now())) - timedelta(days=7),
-                    then=models.Value(Estudio.Prioridad.MEDIA),
-                ),
-                default=models.Value(Estudio.Prioridad.BAJA),
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .annotate(
+                prioridad=models.Case(
+                    models.When(
+                        urgente=True, then=models.Value(Estudio.Prioridad.ALTA)
+                    ),
+                    models.When(
+                        created_at__lt=(make_aware(datetime.now())) - timedelta(days=7),
+                        then=models.Value(Estudio.Prioridad.MEDIA),
+                    ),
+                    default=models.Value(Estudio.Prioridad.BAJA),
+                )
             )
         )
 
@@ -54,6 +60,16 @@ class Estudio(AuditableMixin):
 
     history = HistoricalRecords()
     objects = EstudiosManager()
+
+    @property
+    def prioridad_procedural(self):
+        # Used by other related models like Informe to add Estudio priority to the Serializer outputs
+        if self.urgente:
+            return self.Prioridad.ALTA
+        elif self.created_at < (make_aware(datetime.now()) - timedelta(days=7)):
+            return self.Prioridad.MEDIA
+
+        return self.Prioridad.BAJA
 
     @classmethod
     def post_create(cls, sender, instance, created, *args, **kwargs):

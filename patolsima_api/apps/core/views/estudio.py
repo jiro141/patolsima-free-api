@@ -13,7 +13,7 @@ from patolsima_api.apps.core.serializers import (
 
 
 class EstudioViewSet(viewsets.ModelViewSet):
-    queryset = Estudio.objects.with_prioridad().order_by("created_at")
+    queryset = Estudio.objects.order_by("created_at")
     serializer_class = EstudioSerializer
     permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
     filter_backends = (SearchFilter, DjangoFilterBackend)
