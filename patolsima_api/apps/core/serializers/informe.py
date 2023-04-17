@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, ReadOnlyField
 from patolsima_api.apps.core.models import (
     Informe,
     InformeGenerado,
@@ -30,3 +30,28 @@ class InformeSerializer(ModelSerializer):
     class Meta:
         model = Informe
         fields = "__all__"
+
+
+class InformeListSerializer(ModelSerializer):
+    estudio_tipo = ReadOnlyField()
+    estudio_codigo = ReadOnlyField()
+    estudio_paciente_id = ReadOnlyField()
+    estudio_paciente_ci = ReadOnlyField()
+    estudio_patologo_id = ReadOnlyField()
+    estudio_patologo_name = ReadOnlyField()
+    estudio_prioridad = ReadOnlyField()
+
+    class Meta:
+        model = Informe
+        fields = [
+            "estudio_id",
+            "estudio_tipo",
+            "estudio_codigo",
+            "estudio_paciente_id",
+            "estudio_paciente_ci",
+            "estudio_patologo_id",
+            "estudio_patologo_name",
+            "estudio_prioridad",
+            "completado",
+            "aprobado",
+        ]

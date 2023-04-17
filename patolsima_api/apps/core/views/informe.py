@@ -4,12 +4,14 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
 from patolsima_api.apps.core.models import (
+    Estudio,
     Informe,
     InformeGenerado,
     ResultadoInmunostoquimica,
 )
 from patolsima_api.apps.core.serializers import (
     InformeSerializer,
+    InformeListSerializer,
     InformeGeneradoSerializer,
     ResultadoInmunostoquimicaSerializer,
 )
@@ -22,6 +24,21 @@ class InformeViewSet(viewsets.ModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ("estudio__codigo", "completado", "aprobado")
 
+    def list(self, *args, **kwargs):
+        self.serializer_class = InformeListSerializer
+        request = args[0]
+        params = request.query_params
+        if (
+            params
+            and "prioridad" in params
+            and isinstance(params["prioridad"], str)
+            and params["prioridad"].upper() in Estudio.Prioridad
+        ):
+            self.queryset = self.queryset.filter(
+                estudio_prioridad=params["prioridad"].upper()
+            )
+        return super().list(self, *args, **kwargs)
+
 
 class InformeGeneradoViewSet(viewsets.ModelViewSet):
     queryset = InformeGenerado.objects.all()
@@ -31,7 +48,7 @@ class InformeGeneradoViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         """
         There is no reason to include a list method because the ids will be accessible using the detail for each
-        Muestra instance.
+        Informe instance.
         :param request:
         :param args:
         :param kwargs:
@@ -48,7 +65,7 @@ class ResultadoInmunostoquimicaViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         """
         There is no reason to include a list method because the ids will be accessible using the detail for each
-        Muestra instance.
+        Informe instance.
         :param request:
         :param args:
         :param kwargs:

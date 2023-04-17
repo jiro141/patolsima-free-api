@@ -21,5 +21,6 @@ __all__ = [
     MuestraListSerializer,
     FaseMuestraSerializer,
     InformeSerializer,
+    InformeListSerializer,
     ResultadoInmunostoquimica,
 ]
