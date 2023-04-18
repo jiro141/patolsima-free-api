@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     # Local Apps (Your project's apps)
     "patolsima_api.apps.core",
+    "patolsima_api.apps.facturacion",
     "patolsima_api.apps.s3_management",
 ]
 
