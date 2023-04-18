@@ -61,6 +61,9 @@ class Estudio(AuditableMixin):
     history = HistoricalRecords()
     objects = EstudiosManager()
 
+    def __str__(self):
+        return f"({self.id}) {self.tipo} [{self.codigo}]"
+
     @property
     def prioridad_procedural(self):
         # Used by other related models like Informe to add Estudio priority to the Serializer outputs

@@ -11,4 +11,7 @@ class MedicoTratante(AuditableMixin, PersonalInfoMixin):
     )
     especialidad = models.CharField(max_length=64, null=True, blank=True)
 
+    def __str__(self):
+        return f"({self.id})({self.ncomed}) {self.apellidos} {self.nombres} [{self.especialidad}]"
+
     history = HistoricalRecords()
