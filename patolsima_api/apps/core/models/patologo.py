@@ -9,4 +9,7 @@ class Patologo(AuditableMixin, NombreMixin):
     ncomed = models.CharField(max_length=32, unique=True, null=True, blank=True)
     firma = models.ForeignKey(S3File, on_delete=models.DO_NOTHING, null=True)
 
+    def __str__(self):
+        return f"({self.id})({self.ncomed}) {self.apellidos} {self.nombres}"
+
     history = HistoricalRecords()

@@ -10,6 +10,9 @@ class Paciente(AuditableMixin, PersonalInfoMixin):
 
     history = HistoricalRecords()
 
+    def __str__(self):
+        return f"({self.id})({self.ci}) {self.apellidos} {self.nombres}"
+
     @property
     def edad(self):
         today = date.today()
