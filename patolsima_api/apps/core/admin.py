@@ -10,6 +10,7 @@ from patolsima_api.apps.core.models import (
     Muestra,
     FaseMuestra,
     Informe,
+    ResultadoInmunostoquimica,
 )
 from patolsima_api.utils.admin import date_to_admin_readable
 
@@ -43,7 +44,40 @@ class PatologoAdmin(SimpleHistoryAdmin):
     search_fields = ("ci", "ncomed", "apellidos", "email", "especialidad")
 
 
+class MuestraInline(admin.TabularInline):
+    model = Muestra
+
+
+class MuestraAdmin(SimpleHistoryAdmin):
+    list_select_related = ("estudio",)
+    list_display = (
+        "id",
+        "codigo_estudio",
+        "tipo_de_muestra",
+        "estado",
+        "created_at_formatted",
+        "updated_at_formatted",
+    )
+    search_fields = ("estudio__codigo", "tipo_de_muestra")
+    list_filter = ("estado", "created_at", "updated_at")
+
+    @admin.display(ordering="estudio__codigo", description="Estudio")
+    def codigo_estudio(self, obj: Muestra):
+        return obj.estudio.codigo
+
+    @admin.display(ordering="created_at", description="Creado el")
+    def created_at_formatted(self, obj: Estudio):
+        return date_to_admin_readable(obj.created_at)
+
+    @admin.display(ordering="updated_at", description="Creado el")
+    def updated_at_formatted(self, obj: Estudio):
+        return date_to_admin_readable(obj.updated_at)
+
+
 class EstudioAdmin(SimpleHistoryAdmin):
+    inlines = [
+        MuestraInline,
+    ]
     list_select_related = ["paciente", "patologo", "medico_tratante", "informe"]
     list_display = (
         "id",
@@ -101,34 +135,12 @@ class EstudioAdmin(SimpleHistoryAdmin):
         return bool(obj.informe)
 
 
-class MuestraAdmin(SimpleHistoryAdmin):
-    list_select_related = ("estudio",)
-    list_display = (
-        "id",
-        "codigo_estudio",
-        "tipo_de_muestra",
-        "estado",
-        "created_at_formatted",
-        "updated_at_formatted",
-    )
-    search_fields = ("estudio__codigo", "tipo_de_muestra")
-    list_filter = ("estado", "created_at", "updated_at")
-
-    @admin.display(ordering="estudio__codigo", description="Estudio")
-    def codigo_estudio(self, obj: Muestra):
-        return obj.estudio.codigo
-
-    @admin.display(ordering="created_at", description="Creado el")
-    def created_at_formatted(self, obj: Estudio):
-        return date_to_admin_readable(obj.created_at)
-
-    @admin.display(ordering="updated_at", description="Creado el")
-    def updated_at_formatted(self, obj: Estudio):
-        return date_to_admin_readable(obj.updated_at)
-
-
 class FaseMuestraAdmin(SimpleHistoryAdmin):
     list_display = ("id", "muestra_id", "estado", "created_at", "updated_at")
+
+
+class ResultadoInmunostoquimicaInline(admin.TabularInline):
+    model = ResultadoInmunostoquimica
 
 
 class InformeAdmin(SimpleHistoryAdmin):
@@ -142,6 +154,9 @@ class InformeAdmin(SimpleHistoryAdmin):
     )
     search_fields = ("estudio__codigo",)
     list_filter = ("completado", "aprobado", "created_at", "updated_at")
+    inlines = [
+        ResultadoInmunostoquimicaInline,
+    ]
 
     @admin.display(ordering="estudio__codigo", description="Estudio")
     def codigo_estudio(self, obj: Muestra):
