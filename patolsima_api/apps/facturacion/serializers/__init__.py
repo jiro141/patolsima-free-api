@@ -1,5 +1,5 @@
 from .cliente import ClienteSerializer
-from .orden import OrdenSerializer, ItemOrdenSerializer
+from .orden import OrdenSerializer, ItemOrdenSerializer, OrdenCreateSerializer
 from .recibo_y_factura import FacturaSerializer, ReciboSerializer
 from .pago import PagoSerializer, NotaPagoSerializer
 
@@ -12,4 +12,5 @@ __all__ = [
     ReciboSerializer,
     PagoSerializer,
     NotaPagoSerializer,
+    OrdenCreateSerializer,
 ]
