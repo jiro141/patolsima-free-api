@@ -1,6 +1,5 @@
 from rest_framework import viewsets
 from rest_framework.permissions import DjangoModelPermissions, DjangoObjectPermissions
-from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
 from patolsima_api.apps.core.models import (
@@ -15,6 +14,7 @@ from patolsima_api.apps.core.serializers import (
     InformeGeneradoSerializer,
     ResultadoInmunostoquimicaSerializer,
 )
+from patolsima_api.utils.responses import method_not_allowed
 
 
 class InformeViewSet(viewsets.ModelViewSet):
@@ -54,7 +54,7 @@ class InformeGeneradoViewSet(viewsets.ModelViewSet):
         :param kwargs:
         :return:
         """
-        return Response(status=405, data={"error": "Method not allowed"})
+        return method_not_allowed()
 
 
 class ResultadoInmunostoquimicaViewSet(viewsets.ModelViewSet):
@@ -71,4 +71,4 @@ class ResultadoInmunostoquimicaViewSet(viewsets.ModelViewSet):
         :param kwargs:
         :return:
         """
-        return Response(status=405, data={"error": "Method not allowed"})
+        return method_not_allowed()

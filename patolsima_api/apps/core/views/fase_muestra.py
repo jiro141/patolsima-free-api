@@ -1,9 +1,9 @@
 from rest_framework import viewsets
 from rest_framework.permissions import DjangoModelPermissions, DjangoObjectPermissions
-from rest_framework.response import Response
 
 from patolsima_api.apps.core.models import FaseMuestra
 from patolsima_api.apps.core.serializers import FaseMuestraSerializer
+from patolsima_api.utils.responses import method_not_allowed
 
 
 class FaseMuestraViewSet(viewsets.ModelViewSet):
@@ -20,4 +20,4 @@ class FaseMuestraViewSet(viewsets.ModelViewSet):
         :param kwargs:
         :return:
         """
-        return Response(status=405, data={"error": "Method not allowed"})
+        return method_not_allowed()
