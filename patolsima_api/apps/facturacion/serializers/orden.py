@@ -33,7 +33,7 @@ class OrdenCreateSerializer(serializers.Serializer):
         estudio_ids = validated_data["estudio_ids"]
 
         estudios = Estudio.objects.filter(id__in=estudio_ids).all()
-        if len(estudios) != len(estudio_ids):
+        if estudios.count() != len(estudio_ids):
             raise serializers.ValidationError(
                 "The number of matching Estudio instances in the database is different than the number in 'estudio_ids'"
             )

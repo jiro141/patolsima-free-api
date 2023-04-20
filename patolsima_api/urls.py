@@ -28,6 +28,8 @@ urlpatterns = [
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     path("v1/core/", include("patolsima_api.apps.core.urls")),
+    path("v1/facturacion/", include("patolsima_api.apps.facturacion.urls")),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
 ]
-# print(urlpatterns)
+# from pprint import pprint
+# pprint(urlpatterns)
