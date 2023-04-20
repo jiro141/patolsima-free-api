@@ -5,6 +5,6 @@ from patolsima_api.utils.models import AuditableMixin, TelefonoMixin, DireccionM
 
 class Cliente(AuditableMixin, TelefonoMixin, DireccionMixin):
     razon_social = models.CharField(max_length=255)
-    ci_rif = models.CharField(max_length=32, db_index=True)
+    ci_rif = models.CharField(max_length=32, unique=True, db_index=True)
 
     history = HistoricalRecords()
