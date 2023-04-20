@@ -4,7 +4,6 @@ from simple_history.models import HistoricalRecords
 from patolsima_api.utils.models import AuditableMixin
 from patolsima_api.apps.s3_management.models import S3File
 from .orden import Orden
-from .pago import Pago
 
 
 class Recibo(AuditableMixin):
@@ -17,10 +16,4 @@ class Recibo(AuditableMixin):
 class Factura(Recibo):
     n_factura = models.PositiveIntegerField(unique=True, db_index=True)
 
-    history = HistoricalRecords()
-
-
-class NotaPago(AuditableMixin):
-    pago = models.OneToOneField(Pago, on_delete=models.CASCADE)
-    s3_file = models.OneToOneField(S3File, on_delete=models.CASCADE)
     history = HistoricalRecords()

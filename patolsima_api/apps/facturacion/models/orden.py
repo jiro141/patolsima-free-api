@@ -15,9 +15,11 @@ class Orden(AuditableMixin):
 
 class ItemOrden(AuditableMixin):
     estudio = models.OneToOneField(
-        Estudio, on_delete=models.CASCADE, related_name="item_orden"
+        Estudio, on_delete=models.CASCADE, related_name="items_orden"
     )
-    orden = models.ForeignKey(Orden, on_delete=models.CASCADE)
+    orden = models.ForeignKey(
+        Orden, on_delete=models.CASCADE, related_name="items_orden"
+    )
     monto_usd = models.DecimalField(
         max_digits=10, decimal_places=2, default=Decimal("0.00")
     )
