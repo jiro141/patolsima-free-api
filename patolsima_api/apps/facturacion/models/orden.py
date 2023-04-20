@@ -10,6 +10,7 @@ from .cliente import Cliente
 class Orden(AuditableMixin):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     confirmada = models.BooleanField(default=False)
+    pagada = models.BooleanField(default=False)
     history = HistoricalRecords()
 
 
