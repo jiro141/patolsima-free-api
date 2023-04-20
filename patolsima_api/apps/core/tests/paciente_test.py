@@ -56,6 +56,7 @@ class PacienteTests(APITestCase):
             "nombres": "test",
             "apellidos": "test apellidos",
             "fecha_nacimiento": "1995-01-01",
+            "sexo": Paciente.Sexo.MASCULINO,
         }
         url = reverse("paciente-list")
         r = self.client.post(url, creation_data)
