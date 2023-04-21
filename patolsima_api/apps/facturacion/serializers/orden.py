@@ -1,3 +1,4 @@
+from decimal import Decimal
 from rest_framework import serializers
 from django.db import transaction
 from patolsima_api.apps.facturacion.models import Orden, ItemOrden, Cliente
@@ -9,6 +10,19 @@ class ItemOrdenSerializer(serializers.ModelSerializer):
     class Meta:
         model = ItemOrden
         fields = "__all__"
+
+
+class ItemOrdenUpdateSerializer(serializers.Serializer):
+    id = serializers.IntegerField(min_value=1)
+    monto_usd = serializers.DecimalField(
+        max_digits=10, decimal_places=2, min_value=Decimal("0.00")
+    )
+
+    def update(self, instance, validated_data):
+        instance.monto_usd = validated_data.get("monto_usd", Decimal("0.00"))
+        print(instance.monto_usd)
+        instance.save()
+        return instance
 
 
 class OrdenSerializer(serializers.ModelSerializer):
