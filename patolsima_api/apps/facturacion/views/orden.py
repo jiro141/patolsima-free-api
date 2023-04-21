@@ -9,6 +9,7 @@ from patolsima_api.apps.facturacion.models import Orden, ItemOrden
 from patolsima_api.apps.facturacion.serializers import (
     OrdenSerializer,
     OrdenCreateSerializer,
+    OrdenListSerializer,
     ItemOrdenSerializer,
     ItemOrdenUpdateSerializer,
 )
@@ -23,6 +24,10 @@ class OrdenViewSet(ModelViewSet):
     filter_backends = (SearchFilter, DjangoFilterBackend)
     search_fields = ("cliente__razon_social", "cliente__ci_rif")
     filterset_fields = ("confirmada", "pagada")
+
+    def list(self, request, *args, **kwargs):
+        self.serializer_class = OrdenListSerializer
+        return super().list(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
         self.serializer_class = OrdenCreateSerializer

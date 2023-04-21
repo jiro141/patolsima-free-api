@@ -3,6 +3,7 @@ from rest_framework import serializers
 from django.db import transaction
 from patolsima_api.apps.facturacion.models import Orden, ItemOrden, Cliente
 from patolsima_api.apps.core.models import Estudio
+from .cliente import ClienteListSerializer, ClienteSerializer
 from .pago import PagoSerializer
 from .recibo_y_factura import FacturaSerializer, ReciboSerializer
 
@@ -35,6 +36,8 @@ class OrdenSerializer(serializers.ModelSerializer):
 
     factura = FacturaSerializer(read_only=True)
     recibo = ReciboSerializer(read_only=True)
+
+    cliente = ClienteSerializer(read_only=True)
 
     class Meta:
         model = Orden
@@ -77,3 +80,19 @@ class OrdenCreateSerializer(serializers.Serializer):
     @property
     def data(self):
         return OrdenSerializer(self.instance).data
+
+
+class OrdenListSerializer(serializers.ModelSerializer):
+    cliente = ClienteListSerializer(read_only=True)
+
+    class Meta:
+        model = Orden
+        fields = [
+            "id",
+            "cliente",
+            "confirmada",
+            "pagada",
+            # "n_estudios",
+            # "total",
+            # "deauda"
+        ]
