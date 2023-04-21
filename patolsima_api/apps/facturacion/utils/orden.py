@@ -1,6 +1,6 @@
 from django.db import transaction
 from rest_framework.serializers import ValidationError
-from patolsima_api.apps.facturacion.models import Orden
+from patolsima_api.apps.facturacion.models import Orden, Factura, Recibo
 from patolsima_api.apps.core.models import Estudio
 
 
@@ -22,3 +22,12 @@ def confirm_orden(orden: Orden):
 
     orden.confirmada = True
     orden.save()
+
+
+def generar_recibo(orden: Orden) -> Recibo:
+    pass
+
+
+def generar_factura(orden: Orden, n_factura: int = None) -> Factura:
+    if hasattr(orden, "factura"):
+        pass

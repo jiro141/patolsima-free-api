@@ -13,7 +13,11 @@ from patolsima_api.apps.facturacion.serializers import (
     ItemOrdenSerializer,
     ItemOrdenUpdateSerializer,
 )
-from patolsima_api.apps.facturacion.utils.orden import confirm_orden
+from patolsima_api.apps.facturacion.utils.orden import (
+    confirm_orden,
+    generar_recibo,
+    generar_factura,
+)
 from patolsima_api.utils.responses import method_not_allowed
 
 
@@ -39,6 +43,17 @@ class OrdenViewSet(ModelViewSet):
     @action(detail=True, methods=["post"])
     def confirmar(self, request, pk=None):
         return Response(status=200, data={"confirm": confirm_orden(self.get_object())})
+
+    @action(detail=True, methods=["post"])
+    def recibo(self, request, pk=None):
+        return Response(status=200, data={"confirm": generar_recibo(self.get_object())})
+
+    @action(detail=True, methods=["post"])
+    def factura(self, request, pk=None):
+        return Response(
+            status=200,
+            data={"confirm": generar_factura(self.get_object(), n_factura=None)},
+        )
 
 
 class ItemOrdenViewSet(ModelViewSet):
