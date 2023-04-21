@@ -39,5 +39,7 @@ class NotaPago(AuditableMixin):
     pago = models.OneToOneField(
         Pago, on_delete=models.CASCADE, related_name="nota_de_pago"
     )
-    s3_file = models.OneToOneField(S3File, on_delete=models.CASCADE)
+    s3_file = models.OneToOneField(
+        S3File, on_delete=models.CASCADE, null=True, blank=True
+    )
     history = HistoricalRecords()
