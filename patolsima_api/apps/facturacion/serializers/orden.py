@@ -4,6 +4,7 @@ from django.db import transaction
 from patolsima_api.apps.facturacion.models import Orden, ItemOrden, Cliente
 from patolsima_api.apps.core.models import Estudio
 from .pago import PagoSerializer
+from .recibo_y_factura import FacturaSerializer, ReciboSerializer
 
 
 class ItemOrdenSerializer(serializers.ModelSerializer):
@@ -32,6 +33,9 @@ class OrdenSerializer(serializers.ModelSerializer):
     confirmada = serializers.ReadOnlyField()
     pagada = serializers.ReadOnlyField()
 
+    factura = FacturaSerializer(read_only=True)
+    recibo = ReciboSerializer(read_only=True)
+
     class Meta:
         model = Orden
         fields = "__all__"
@@ -46,14 +50,16 @@ class OrdenCreateSerializer(serializers.Serializer):
     def create(self, validated_data):
         estudio_ids = validated_data["estudio_ids"]
 
-        estudios = Estudio.objects.filter(id__in=estudio_ids).all()
+        estudios = Estudio.objects.filter(
+            id__in=estudio_ids, items_orden__isnull=True
+        ).all()
         if estudios.count() != len(estudio_ids):
             raise serializers.ValidationError(
                 "The number of matching Estudio instances in the database is different than the number in 'estudio_ids'"
             )
 
         estudio1 = estudios.first()
-        cliente = Cliente.objects.get_or_create(
+        cliente, created = Cliente.objects.get_or_create(
             ci_rif=f"V{estudio1.paciente.ci}",
             defaults={
                 "razon_social": estudio1.paciente.nombre_completo,
@@ -63,7 +69,11 @@ class OrdenCreateSerializer(serializers.Serializer):
             },
         )
 
-        orden = Orden(cliente=cliente)
+        orden = Orden.objects.create(cliente=cliente)
         items_orden = [ItemOrden(estudio=estudio, orden=orden) for estudio in estudios]
         ItemOrden.objects.bulk_create(items_orden)
         return orden
+
+    @property
+    def data(self):
+        return OrdenSerializer(self.instance).data
