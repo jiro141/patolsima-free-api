@@ -1,11 +1,16 @@
 from django.db import transaction
 from rest_framework.serializers import ValidationError
+from typing import Union
 from patolsima_api.apps.facturacion.models import Orden, Factura, Recibo
 from patolsima_api.apps.core.models import Estudio
+from patolsima_api.apps.s3_management.utils import upload_from_local_filesystem
 
 
 @transaction.atomic
 def confirm_orden(orden: Orden):
+    if orden.confirmada:
+        raise ValidationError("Orden is already confirmed")
+
     if (
         orden.items_orden.filter(estudio__confirmado=False).count()
         < orden.items_orden.count()
@@ -24,10 +29,23 @@ def confirm_orden(orden: Orden):
     orden.save()
 
 
+@transaction.atomic
 def generar_recibo(orden: Orden) -> Recibo:
-    pass
+    if hasattr(orden, "recibo"):
+        return orden.recibo
+    recibo = Recibo.objects.create(orden=orden)
+    recibo.s3_file = upload_from_local_filesystem(render_recibo_factura(recibo))
+    recibo.save()
 
 
+@transaction.atomic
 def generar_factura(orden: Orden, n_factura: int = None) -> Factura:
     if hasattr(orden, "factura"):
-        pass
+        return orden.factura
+    factura = Factura.objects.create(orden=orden, n_factura=n_factura)
+    factura.s3_file = upload_from_local_filesystem(render_recibo_factura(factura))
+    factura.save()
+
+
+def render_recibo_factura(registro: Union[Factura, Recibo]) -> str:
+    pass
