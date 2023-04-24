@@ -13,11 +13,11 @@ from patolsima_api.apps.facturacion.serializers import (
     OrdenListSerializer,
     ItemOrdenSerializer,
     ItemOrdenUpdateSerializer,
+    FacturaCreateSerializer,
 )
 from patolsima_api.apps.facturacion.utils.orden import (
     confirm_orden,
-    generar_recibo,
-    generar_factura,
+    generar_recibo_o_factura,
 )
 from patolsima_api.utils.responses import method_not_allowed
 
@@ -47,16 +47,21 @@ class OrdenViewSet(ModelViewSet):
 
     @action(detail=True, methods=["post"])
     def recibo(self, request: Request, pk=None):
-        return Response(status=200, data={"confirm": generar_recibo(self.get_object())})
+        return Response(
+            status=200,
+            data={"confirm": generar_recibo_o_factura(self.get_object(), "recibo")},
+        )
 
     @action(detail=True, methods=["post"])
     def factura(self, request: Request, pk=None):
-        request_data = request.data
+        request_data = FacturaCreateSerializer(request.data).data
         return Response(
             status=200,
             data={
-                "confirm": generar_factura(
-                    self.get_object(), n_factura=request_data.get("n_factura")
+                "confirm": generar_recibo_o_factura(
+                    self.get_object(),
+                    "factura",
+                    n_factura=request_data.get("n_factura"),
                 )
             },
         )

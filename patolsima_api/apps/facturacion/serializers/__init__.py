@@ -6,7 +6,11 @@ from .orden import (
     OrdenCreateSerializer,
     OrdenListSerializer,
 )
-from .recibo_y_factura import FacturaSerializer, ReciboSerializer
+from .recibo_y_factura import (
+    FacturaSerializer,
+    ReciboSerializer,
+    FacturaCreateSerializer,
+)
 from .pago import PagoSerializer, NotaPagoSerializer
 
 
@@ -19,6 +23,7 @@ __all__ = [
     ItemOrdenSerializer,
     ItemOrdenUpdateSerializer,
     FacturaSerializer,
+    FacturaCreateSerializer,
     ReciboSerializer,
     PagoSerializer,
     NotaPagoSerializer,

@@ -17,3 +17,7 @@ class FacturaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Factura
         fields = "__all__"
+
+
+class FacturaCreateSerializer(serializers.Serializer):
+    n_factura = serializers.IntegerField(min_value=1)

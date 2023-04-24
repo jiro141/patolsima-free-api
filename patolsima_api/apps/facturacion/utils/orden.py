@@ -19,7 +19,7 @@ def confirm_orden(orden: Orden):
             "There is at least 1 Estudio confirmed for this Orden. Please check"
         )
 
-    estudios_id = [item.estudio_id for item in orden.items_orden]
+    estudios_id = [item.estudio_id for item in orden.items_orden.all()]
     estudios = Estudio.objects.select_for_update().filter(id__in=estudios_id)
     for estudio in estudios:
         estudio.confirmado = True
@@ -27,24 +27,24 @@ def confirm_orden(orden: Orden):
 
     orden.confirmada = True
     orden.save()
+    return True
 
 
 @transaction.atomic
-def generar_recibo(orden: Orden) -> Recibo:
-    if hasattr(orden, "recibo"):
-        return orden.recibo
-    recibo = Recibo.objects.create(orden=orden)
-    recibo.s3_file = upload_from_local_filesystem(render_recibo_factura(recibo))
-    recibo.save()
+def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Recibo:
+    if not orden.pagada:
+        raise ValidationError("La orden no ha sido pagada todavia.")
 
+    if hasattr(orden, tipo_documento):
+        return getattr(orden, tipo_documento)
 
-@transaction.atomic
-def generar_factura(orden: Orden, n_factura: int = None) -> Factura:
-    if hasattr(orden, "factura"):
-        return orden.factura
-    factura = Factura.objects.create(orden=orden, n_factura=n_factura)
-    factura.s3_file = upload_from_local_filesystem(render_recibo_factura(factura))
-    factura.save()
+    intancia_de_documento = (
+        Recibo if tipo_documento == "recibo" else Factura
+    ).objects.create(orden=orden, **kwargs)
+    intancia_de_documento.s3_file = upload_from_local_filesystem(
+        render_recibo_factura(intancia_de_documento)
+    )
+    intancia_de_documento.save()
 
 
 def render_recibo_factura(registro: Union[Factura, Recibo]) -> str:
