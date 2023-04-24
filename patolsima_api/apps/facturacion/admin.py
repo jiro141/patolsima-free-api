@@ -89,6 +89,7 @@ class OrdenAdmin(AuditableAdmin, SimpleHistoryAdmin):
         ReciboAdminInline,
         FacturaAdminInline,
     ]
+    readonly_fields = ("pagada", "confirmada")
 
     @admin.display(ordering="cliente__ci_rif", description="CI/RIF")
     def rif_cliente(self, obj: Orden):
