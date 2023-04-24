@@ -33,9 +33,28 @@ class ItemOrdenAdminInline(admin.StackedInline):
     model = ItemOrden
     readonly_fields = ("estudio",)
 
+    def has_add_permission(self, request, obj):
+        return False
+
+    def has_delete_permission(self, request, obj):
+        return False
+
 
 class PagoAdminInline(admin.TabularInline):
     model = Pago
+    readonly_fields = (
+        "pendiente_por_pagar_usd",
+        "total_usd",
+        "monto_bs",
+        "pendiente_por_pagar_bs",
+        "total_bs",
+    )
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj):
+        return False
 
 
 class FacturaAdminInline(admin.StackedInline):
