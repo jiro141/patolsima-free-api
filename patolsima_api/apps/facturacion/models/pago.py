@@ -46,14 +46,12 @@ class Pago(AuditableMixin):
         total_orden = orden.items_orden.aggregate(
             sum_costo=model_functions.Coalesce(models.Sum("monto_usd"), Decimal("0.00"))
         )["sum_costo"]
-        print(f"total_orden={total_orden}")
         qs = orden.pagos
         if instance.id:
             qs = qs.exclude(id=instance.id)
         suma_pagos = qs.aggregate(
             sum_total=model_functions.Coalesce(models.Sum("monto_usd"), Decimal("0.00"))
         )["sum_total"]
-        print(f"suma_pagos={suma_pagos}")
         if (suma_pagos + instance.monto_usd) > total_orden:
             raise Exception(
                 "El monto a guardar excederia lo que debe pagarse por la orden"
@@ -88,9 +86,6 @@ class Pago(AuditableMixin):
         suma_pagos = orden.pagos.aggregate(sum_total=models.Sum("monto_usd"))[
             "sum_total"
         ]
-        print("Luego de guardar--------------------")
-        print(f"total_orden={total_orden}")
-        print(f"suma_pagos={suma_pagos}")
         if total_orden == suma_pagos:
             orden.pagada = True
         else:

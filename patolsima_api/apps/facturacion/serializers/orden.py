@@ -22,7 +22,6 @@ class ItemOrdenUpdateSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         instance.monto_usd = validated_data.get("monto_usd", Decimal("0.00"))
-        print(instance.monto_usd)
         instance.save()
         return instance
 

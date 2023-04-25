@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 import dj_database_url
 from datetime import timedelta
+from patolsima_api.utils.pyBCV import Currency as BCV_handler
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -162,3 +163,4 @@ AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
 
 # Cambios de Dolares a Bolivares
 CAMBIO_USD_BS_PROPERTY_NAME = "bs_e"
+BCV_HANDLER = BCV_handler(lazy_load=True)

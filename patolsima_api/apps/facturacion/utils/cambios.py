@@ -1,3 +1,4 @@
+from django.conf import settings
 from datetime import datetime, timedelta
 from decimal import Decimal
 from django.conf import settings
@@ -6,7 +7,10 @@ from patolsima_api.apps.facturacion.models import CambioUSDBS
 
 
 def actualizar_cambio_usd_bs() -> CambioUSDBS:
-    return CambioUSDBS.objects.create(bs_e=Decimal("25.00"))
+    precio_dolar_bcv = settings.BCV_HANDLER.get_rate("USD")
+    return CambioUSDBS.objects.create(
+        bs_e=Decimal(precio_dolar_bcv).quantize(Decimal(".0000001"))
+    )
 
 
 def obtener_cambio_usd_bs_mas_reciente() -> Decimal:
