@@ -1,14 +1,11 @@
 from django.db import models
 from datetime import date
 from simple_history.models import HistoricalRecords
-from patolsima_api.utils.models import AuditableMixin, PersonalInfoMixin
+from patolsima_api.utils.models import AuditableMixin, PersonalInfoMixin, NCOMEDMixin
 
 
-class MedicoTratante(AuditableMixin, PersonalInfoMixin):
+class MedicoTratante(AuditableMixin, PersonalInfoMixin, NCOMEDMixin):
     ci = models.IntegerField(unique=True, null=True)
-    ncomed = models.CharField(
-        max_length=32, unique=True, db_index=True, null=True, blank=True
-    )
     especialidad = models.CharField(max_length=64, null=True, blank=True)
 
     def __str__(self):

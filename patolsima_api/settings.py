@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     # Local Apps (Your project's apps)
     "patolsima_api.apps.core",
+    "patolsima_api.apps.facturacion",
     "patolsima_api.apps.s3_management",
 ]
 
@@ -158,3 +159,6 @@ ENV = os.environ.get("env")
 # S3 bucket
 AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
 AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
+
+# Cambios de Dolares a Bolivares
+CAMBIO_USD_BS_PROPERTY_NAME = "bs_e"

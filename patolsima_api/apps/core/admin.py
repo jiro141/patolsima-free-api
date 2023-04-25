@@ -69,7 +69,7 @@ class MuestraAdmin(SimpleHistoryAdmin):
     def created_at_formatted(self, obj: Estudio):
         return date_to_admin_readable(obj.created_at)
 
-    @admin.display(ordering="updated_at", description="Creado el")
+    @admin.display(ordering="updated_at", description="Actualizado el")
     def updated_at_formatted(self, obj: Estudio):
         return date_to_admin_readable(obj.updated_at)
 
@@ -126,7 +126,7 @@ class EstudioAdmin(SimpleHistoryAdmin):
     def created_at_formatted(self, obj: Estudio):
         return date_to_admin_readable(obj.created_at)
 
-    @admin.display(ordering="updated_at", description="Creado el")
+    @admin.display(ordering="updated_at", description="Actualizado el")
     def updated_at_formatted(self, obj: Estudio):
         return date_to_admin_readable(obj.updated_at)
 
@@ -166,7 +166,7 @@ class InformeAdmin(SimpleHistoryAdmin):
     def created_at_formatted(self, obj: Estudio):
         return date_to_admin_readable(obj.created_at)
 
-    @admin.display(ordering="updated_at", description="Creado el")
+    @admin.display(ordering="updated_at", description="Actualizado el")
     def updated_at_formatted(self, obj: Estudio):
         return date_to_admin_readable(obj.updated_at)
 

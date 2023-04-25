@@ -1,4 +1,12 @@
-from .auditable import AuditableMixin
-from .personal_info import PersonalInfoMixin, NombreMixin
+from .auditable import *
+from .personal_info import *
 
-__all__ = [AuditableMixin, PersonalInfoMixin, NombreMixin]
+__all__ = [
+    AuditableMixin,
+    PersonalInfoMixin,
+    NombreMixin,
+    EmailMixin,
+    DireccionMixin,
+    TelefonoMixin,
+    NCOMEDMixin,
+]

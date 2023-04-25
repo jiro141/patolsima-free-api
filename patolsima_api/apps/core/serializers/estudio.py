@@ -19,6 +19,7 @@ class EstudioSerializer(serializers.ModelSerializer):
     prioridad = serializers.ReadOnlyField()
     codigo = serializers.ReadOnlyField()
     estudio_asociado = serializers.ReadOnlyField()
+    confirmado = serializers.ReadOnlyField()
 
     class Meta:
         model = Estudio
@@ -120,6 +121,7 @@ class EstudioListSerializer(serializers.ModelSerializer):
     patologo = PatologoListSerializer(read_only=True)
     prioridad = serializers.ReadOnlyField()
     codigo = serializers.ReadOnlyField()
+    confirmado = serializers.ReadOnlyField()
 
     class Meta:
         model = Estudio
@@ -131,4 +133,5 @@ class EstudioListSerializer(serializers.ModelSerializer):
             "codigo",
             "tipo",
             "prioridad",
+            "confirmado",
         ]
