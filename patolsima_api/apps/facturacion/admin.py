@@ -10,6 +10,7 @@ from patolsima_api.apps.facturacion.models import (
     Factura,
     Pago,
     NotaPago,
+    CambioUSDBS,
 )
 from patolsima_api.utils.admin import date_to_admin_readable
 from patolsima_api.utils.models.admin import AuditableAdmin
@@ -133,7 +134,17 @@ class ReciboAdmin(AuditableAdmin, SimpleHistoryAdmin):
         return date_to_admin_readable(obj.fecha_generacion)
 
 
+class CambioUSDAdmin(AuditableAdmin, SimpleHistoryAdmin):
+    list_display = (
+        "id",
+        "bs_e",
+        "created_at_formatted",
+        "updated_at_formatted",
+    )
+
+
 admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(Orden, OrdenAdmin)
 admin.site.register(Factura, FacturaAdmin)
 admin.site.register(Recibo, ReciboAdmin)
+admin.site.register(CambioUSDBS, CambioUSDAdmin)
