@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.signals import pre_save
 from decimal import Decimal
 from simple_history.models import HistoricalRecords
 from patolsima_api.utils.models import AuditableMixin, TelefonoMixin, DireccionMixin
@@ -25,3 +26,16 @@ class ItemOrden(AuditableMixin):
         max_digits=10, decimal_places=2, default=Decimal("0.00")
     )
     history = HistoricalRecords()
+
+    @classmethod
+    def pre_save(cls, sender, instance, *args, **kwargs):
+        if not instance.orden:
+            raise Exception("ItemOrden must contain relationship with Orden")
+
+        if instance.orden.pagada:
+            raise Exception(
+                "No se puede cambiar el ItemOrden de una Orden luego de estar pagada."
+            )
+
+
+pre_save.connect(ItemOrden.pre_save, ItemOrden)
