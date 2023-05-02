@@ -1,9 +1,9 @@
 from django.db import transaction
 from rest_framework.serializers import ValidationError
-from typing import Union
 from patolsima_api.apps.facturacion.models import Orden, Factura, Recibo
 from patolsima_api.apps.core.models import Estudio
 from patolsima_api.apps.s3_management.utils import upload_from_local_filesystem
+from .render import render_recibo_factura
 
 
 @transaction.atomic
@@ -42,10 +42,6 @@ def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Rec
         Recibo if tipo_documento == "recibo" else Factura
     ).objects.create(orden=orden, **kwargs)
     intancia_de_documento.s3_file = upload_from_local_filesystem(
-        render_recibo_factura(intancia_de_documento)
+        render_recibo_factura(intancia_de_documento, tipo_documento)
     )
     intancia_de_documento.save()
-
-
-def render_recibo_factura(registro: Union[Factura, Recibo]) -> str:
-    pass

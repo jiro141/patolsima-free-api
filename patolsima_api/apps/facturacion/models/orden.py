@@ -14,6 +14,48 @@ class Orden(AuditableMixin):
     pagada = models.BooleanField(default=False)
     history = HistoricalRecords()
 
+    @property
+    def importe_orden_usd(self) -> Decimal:
+        return self.items_orden.aggregate(sum_costo=models.Sum("monto_usd"))[
+            "sum_costo"
+        ]
+
+    @property
+    def importe_pagado_usd(self) -> Decimal:
+        return self.pagos.aggregate(sum_total=models.Sum("monto_usd"))["sum_total"]
+
+    @property
+    def importe_orden_bs(self) -> Decimal:
+        from patolsima_api.apps.facturacion.utils.cambios import (
+            obtener_cambio_usd_bs_mas_reciente,
+        )
+
+        return self.importe_orden_usd * obtener_cambio_usd_bs_mas_reciente()
+
+    @property
+    def importe_pagado_bs(self) -> Decimal:
+        from patolsima_api.apps.facturacion.utils.cambios import (
+            obtener_cambio_usd_bs_mas_reciente,
+        )
+
+        return self.importe_pagado_usd * obtener_cambio_usd_bs_mas_reciente()
+
+    @property
+    def balance(self) -> dict:
+        from patolsima_api.apps.facturacion.utils.cambios import (
+            obtener_cambio_usd_bs_mas_reciente,
+        )
+
+        importe_orden_usd = self.importe_orden_usd
+        importe_pagado_usd = self.importe_pagado_usd
+        cambio = obtener_cambio_usd_bs_mas_reciente()
+        return {
+            "total_usd": importe_orden_usd,
+            "total_bs": importe_orden_usd * cambio,
+            "pagado_usd": importe_pagado_usd,
+            "pagado_bs": importe_pagado_usd * cambio,
+        }
+
 
 class ItemOrden(AuditableMixin):
     estudio = models.OneToOneField(
