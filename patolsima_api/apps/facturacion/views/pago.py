@@ -19,7 +19,7 @@ class PagoViewSet(ModelViewSet):
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ("orden_id",)
 
-    @action(methods=["GET"], detail=True)
+    @action(detail=True, methods=["GET"])
     def nota_de_pago(self, request, pk=None):
         return Response(
             status=200,

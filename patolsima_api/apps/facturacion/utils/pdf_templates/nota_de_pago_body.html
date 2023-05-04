@@ -1,0 +1,7 @@
+<h4>Nota de Pago N: {{ nota_de_pago.id }}</h4>
+<p>Identificacion del Pago: {{ pago.id }}</p>
+
+<p>Se pagaron {{ pago.monto_usd }} USD o {{ pago.monto_bs }} BS</p>
+<p>Restan por pagar {{ pago.monto_usd }} USD o {{ pago.monto_bs }} BS del total de {{ pago.monto_usd }} USD o {{ pago.monto_bs }} BS</p>
+<p>Detalle del pago: {{ pago.detalle }}</p>
+<p>Pago realizado el: {{ pago.created_at_human_readable }}</p>

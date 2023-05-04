@@ -9,3 +9,7 @@ facturacion_environment = Environment(
 recibo_body_template = facturacion_environment.get_template("body_recibo.html")
 recibo_header_template = facturacion_environment.get_template("header_recibo.html")
 recibo_footer_template = facturacion_environment.get_template("footer_recibo.html")
+
+nota_de_pago_body_template = facturacion_environment.get_template(
+    "nota_de_pago_body.html"
+)
