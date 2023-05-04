@@ -26,6 +26,7 @@ def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str) -> str:
         "items_orden": registro.orden.items_orden.all().order_by(
             "estudio__tipo", "estudio__codigo"
         ),
+        "pagos": registro.orden.pagos.all().order_by("created_at"),
         **registro.orden.balance,
         **registro.pdf_reder_context,
     }

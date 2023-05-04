@@ -41,6 +41,23 @@
 {% endfor %}
 </tbody>
 </table>
+
+<table style="border-collapse: collapse; width: 100%; height: 36px;" border="1">
+<tbody>
+    <tr style="height: 18px;">
+    <td style="width: 20%; height: 18px;">Monto USD</td>
+    <td style="width: 20%; height: 18px;">Pendiente por pagar</td>
+    <td style="width: 20%; height: 18px;">Fecha y Hora</td>
+</tr>
+{% for pago in pagos %}
+    <tr style="height: 18px;">
+        <td style="width: 20%; height: 18px;">{{ pago.monto_usd }}</td>
+        <td style="width: 20%; height: 18px;">{{ pago.pendiente_por_pagar_usd }}</td>
+        <td style="width: 20%; height: 18px;">{{ pago.created_at_human_readable }}</td>
+    </tr>
+{% endfor %}
+</tbody>
+</table
 <p>&nbsp;</p>
 <p style="text-align: right;">Total USD: {{ total_usd }}</p>
 <p style="text-align: right;">Total Bs. {{ total_bs }}</p>
