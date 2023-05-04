@@ -30,3 +30,7 @@ class Factura(AbstractRecibo):
 
 class Recibo(AbstractRecibo):
     history = HistoricalRecords()
+
+    @property
+    def pdf_reder_context(self):
+        return {"n_recibo": self.id}

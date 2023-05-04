@@ -35,13 +35,14 @@ def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Rec
     if not orden.pagada:
         raise ValidationError("La orden no ha sido pagada todavia.")
 
-    if hasattr(orden, tipo_documento):
+    if hasattr(orden, tipo_documento) and getattr(orden, tipo_documento).s3_file:
         return getattr(orden, tipo_documento)
 
-    intancia_de_documento = (
+    intancia_de_documento, created = (
         Recibo if tipo_documento == "recibo" else Factura
-    ).objects.create(orden=orden, **kwargs)
+    ).objects.get_or_create(orden=orden, defaults=kwargs)
     intancia_de_documento.s3_file = upload_from_local_filesystem(
         render_recibo_factura(intancia_de_documento, tipo_documento)
     )
     intancia_de_documento.save()
+    return intancia_de_documento

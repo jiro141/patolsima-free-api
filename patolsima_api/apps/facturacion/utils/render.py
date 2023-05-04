@@ -23,8 +23,14 @@ def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str) -> str:
     context = {
         "cliente": registro.orden.cliente,
         "orden": registro.orden,
+        "items_orden": registro.orden.items_orden.all().order_by(
+            "estudio__tipo", "estudio__codigo"
+        ),
         **registro.orden.balance,
         **registro.pdf_reder_context,
     }
     templates = RECIBO_TEMPLATES if tipo == "recibo" else FACTURA_TEMPLATES
-    return render_pdf(context=context, templates=templates, destination=filename)
+    pdf_filename = render_pdf(
+        context=context, templates=templates, destination=filename
+    )
+    return pdf_filename
