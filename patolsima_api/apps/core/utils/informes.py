@@ -1,8 +1,7 @@
 import time
-from django.db import transaction
-from django.http import HttpResponse
+from django.http import FileResponse
 from rest_framework.exceptions import ValidationError
-from typing import Dict, Any
+from typing import Dict, Any, Generator
 from patolsima_api.apps.core.models import Informe, Estudio
 from patolsima_api.apps.core.serializers import InformeSerializer
 from patolsima_api.apps.core.utils.jinja_templates import informe_body_template
@@ -51,7 +50,7 @@ def render_informe(informe: Informe, preview_only: bool = False) -> str:
     if not preview_only:
         _check_errors_before_generar_informe(informe)
 
-    filename = f"informe_{informe.id}_{int(time.time())}"
+    filename = f"informe_{informe.estudio.id}_{int(time.time())}"
 
     templates = (
         INFORME_INMUNOSTOQUIMICA_TEMPLATES
@@ -62,23 +61,20 @@ def render_informe(informe: Informe, preview_only: bool = False) -> str:
 
 
 def generar_informe_preview(
-    informe: Informe, preview_only: bool = False
-) -> Dict[str, Any]:
+    informe: Informe,
+) -> FileResponse:
     """
     Generates a PDF file for an Informe instance.
     :param informe: the Informe instance to translate to PDF
-    :return: HTTPResponse that contains the streeaming of the PDF file to the frontend
+    :return: FileResponse containing the PDF file as a binary attachment
     """
 
     filepath = render_informe(informe, preview_only=True)
-
-    with open(filepath, "rb") as binary_file:
-        pass
-
+    return FileResponse(open(filepath, "rb"), as_attachment=True)
     # TO COMPLETE
 
 
-def generate_pdf(informe: Informe) -> Dict[str, Any]:
+def generar_y_guardar_informe(informe: Informe) -> Dict[str, Any]:
     render_informe(informe)
     return InformeSerializer(
         informe

@@ -16,7 +16,10 @@ from patolsima_api.apps.core.serializers import (
     InformeGeneradoSerializer,
     ResultadoInmunostoquimicaSerializer,
 )
-from patolsima_api.apps.core.utils.informes import generar_informe
+from patolsima_api.apps.core.utils.informes import (
+    generar_informe_preview,
+    generar_y_guardar_informe,
+)
 from patolsima_api.utils.responses import method_not_allowed
 
 
@@ -44,13 +47,11 @@ class InformeViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=["GET"])
     def pdf_preview(self, request, pk=None):
-        return Response(
-            status=200, data=generar_informe(self.get_object(), preview_only=True)
-        )
+        return generar_informe_preview(self.get_object())
 
     @action(detail=True, methods=["GET"])
     def generate_pdf(self, request, pk=None):
-        return Response(status=200, data=generar_informe(self.get_object()))
+        return Response(status=200, data=generar_y_guardar_informe(self.get_object()))
 
 
 class InformeGeneradoViewSet(viewsets.ModelViewSet):
