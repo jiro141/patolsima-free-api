@@ -15,5 +15,10 @@ appmigrations:
 addtestdata:
 	python manage.py create_default_data_core
 
+createauxdirectories:
+	mkdir var
+	mkdir var/pdfkit
+	mkdir var/s3
+
 test:
 	python manage.py test

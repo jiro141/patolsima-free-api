@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<p>Cliente</p>
+<table style="border-collapse: collapse; width: 100%;" border="1">
+<tbody>
+<tr>
+<td style="width: 16.6667%;">Nombre o Razon Social</td>
+<td style="width: 16.6667%;">{{ cliente.razon_social }}</td>
+<td style="width: 16.6667%;">RIF</td>
+<td style="width: 16.6667%;">{{ cliente.ci_rif }}</td>
+<td style="width: 16.6667%;">Email</td>
+<td style="width: 16.6667%;">{{ cliente.email }}</td>
+</tr>
+<tr>
+<td style="width: 16.6667%;">Telefono</td>
+    {% if cliente.telefono_celular %}
+        <td style="width: 16.6667%;">{{ cliente.telefono_celular }}</td>
+    {% else %}
+        <td style="width: 16.6667%;">{{ cliente.telefono_fijo }}</td>
+    {% endif %}
+<td style="width: 16.6667%;">Direccion</td>
+<td style="width: 16.6667%;">{{ cliente.direccion }}</td>
+<td style="width: 16.6667%;">&nbsp;</td>
+<td style="width: 16.6667%;">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>No Orden: {{ orden.id }}</p>
+<table style="border-collapse: collapse; width: 100%; height: 36px;" border="1">
+<tbody>
+<tr style="height: 18px;">
+<td style="width: 20%; height: 18px;">Descripcion</td>
+<td style="width: 20%; height: 18px;">Tipo de Estudio</td>
+<td style="width: 20%; height: 18px;">Precio</td>
+</tr>
+{% for item_orden in items_orden %}
+    <tr style="height: 18px;">
+    <td style="width: 20%; height: 18px;">{{ item_orden.estudio.codigo }}</td>
+    <td style="width: 20%; height: 18px;">{{ item_orden.estudio.tipo }}</td>
+    <td style="width: 20%; height: 18px;">{{ item_orden.monto_usd }}</td>
+    </tr>
+{% endfor %}
+</tbody>
+</table>
+
+<table style="border-collapse: collapse; width: 100%; height: 36px;" border="1">
+<tbody>
+    <tr style="height: 18px;">
+    <td style="width: 20%; height: 18px;">Monto USD</td>
+    <td style="width: 20%; height: 18px;">Pendiente por pagar</td>
+    <td style="width: 20%; height: 18px;">Fecha y Hora</td>
+</tr>
+{% for pago in pagos %}
+    <tr style="height: 18px;">
+        <td style="width: 20%; height: 18px;">{{ pago.monto_usd }}</td>
+        <td style="width: 20%; height: 18px;">{{ pago.pendiente_por_pagar_usd }}</td>
+        <td style="width: 20%; height: 18px;">{{ pago.created_at_human_readable }}</td>
+    </tr>
+{% endfor %}
+</tbody>
+</table
+<p>&nbsp;</p>
+<p style="text-align: right;">Total USD: {{ total_usd }}</p>
+<p style="text-align: right;">Total Bs. {{ total_bs }}</p>

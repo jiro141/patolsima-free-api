@@ -14,11 +14,23 @@ class AbstractRecibo(AuditableMixin):
     class Meta:
         abstract = True
 
+    @property
+    def pdf_reder_context(self):
+        return {}
+
 
 class Factura(AbstractRecibo):
     n_factura = models.PositiveIntegerField(unique=True, db_index=True)
     history = HistoricalRecords()
 
+    @property
+    def pdf_reder_context(self):
+        return {"n_factura": self.n_factura}
+
 
 class Recibo(AbstractRecibo):
     history = HistoricalRecords()
+
+    @property
+    def pdf_reder_context(self):
+        return {"n_recibo": self.id}

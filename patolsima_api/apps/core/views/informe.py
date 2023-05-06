@@ -1,5 +1,7 @@
 from rest_framework import viewsets
 from rest_framework.permissions import DjangoModelPermissions, DjangoObjectPermissions
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 
 from patolsima_api.apps.core.models import (
@@ -13,6 +15,10 @@ from patolsima_api.apps.core.serializers import (
     InformeListSerializer,
     InformeGeneradoSerializer,
     ResultadoInmunostoquimicaSerializer,
+)
+from patolsima_api.apps.core.utils.informes import (
+    generar_informe_preview,
+    generar_y_guardar_informe,
 )
 from patolsima_api.utils.responses import method_not_allowed
 
@@ -38,6 +44,14 @@ class InformeViewSet(viewsets.ModelViewSet):
                 estudio_prioridad=params["prioridad"].upper()
             )
         return super().list(self, *args, **kwargs)
+
+    @action(detail=True, methods=["GET"])
+    def pdf_preview(self, request, pk=None):
+        return generar_informe_preview(self.get_object())
+
+    @action(detail=True, methods=["GET"])
+    def generate_pdf(self, request, pk=None):
+        return Response(status=200, data=generar_y_guardar_informe(self.get_object()))
 
 
 class InformeGeneradoViewSet(viewsets.ModelViewSet):

@@ -80,12 +80,8 @@ class Pago(AuditableMixin):
     @classmethod
     def post_save(cls, sender, instance, created, *args, **kwargs):
         orden = instance.orden
-        total_orden = orden.items_orden.aggregate(sum_costo=models.Sum("monto_usd"))[
-            "sum_costo"
-        ]
-        suma_pagos = orden.pagos.aggregate(sum_total=models.Sum("monto_usd"))[
-            "sum_total"
-        ]
+        total_orden = orden.importe_orden_usd
+        suma_pagos = orden.importe_pagado_usd
         if total_orden == suma_pagos:
             orden.pagada = True
         else:

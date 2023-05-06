@@ -5,6 +5,8 @@ from django.db import models
 # from django.contrib.auth.models import User
 from softdelete.models import SoftDeleteObject
 
+from patolsima_api.utils.admin import date_to_admin_readable
+
 
 class AuditableMixin(SoftDeleteObject, models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -15,3 +17,7 @@ class AuditableMixin(SoftDeleteObject, models.Model):
 
     class Meta:
         abstract = True
+
+    @property
+    def created_at_human_readable(self):
+        return date_to_admin_readable(self.created_at)

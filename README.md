@@ -27,3 +27,4 @@ Puede ser ejecutado usando Docker (recomendado) o como un servidor comun y silve
 5. Luego de aplicar las migraciones, ejecute `docker compose run api make tests` para correr los tests.
 6. Agregue un superusuario con `docker compose run api python manage.py createsuperuser`.
 7. Ahora agregue la data de prueba utilizando `docker compose run api make addtestdata`.
+8. Cree los directorios auxiliares utilizando `docker compose run api make createauxdirectories`.
