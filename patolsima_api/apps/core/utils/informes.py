@@ -1,13 +1,23 @@
 import time
 from django.db import transaction
+from django.http import HttpResponse
 from rest_framework.exceptions import ValidationError
+from typing import Dict, Any
 from patolsima_api.apps.core.models import Informe, Estudio
+from patolsima_api.apps.core.serializers import InformeSerializer
 from patolsima_api.apps.core.utils.jinja_templates import informe_body_template
 from patolsima_api.utils.render_pdf import render_pdf
 from patolsima_api.apps.s3_management.utils.upload import upload_from_local_filesystem
 
 
-INFORME_TEMPLATES = {
+INFORME_REGULAR_TEMPLATES = {
+    "body": {
+        "template_obj": informe_body_template,
+        "pre_render": True,
+    }
+}
+
+INFORME_INMUNOSTOQUIMICA_TEMPLATES = {
     "body": {
         "template_obj": informe_body_template,
         "pre_render": True,
@@ -30,12 +40,46 @@ def _check_errors_before_generar_informe(informe: Informe):
         raise ValidationError("El Informe debe estar aprobado por el patologo.")
 
 
-def generar_informe(informe: Informe) -> Informe:
-    _check_errors_before_generar_informe(informe)
+def render_informe(informe: Informe, preview_only: bool = False) -> str:
+    """
+    Renders the Informe into a PDF
+    :param informe: Informe instance to be rendered
+    :param preview_only: helps to identify if the validation for definitive generation of the PDF shall be evaluated.
+    :return: File path to the PDF file into the filesystem.
+    """
+
+    if not preview_only:
+        _check_errors_before_generar_informe(informe)
+
     filename = f"informe_{informe.id}_{int(time.time())}"
 
-    file_path = render_pdf(
-        context={}, templates=INFORME_TEMPLATES, destination=filename
+    templates = (
+        INFORME_INMUNOSTOQUIMICA_TEMPLATES
+        if informe.estudio.tipo == Estudio.TipoEstudio.INMUNOSTOQUIMICA
+        else INFORME_REGULAR_TEMPLATES
     )
+    return render_pdf(context={}, templates=templates, destination=filename)
 
-    return informe
+
+def generar_informe_preview(
+    informe: Informe, preview_only: bool = False
+) -> Dict[str, Any]:
+    """
+    Generates a PDF file for an Informe instance.
+    :param informe: the Informe instance to translate to PDF
+    :return: HTTPResponse that contains the streeaming of the PDF file to the frontend
+    """
+
+    filepath = render_informe(informe, preview_only=True)
+
+    with open(filepath, "rb") as binary_file:
+        pass
+
+    # TO COMPLETE
+
+
+def generate_pdf(informe: Informe) -> Dict[str, Any]:
+    render_informe(informe)
+    return InformeSerializer(
+        informe
+    ).data  # Maybe I can change this to only the S3 link to the file uploaded
