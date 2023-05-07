@@ -9,6 +9,8 @@ from django.http import FileResponse
 # At the end I replaced everything in this file with a call to Django's FileResponse
 # Jesus, 06/05/2023
 
+# Last sentence was false, so I'll keep the file and its content
+
 
 def extract_file_bytes(filepath: str) -> Generator[bytes, None, None]:
     with open(filepath, "rb") as binary_file:
