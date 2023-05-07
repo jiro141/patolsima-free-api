@@ -3,7 +3,7 @@ from django.db.models import functions as model_functions
 from django.db.models.signals import pre_save, post_save
 from decimal import Decimal
 from simple_history.models import HistoricalRecords
-from patolsima_api.apps.s3_management.models import S3File
+from patolsima_api.apps.uploaded_file_management.models import UploadedFile
 from patolsima_api.utils.models import AuditableMixin
 from .orden import Orden
 
@@ -98,6 +98,6 @@ class NotaPago(AuditableMixin):
         Pago, on_delete=models.CASCADE, related_name="nota_de_pago"
     )
     s3_file = models.OneToOneField(
-        S3File, on_delete=models.CASCADE, null=True, blank=True
+        UploadedFile, on_delete=models.CASCADE, null=True, blank=True
     )
     history = HistoricalRecords()

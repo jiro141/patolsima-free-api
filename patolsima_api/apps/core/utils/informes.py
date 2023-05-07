@@ -7,7 +7,9 @@ from patolsima_api.apps.core.serializers import InformeSerializer
 from patolsima_api.apps.core.utils.jinja_templates import informe_body_template
 from patolsima_api.utils.render_pdf import render_pdf
 from patolsima_api.utils.file import FileResponseWithTemporalFileDeletion
-from patolsima_api.apps.s3_management.utils.upload import upload_from_local_filesystem
+from patolsima_api.apps.uploaded_file_management.utils.upload import (
+    upload_from_local_filesystem,
+)
 
 
 INFORME_REGULAR_TEMPLATES = {

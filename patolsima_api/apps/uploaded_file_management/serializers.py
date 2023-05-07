@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from .models import S3File
+from .models import UploadedFile
 
 
-class S3FileSerializer(serializers.ModelSerializer):
+class UploadedFileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = S3File
+        model = UploadedFile
         fields = [
             "nombre_archivo",
             "size",

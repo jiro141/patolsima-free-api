@@ -4,7 +4,7 @@ from decimal import Decimal
 from simple_history.models import HistoricalRecords
 from patolsima_api.utils.models import AuditableMixin, TelefonoMixin, DireccionMixin
 from patolsima_api.apps.core.models import Estudio
-from patolsima_api.apps.s3_management.models import S3File
+from patolsima_api.apps.uploaded_file_management.models import UploadedFile
 from .cliente import Cliente
 
 

@@ -1,10 +1,12 @@
 from rest_framework import serializers
 from patolsima_api.apps.facturacion.models import Factura, Recibo
-from patolsima_api.apps.s3_management.serializers import S3FileSerializer
+from patolsima_api.apps.uploaded_file_management.serializers import (
+    UploadedFileSerializer,
+)
 
 
 class ReciboSerializer(serializers.ModelSerializer):
-    s3_file = S3FileSerializer(read_only=True)
+    s3_file = UploadedFileSerializer(read_only=True)
 
     class Meta:
         model = Recibo
@@ -12,7 +14,7 @@ class ReciboSerializer(serializers.ModelSerializer):
 
 
 class FacturaSerializer(serializers.ModelSerializer):
-    s3_file = S3FileSerializer(read_only=True)
+    s3_file = UploadedFileSerializer(read_only=True)
 
     class Meta:
         model = Factura

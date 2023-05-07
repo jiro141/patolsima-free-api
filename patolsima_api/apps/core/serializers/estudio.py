@@ -3,7 +3,9 @@ from patolsima_api.apps.core.models import Estudio, Paciente, Patologo, MedicoTr
 from patolsima_api.apps.core.utils.serializers import (
     get_fk_objects_for_estudio_CU_serializers,
 )
-from patolsima_api.apps.s3_management.serializers import S3FileSerializer
+from patolsima_api.apps.uploaded_file_management.serializers import (
+    UploadedFileSerializer,
+)
 from .paciente import PacienteListSerializer
 from .medico_tratante import MedicoTratanteListSerializer
 from .patologo import PatologoListSerializer
@@ -15,7 +17,7 @@ class EstudioSerializer(serializers.ModelSerializer):
     medico_tratante = MedicoTratanteListSerializer(read_only=True)
     patologo = PatologoListSerializer(read_only=True)
     muestras = MuestraSerializer(read_only=True, many=True)
-    adjuntos = S3FileSerializer(read_only=True, many=True)
+    adjuntos = UploadedFileSerializer(read_only=True, many=True)
     prioridad = serializers.ReadOnlyField()
     codigo = serializers.ReadOnlyField()
     estudio_asociado = serializers.ReadOnlyField()

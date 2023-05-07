@@ -2,7 +2,9 @@ from django.db import transaction
 from rest_framework.serializers import ValidationError
 from patolsima_api.apps.facturacion.models import Orden, Factura, Recibo
 from patolsima_api.apps.core.models import Estudio
-from patolsima_api.apps.s3_management.utils import upload_from_local_filesystem
+from patolsima_api.apps.uploaded_file_management.utils import (
+    upload_from_local_filesystem,
+)
 from .render import render_recibo_factura
 
 

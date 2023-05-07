@@ -4,7 +4,7 @@ from django.db.models import functions as model_functions
 from django.utils.timezone import make_aware
 from simple_history.models import HistoricalRecords
 from patolsima_api.utils.models import AuditableMixin
-from patolsima_api.apps.s3_management.models import S3File
+from patolsima_api.apps.uploaded_file_management.models import UploadedFile
 from .estudio import Estudio
 
 
@@ -46,7 +46,7 @@ class Informe(AuditableMixin):
     estudio = models.OneToOneField(
         Estudio, on_delete=models.DO_NOTHING, primary_key=True
     )
-    informes_generados = models.ManyToManyField(S3File, through="InformeGenerado")
+    informes_generados = models.ManyToManyField(UploadedFile, through="InformeGenerado")
     # Campos de texto enriquecido
     descripcion_macroscopica = models.TextField(max_length=10240, null=True, blank=True)
     descripcion_microscopica = models.TextField(max_length=10240, null=True, blank=True)
@@ -64,7 +64,7 @@ class Informe(AuditableMixin):
 
 
 class InformeGenerado(AuditableMixin):
-    s3_file = models.ForeignKey(S3File, on_delete=models.CASCADE)
+    s3_file = models.ForeignKey(UploadedFile, on_delete=models.CASCADE)
     informe = models.ForeignKey("Informe", on_delete=models.CASCADE)
 
 

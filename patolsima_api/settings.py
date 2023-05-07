@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     # Local Apps (Your project's apps)
     "patolsima_api.apps.core",
     "patolsima_api.apps.facturacion",
-    "patolsima_api.apps.s3_management",
+    "patolsima_api.apps.uploaded_file_management",
 ]
 
 MIDDLEWARE = [

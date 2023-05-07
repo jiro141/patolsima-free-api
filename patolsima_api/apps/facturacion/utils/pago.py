@@ -1,6 +1,8 @@
 from django.db import transaction
 from patolsima_api.apps.facturacion.models import Pago, NotaPago
-from patolsima_api.apps.s3_management.utils.upload import upload_from_local_filesystem
+from patolsima_api.apps.uploaded_file_management.utils.upload import (
+    upload_from_local_filesystem,
+)
 from patolsima_api.apps.facturacion.utils.render import render_nota_de_pago
 
 

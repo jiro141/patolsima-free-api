@@ -1,10 +1,12 @@
 from rest_framework.serializers import ModelSerializer
 from patolsima_api.apps.core.models import FaseMuestra
-from patolsima_api.apps.s3_management.serializers import S3FileSerializer
+from patolsima_api.apps.uploaded_file_management.serializers import (
+    UploadedFileSerializer,
+)
 
 
 class FaseMuestraSerializer(ModelSerializer):
-    adjuntos = S3FileSerializer(many=True, read_only=True)
+    adjuntos = UploadedFileSerializer(many=True, read_only=True)
 
     class Meta:
         model = FaseMuestra

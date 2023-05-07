@@ -5,11 +5,13 @@ from patolsima_api.apps.core.models import (
     InformeGenerado,
     ResultadoInmunostoquimica,
 )
-from patolsima_api.apps.s3_management.serializers import S3FileSerializer
+from patolsima_api.apps.uploaded_file_management.serializers import (
+    UploadedFileSerializer,
+)
 
 
 class InformeGeneradoSerializer(ModelSerializer):
-    s3_file = S3FileSerializer(read_only=True)
+    s3_file = UploadedFileSerializer(read_only=True)
 
     class Meta:
         model = InformeGenerado
