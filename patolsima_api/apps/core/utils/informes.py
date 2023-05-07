@@ -6,6 +6,7 @@ from patolsima_api.apps.core.models import Informe, Estudio
 from patolsima_api.apps.core.serializers import InformeSerializer
 from patolsima_api.apps.core.utils.jinja_templates import informe_body_template
 from patolsima_api.utils.render_pdf import render_pdf
+from patolsima_api.utils.file import FileResponseWithTemporalFileDeletion
 from patolsima_api.apps.s3_management.utils.upload import upload_from_local_filesystem
 
 
@@ -70,7 +71,9 @@ def generar_informe_preview(
     """
 
     filepath = render_informe(informe, preview_only=True)
-    return FileResponse(open(filepath, "rb"), as_attachment=True)
+    return FileResponseWithTemporalFileDeletion(
+        open(filepath, "rb"), as_attachment=True, temporal_file_path=filepath
+    )
     # TO COMPLETE
 
 

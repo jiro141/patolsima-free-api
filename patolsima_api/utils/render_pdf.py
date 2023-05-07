@@ -1,4 +1,6 @@
 import pdfkit
+import os
+import contextlib
 from typing import Dict, Any
 from django.conf import settings
 
@@ -29,5 +31,10 @@ def render_pdf(
         configuration=settings.PDFKIT_CONFIGURATION,
         options=options,
     )
+
+    # Deletion of the temporal files
+    for template_obj in templates.values():
+        with contextlib.suppress(OSError):
+            os.remove(template_obj["source"])
 
     return output_filename

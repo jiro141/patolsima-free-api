@@ -1,6 +1,9 @@
+import os
+import contextlib
 from django.conf import settings
 from django.http import StreamingHttpResponse
 from typing import Generator, Iterable
+from django.http import FileResponse
 
 
 # At the end I replaced everything in this file with a call to Django's FileResponse
@@ -21,3 +24,15 @@ def response_as_binary_file_stream(
     response = StreamingHttpResponse(bytes_array, content_type=content_type)
     response["Content-Disposition"] = f'attachment; filename="{filename}"'
     return response
+
+
+class FileResponseWithTemporalFileDeletion(FileResponse):
+    def __init__(self, *args, **kwargs):
+        self.temporal_file_path = kwargs.pop("temporal_file_path", None)
+        super().__init__(*args, **kwargs)
+
+    def close(self):
+        super().close()
+        if self.temporal_file_path:
+            with contextlib.suppress(IOError, OSError):
+                os.remove(self.temporal_file_path)
