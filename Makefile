@@ -20,5 +20,5 @@ createauxdirectories:
 	mkdir var/pdfkit
 	mkdir var/s3
 
-test:
+tests:
 	python manage.py test
