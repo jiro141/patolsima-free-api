@@ -28,7 +28,7 @@ INFORME_INMUNOSTOQUIMICA_TEMPLATES = {
 
 
 def _check_errors_before_generar_informe(informe: Informe):
-    estudio = informe
+    estudio = informe.estudio
     if not estudio.confirmado:
         raise ValidationError("El Estudio necesita estar confirmado.")
 
@@ -80,7 +80,8 @@ def generar_informe_preview(
 
 
 def generar_y_guardar_informe(informe: Informe) -> Dict[str, Any]:
-    render_informe(informe)
+    filepath = render_informe(informe)
+    upload_from_local_filesystem(file_path=filepath, path_prefix="informes")
     return InformeSerializer(
         informe
     ).data  # Maybe I can change this to only the S3 link to the file uploaded
