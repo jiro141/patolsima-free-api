@@ -158,14 +158,31 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 ENV = os.environ.get("env")
 
-# S3 bucket
+# S3 HANDLING
 AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
 AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
+S3_LOCALE_PATH = os.environ.get("S3_LOCALE_PATH", f"{os.getcwd()}/var/s3/")
+S3_DEFAULT_BUCKET = os.environ.get("S3_DEFAULT_BUCKET", "default")
+S3_BUCKETS = [
+    S3_DEFAULT_BUCKET,
+    *[bucket for bucket in os.environ.get("S3_BUCKETS", "").split(",") if bucket],
+]
+
+# Binary streams chunk size (e.g. for downloading/uploading files without collapsing the system due to lack of memory
+# resources)
+
+DEFAULT_BINARY_STREAMS_CHUNK_SIZE = os.environ.get(
+    "DEFAULT_BINARY_STREAMS_CHUNK_SIZE", 4096
+)
 
 # Cambios de Dolares a Bolivares
 CAMBIO_USD_BS_PROPERTY_NAME = "bs_e"
 BCV_HANDLER = BCV_handler(lazy_load=True)
 
 # PDFKIT
-PDFKIT_CONFIGURATION = pdfkit.configuration(wkhtmltopdf="/usr/local/bin/wkhtmltopdf")
-PDFKIT_RENDER_PATH = f"{os.getcwd()}/var/pdfkit"
+PDFKIT_CONFIGURATION = pdfkit.configuration(
+    wkhtmltopdf=os.environ.get(
+        "WKHTMLTOPDF_EXECUTABLE_PATH", "/usr/local/bin/wkhtmltopdf"
+    )
+)
+PDFKIT_RENDER_PATH = os.environ.get("PDFKIT_RENDER_PATH", f"{os.getcwd()}/var/pdfkit")
