@@ -5,7 +5,7 @@ from .abstract_storage_adapter import AbstractStorageUnitAdapter
 from patolsima_api.apps.uploaded_file_management.models import UploadedFile
 
 
-class LocalFileSystemAdapter(AbstractStorageUnitAdapter):
+class LocalFileSystemStorageAdapter(AbstractStorageUnitAdapter):
     storage_unit_identifier = UploadedFile.StorageUnit.LOCAL_STORAGE
 
     def upload_file(self, file: BinaryIO, bucket: str, object_key: str):
