@@ -67,6 +67,9 @@ class EstudioCreateSerializer(serializers.Serializer):
         )
         return estudio
 
+    def update(self, instance, validated_data):
+        raise NotImplementedError("Method not implemented")
+
     @property
     def data(self):
         return EstudioSerializer(self.instance).data
@@ -80,6 +83,9 @@ class EstudioUpdateSerializer(serializers.Serializer):
     urgente = serializers.BooleanField(write_only=True, required=False)
     envio_digital = serializers.BooleanField(write_only=True, required=False)
     tipo = serializers.ChoiceField(Estudio.TipoEstudio, write_only=True, required=False)
+
+    def create(self, validated_data):
+        raise NotImplementedError("Method not implemented")
 
     def update(self, instance, validated_data):
         """
@@ -137,3 +143,13 @@ class EstudioListSerializer(serializers.ModelSerializer):
             "prioridad",
             "confirmado",
         ]
+
+
+class ArchivoAdjuntoEstudio(serializers.Serializer):
+    file = serializers.FileField()
+
+    def update(self, instance, validated_data):
+        raise NotImplementedError()
+
+    def create(self, validated_data):
+        pass

@@ -34,4 +34,5 @@ class LocalFileSystemStorageAdapter(AbstractStorageUnitAdapter):
         return open(object_path, "rb")
 
     def delete_file(self, bucket: str, object_key: str):
+        # checkar que el archivo exista
         os.remove(f"{settings.S3_LOCALE_PATH}/{bucket}/{object_key}")

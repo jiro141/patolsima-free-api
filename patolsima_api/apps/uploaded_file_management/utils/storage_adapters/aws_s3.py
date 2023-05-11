@@ -39,5 +39,6 @@ class S3StorageAdapter(AbstractStorageUnitAdapter):
         return s3_object["Body"]
 
     def delete_file(self, bucket: str, object_key: str):
+        # Falta a;adir el caso en el que el archivo no existe en S3
         response = self.s3_client.delete_object(Bucket=bucket, Key=object_key)
         print(response)

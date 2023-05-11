@@ -23,6 +23,7 @@ class UploadedFile(AuditableMixin):
         max_length=16, choices=StorageUnit.choices, default=StorageUnit.LOCAL_STORAGE
     )
     size = models.IntegerField()  # bytes
+    content_type = models.CharField(max_length=64, null=True, blank=True)
     object_key = models.CharField(max_length=512, null=True, blank=True)
     bucket_name = models.CharField(max_length=256, null=True, blank=True)
 
