@@ -161,7 +161,7 @@ ENV = os.environ.get("env")
 # S3 HANDLING
 AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
 AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
-S3_LOCALE_PATH = os.environ.get("S3_LOCALE_PATH", f"{os.getcwd()}/var/s3/")
+S3_LOCALE_PATH = os.environ.get("S3_LOCALE_PATH", f"{os.getcwd()}/var/s3")
 S3_DEFAULT_BUCKET = os.environ.get("S3_DEFAULT_BUCKET", "default")
 S3_BUCKETS = [
     S3_DEFAULT_BUCKET,

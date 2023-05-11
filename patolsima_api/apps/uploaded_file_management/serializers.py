@@ -13,4 +13,5 @@ class UploadedFileSerializer(serializers.ModelSerializer):
             "storage_unit",
             "size",
             "content_type",
+            "uri",
         ]

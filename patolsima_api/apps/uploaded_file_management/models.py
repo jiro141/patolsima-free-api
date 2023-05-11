@@ -32,3 +32,11 @@ class UploadedFile(AuditableMixin):
     @property
     def file_extension(self):
         return self.file_name.split(".")[-1]
+
+    @property
+    def uri(self):
+        from patolsima_api.apps.uploaded_file_management.utils.storage_adapters import (
+            get_uri_from_storage_adapter,
+        )
+
+        return get_uri_from_storage_adapter(self)
