@@ -5,6 +5,12 @@ from typing import Dict, Any
 from django.conf import settings
 
 
+def _remove_temporal_templates(templates: Dict[str, dict]):
+    for template_obj in templates.values():
+        with contextlib.suppress(OSError):
+            os.remove(template_obj["source"])
+
+
 def render_pdf(
     context: Dict[str, Any],
     templates: Dict[str, dict],
@@ -32,27 +38,28 @@ def render_pdf(
                 temp_file.writelines(t_config["template_obj"].render(**context))
             t_config["source"] = temp_filename
 
-    wkhtmltopdf_options = {**(extra_args.pop("wkhtmltopdf_options", {}))}
+    wkhtmltopdf_options = {
+        "enable-local-file-access": None,
+        **(extra_args.pop("wkhtmltopdf_options", {})),
+    }
 
     if "header" in templates:
-        c = templates.pop("header")
-        wkhtmltopdf_options["--header-html"] = c["source"]
+        wkhtmltopdf_options["--header-html"] = templates["header"]["source"]
     if "footer" in templates:
-        c = templates.pop("footer")
-        wkhtmltopdf_options["--footer-html"] = c["source"]
+        wkhtmltopdf_options["--footer-html"] = templates["footer"]["source"]
 
     output_filename = f"{settings.PDFKIT_RENDER_PATH}/{destination}.pdf"
+    pdf_body_pages = [
+        conf["source"] for t, conf in templates.items() if t not in ["footer", "header"]
+    ]
 
     pdfkit.from_file(
-        [conf["source"] for t, conf in templates.items()],
+        pdf_body_pages,
         output_filename,
         configuration=settings.PDFKIT_CONFIGURATION,
         options=wkhtmltopdf_options,
+        verbose=settings.PDFKIT_VERBOSE_OUTPUT,
     )
 
-    # Deletion of the temporal files
-    for template_obj in templates.values():
-        with contextlib.suppress(OSError):
-            os.remove(template_obj["source"])
-
+    _remove_temporal_templates(templates)  # Deletion of the temporal files
     return output_filename

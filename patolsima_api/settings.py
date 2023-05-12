@@ -186,3 +186,4 @@ PDFKIT_CONFIGURATION = pdfkit.configuration(
     )
 )
 PDFKIT_RENDER_PATH = os.environ.get("PDFKIT_RENDER_PATH", f"{os.getcwd()}/var/pdfkit")
+PDFKIT_VERBOSE_OUTPUT = bool(int(os.environ.get("PDFKIT_VERBOSE_OUTPUT", 0)))
