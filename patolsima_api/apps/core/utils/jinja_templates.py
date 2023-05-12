@@ -7,3 +7,5 @@ core_templates_environment = Environment(
     )
 )
 informe_body_template = core_templates_environment.get_template("informe_body.html")
+informe_footer_template = core_templates_environment.get_template("informe_footer.html")
+informe_header_template = core_templates_environment.get_template("informe_header.html")
