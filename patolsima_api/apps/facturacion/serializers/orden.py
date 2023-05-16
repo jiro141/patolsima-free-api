@@ -40,6 +40,7 @@ class OrdenSerializer(serializers.ModelSerializer):
     recibo = ReciboSerializer(read_only=True)
 
     cliente = ClienteSerializer(read_only=True)
+    balance = serializers.ReadOnlyField()
 
     class Meta:
         model = Orden
