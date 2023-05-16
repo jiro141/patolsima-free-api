@@ -1,10 +1,15 @@
+import os
 import time
 from django.http import FileResponse
 from rest_framework.exceptions import ValidationError
 from typing import Dict, Any, Generator
 from patolsima_api.apps.core.models import Informe, Estudio
 from patolsima_api.apps.core.serializers import InformeSerializer
-from patolsima_api.apps.core.utils.jinja_templates import informe_body_template
+from patolsima_api.apps.core.utils.jinja_templates import (
+    informe_body_template,
+    informe_footer_template,
+    informe_header_template,
+)
 from patolsima_api.utils.render_pdf import render_pdf
 from patolsima_api.utils.file import FileResponseWithTemporalFileDeletion
 from patolsima_api.apps.uploaded_file_management.utils.upload import (
@@ -16,7 +21,12 @@ INFORME_REGULAR_TEMPLATES = {
     "body": {
         "template_obj": informe_body_template,
         "pre_render": True,
-    }
+    },
+    "footer": {
+        "template_obj": informe_footer_template,
+        "pre_render": True,
+    },
+    "header": {"template_obj": informe_header_template, "pre_render": True},
 }
 
 INFORME_INMUNOSTOQUIMICA_TEMPLATES = {
@@ -28,7 +38,7 @@ INFORME_INMUNOSTOQUIMICA_TEMPLATES = {
 
 
 def _check_errors_before_generar_informe(informe: Informe):
-    estudio = informe
+    estudio = informe.estudio
     if not estudio.confirmado:
         raise ValidationError("El Estudio necesita estar confirmado.")
 
@@ -60,7 +70,28 @@ def render_informe(informe: Informe, preview_only: bool = False) -> str:
         if informe.estudio.tipo == Estudio.TipoEstudio.INMUNOSTOQUIMICA
         else INFORME_REGULAR_TEMPLATES
     )
-    return render_pdf(context={}, templates=templates, destination=filename)
+
+    return render_pdf(
+        context={
+            "current_work_path_python": os.getcwd(),
+            "tipo_estudio_titulo": "Citologia Ginecologica",
+        },
+        templates=templates,
+        destination=filename,
+        extra_args={
+            "wkhtmltopdf_options": {
+                "--page-size": "A4",
+                # "--orientation": "Landscape",
+                "--header-right": "[page]/[topage]",
+                "--header-spacing": "5",
+                "--footer-spacing": "5",
+                "--margin-left": "50px",
+                "--margin-right": "50px",
+                "--margin-top": "200px",
+                "--margin-bottom": "130px",
+            }
+        },
+    )
 
 
 def generar_informe_preview(
@@ -80,7 +111,8 @@ def generar_informe_preview(
 
 
 def generar_y_guardar_informe(informe: Informe) -> Dict[str, Any]:
-    render_informe(informe)
+    filepath = render_informe(informe)
+    upload_from_local_filesystem(file_path=filepath, path_prefix="informes")
     return InformeSerializer(
         informe
     ).data  # Maybe I can change this to only the S3 link to the file uploaded

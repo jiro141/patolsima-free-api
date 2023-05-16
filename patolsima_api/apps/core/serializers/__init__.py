@@ -17,6 +17,7 @@ __all__ = [
     EstudioListSerializer,
     EstudioCreateSerializer,
     EstudioUpdateSerializer,
+    ArchivoAdjuntoEstudio,
     MuestraSerializer,
     MuestraListSerializer,
     FaseMuestraSerializer,

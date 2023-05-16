@@ -44,7 +44,8 @@ def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Rec
         Recibo if tipo_documento == "recibo" else Factura
     ).objects.get_or_create(orden=orden, defaults=kwargs)
     intancia_de_documento.s3_file = upload_from_local_filesystem(
-        render_recibo_factura(intancia_de_documento, tipo_documento)
+        render_recibo_factura(intancia_de_documento, tipo_documento),
+        path_prefix=f"ordenes/{orden.id}",
     )
     intancia_de_documento.save()
     return intancia_de_documento

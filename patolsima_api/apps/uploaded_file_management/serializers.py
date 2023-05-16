@@ -6,9 +6,12 @@ class UploadedFileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UploadedFile
         fields = [
-            "nombre_archivo",
+            "id",
+            "uuid",
+            "file_name",
+            "local_filepath",
+            "storage_unit",
             "size",
-            "s3_object_id",
-            "s3_path",
-            "s3_bucket_name",
+            "content_type",
+            "uri",
         ]

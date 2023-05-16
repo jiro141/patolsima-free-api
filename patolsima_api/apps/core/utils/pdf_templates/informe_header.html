@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html lang="es">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <style type="text/css">
+            body {
+                margin: 0;
+                padding: 0;
+                line-height: 1;
+                font-size: 12pt;
+                height: 50mm; /* set it to your bottom margin */
+            }
+
+            .header {
+                position: absolute;
+                width: 100%;
+            }
+
+            .patolsima_logo {
+                height: 150px;
+                width: auto;
+            }
+
+            .flex_container {
+                display: -webkit-box;
+                display: flex;
+                -webkit-flex-flow: row;
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: normal;
+                -webkit-flex-wrap: wrap;
+                flex-flow: row wrap;
+            }
+
+            .logo_container {
+                -webkit-box-flex: 1;
+                -webkit-flex: 1;
+                flex: 1;
+            }
+
+            .title_container {
+                -webkit-box-flex: 7;
+                -webkit-flex: 7;
+
+                -webkit-flex-wrap: wrap;
+                -webkit-align-items: center;
+                -webkit-align-content: center;
+                -webkit-justify-content: center;
+                -webkit-box-orient: vertical;
+                -webkit-box-pack: center;
+
+                flex: 7;
+                display: -webkit-box;
+                display: flex;
+                align-items: center;
+                align-content: center;
+                justify-content: center;
+            }
+
+            .title_text {
+                margin: auto;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <div class="flex_container">
+                <div class="logo_container"><img class="patolsima_logo" src="{{ current_work_path_python }}/patolsima_api/apps/core/utils/pdf_templates/images/logo.png" alt=""></div>
+                <div class="title_container"><h1 class="title_text">Informe de {{ tipo_estudio_titulo }}</h1></div>
+            </div>
+        </div>
+    </body>
+</html>
+
