@@ -1,4 +1,30 @@
 <!DOCTYPE HTML>
-<p>Patolsima el lab de tus biopsias</p>
-<p style="text-align: right;">Recibo N: {{ n_recibo }}</p>
-<p style="text-align: right;">Factura N: {{ n_factura }}</p>
+<html lang="es">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <style type="text/css">
+            body {
+                margin: 0;
+                padding: 0;
+                line-height: 1;
+                font-size: 12pt;
+                height: 50mm; /* set it to your bottom margin */
+            }
+
+            .footer {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+            }
+        </style>
+    </head>
+    <body style="border: 1px solid red;">
+        <div class="footer">
+            <div class="upper_div">
+                <div><img src="{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/Header.png" alt=""></div>
+            </div>
+            <div><img src="{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/Objeto-inteligente-vectorial.gif" alt=""></div>
+        </div>
+    </body>
+</html>

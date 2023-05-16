@@ -33,6 +33,7 @@ def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str) -> str:
     """
     filename = f"{tipo}_{registro.orden.id}_{int(time.time())}"
     context = {
+        "current_work_path_python": os.getcwd(),
         "cliente": registro.orden.cliente,
         "orden": registro.orden,
         "items_orden": registro.orden.items_orden.all().order_by(
@@ -44,7 +45,22 @@ def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str) -> str:
     }
     templates = RECIBO_TEMPLATES if tipo == "recibo" else FACTURA_TEMPLATES
     pdf_filename = render_pdf(
-        context=context, templates=templates, destination=filename
+        context=context,
+        templates=templates,
+        destination=filename,
+        extra_args={
+            "wkhtmltopdf_options": {
+                "--page-size": "A5",
+                "--orientation": "Landscape",
+                "--footer-left": "[page]/[topage]",
+                "--header-spacing": "5",
+                "--footer-spacing": "5",
+                "--margin-left": "50px",
+                "--margin-right": "50px",
+                "--margin-top": "150px",
+                "--margin-bottom": "70px",
+            }
+        },
     )
     return pdf_filename
 
