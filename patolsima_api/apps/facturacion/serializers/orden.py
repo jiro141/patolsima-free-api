@@ -15,7 +15,6 @@ class ItemOrdenSerializer(serializers.ModelSerializer):
 
 
 class ItemOrdenUpdateSerializer(serializers.Serializer):
-    id = serializers.IntegerField(min_value=1)
     monto_usd = serializers.DecimalField(
         max_digits=10, decimal_places=2, min_value=Decimal("0.00")
     )
@@ -24,6 +23,10 @@ class ItemOrdenUpdateSerializer(serializers.Serializer):
         instance.monto_usd = validated_data.get("monto_usd", Decimal("0.00"))
         instance.save()
         return instance
+
+    @property
+    def data(self):
+        return ItemOrdenSerializer(self.instance).data
 
 
 class OrdenSerializer(serializers.ModelSerializer):
