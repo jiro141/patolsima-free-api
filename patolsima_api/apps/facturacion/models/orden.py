@@ -16,31 +16,19 @@ class Orden(AuditableMixin):
 
     @property
     def importe_orden_usd(self) -> Decimal:
-        return self.items_orden.aggregate(sum_costo=models.Sum("monto_usd"))[
-            "sum_costo"
-        ] or Decimal("0.00")
+        return self.balance["total_usd"]
 
     @property
     def importe_pagado_usd(self) -> Decimal:
-        return self.pagos.aggregate(sum_total=models.Sum("monto_usd"))[
-            "sum_total"
-        ] or Decimal("0.00")
+        return self.balance["pagado_usd"]
 
     @property
     def importe_orden_bs(self) -> Decimal:
-        from patolsima_api.apps.facturacion.utils.cambios import (
-            obtener_cambio_usd_bs_mas_reciente,
-        )
-
-        return self.importe_orden_usd * obtener_cambio_usd_bs_mas_reciente()
+        return self.balance["total_bs"]
 
     @property
     def importe_pagado_bs(self) -> Decimal:
-        from patolsima_api.apps.facturacion.utils.cambios import (
-            obtener_cambio_usd_bs_mas_reciente,
-        )
-
-        return self.importe_pagado_usd * obtener_cambio_usd_bs_mas_reciente()
+        return self.balance["pagado_bs"]
 
     @property
     def balance(self) -> dict:
@@ -48,8 +36,12 @@ class Orden(AuditableMixin):
             obtener_cambio_usd_bs_mas_reciente,
         )
 
-        importe_orden_usd = self.importe_orden_usd
-        importe_pagado_usd = self.importe_pagado_usd
+        importe_orden_usd = self.items_orden.aggregate(
+            sum_costo=models.Sum("monto_usd")
+        )["sum_costo"] or Decimal("0.00")
+        importe_pagado_usd = self.pagos.aggregate(sum_total=models.Sum("monto_usd"))[
+            "sum_total"
+        ] or Decimal("0.00")
         cambio = obtener_cambio_usd_bs_mas_reciente()
         return {
             "total_usd": importe_orden_usd,
