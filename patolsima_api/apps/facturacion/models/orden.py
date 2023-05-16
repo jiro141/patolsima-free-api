@@ -18,11 +18,13 @@ class Orden(AuditableMixin):
     def importe_orden_usd(self) -> Decimal:
         return self.items_orden.aggregate(sum_costo=models.Sum("monto_usd"))[
             "sum_costo"
-        ]
+        ] or Decimal("0.00")
 
     @property
     def importe_pagado_usd(self) -> Decimal:
-        return self.pagos.aggregate(sum_total=models.Sum("monto_usd"))["sum_total"]
+        return self.pagos.aggregate(sum_total=models.Sum("monto_usd"))[
+            "sum_total"
+        ] or Decimal("0.00")
 
     @property
     def importe_orden_bs(self) -> Decimal:
@@ -54,6 +56,8 @@ class Orden(AuditableMixin):
             "total_bs": importe_orden_usd * cambio,
             "pagado_usd": importe_pagado_usd,
             "pagado_bs": importe_pagado_usd * cambio,
+            "por_pagar_usd": (importe_orden_usd - importe_pagado_usd),
+            "por_pagar_bs": (importe_orden_usd - importe_pagado_usd) * cambio,
         }
 
 
