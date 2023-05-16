@@ -1,4 +1,5 @@
 import os
+import contextlib
 from django.db import transaction
 from django.conf import settings
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -14,6 +15,7 @@ def upload_from_local_filesystem(
     bucket: str = settings.S3_DEFAULT_BUCKET,
     path_prefix: str = "",
     content_type: str = None,
+    delete_original_after_upload: bool = False,
 ) -> UploadedFile:
     if not os.path.isfile(file_path):
         raise ValueError("Path entered must be a file")
@@ -37,6 +39,10 @@ def upload_from_local_filesystem(
                 object_key=new_file.object_key,
                 extra_args={},
             )
+
+    if delete_original_after_upload:
+        with contextlib.suppress(IOError, OSError):
+            os.remove(file_path)
 
     return new_file
 
