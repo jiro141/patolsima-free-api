@@ -46,7 +46,9 @@ class Informe(AuditableMixin):
     estudio = models.OneToOneField(
         Estudio, on_delete=models.DO_NOTHING, primary_key=True
     )
-    informes_generados = models.ManyToManyField(UploadedFile, through="InformeGenerado")
+    informes_generado = models.ForeignKey(
+        UploadedFile, on_delete=models.CASCADE, null=True, blank=True
+    )
     # Campos de texto enriquecido
     descripcion_macroscopica = models.TextField(max_length=10240, null=True, blank=True)
     descripcion_microscopica = models.TextField(max_length=10240, null=True, blank=True)
@@ -61,11 +63,6 @@ class Informe(AuditableMixin):
 
     history = HistoricalRecords()
     objects = InformesManager()
-
-
-class InformeGenerado(AuditableMixin):
-    s3_file = models.ForeignKey(UploadedFile, on_delete=models.CASCADE)
-    informe = models.ForeignKey("Informe", on_delete=models.CASCADE)
 
 
 class ResultadoInmunostoquimica(AuditableMixin):

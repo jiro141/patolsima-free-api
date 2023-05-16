@@ -1,6 +1,7 @@
 import os
 import time
 from django.http import FileResponse
+from django.db import transaction
 from rest_framework.exceptions import ValidationError
 from typing import Dict, Any, Generator
 from patolsima_api.apps.core.models import Informe, Estudio
@@ -14,6 +15,9 @@ from patolsima_api.utils.render_pdf import render_pdf
 from patolsima_api.utils.file import FileResponseWithTemporalFileDeletion
 from patolsima_api.apps.uploaded_file_management.utils.upload import (
     upload_from_local_filesystem,
+)
+from patolsima_api.apps.uploaded_file_management.serializers import (
+    UploadedFileSerializer,
 )
 
 
@@ -107,12 +111,13 @@ def generar_informe_preview(
     return FileResponseWithTemporalFileDeletion(
         open(filepath, "rb"), as_attachment=True, temporal_file_path=filepath
     )
-    # TO COMPLETE
 
 
+@transaction.atomic
 def generar_y_guardar_informe(informe: Informe) -> Dict[str, Any]:
     filepath = render_informe(informe)
-    upload_from_local_filesystem(file_path=filepath, path_prefix="informes")
-    return InformeSerializer(
-        informe
-    ).data  # Maybe I can change this to only the S3 link to the file uploaded
+    informe.informes_generado = upload_from_local_filesystem(
+        file_path=filepath, path_prefix="informes", delete_original_after_upload=True
+    )
+    informe.save()
+    return UploadedFileSerializer(informe.informes_generado).data

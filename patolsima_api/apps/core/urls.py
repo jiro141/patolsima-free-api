@@ -8,7 +8,6 @@ from patolsima_api.apps.core.views import (
     MuestraViewSet,
     FaseMuestraViewSet,
     InformeViewSet,
-    InformeGeneradoViewSet,
     ResultadoInmunostoquimicaViewSet,
 )
 
@@ -20,9 +19,6 @@ router.register(r"estudios", EstudioViewSet, basename="estudio")
 router.register(r"muestras", MuestraViewSet, basename="muestra")
 router.register(r"fasesmuestra", FaseMuestraViewSet, basename="fase-muestra")
 router.register(r"informes", InformeViewSet, basename="informe")
-router.register(
-    r"informes-generados", InformeGeneradoViewSet, basename="informe-generado"
-)
 router.register(
     r"resultados-inmunostoquimica",
     ResultadoInmunostoquimicaViewSet,
