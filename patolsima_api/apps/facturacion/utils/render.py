@@ -31,6 +31,7 @@ def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str) -> str:
     :param registro: Factura/Recibo instance. The Orden instance associated must be pagada=True.
     :return: the path of the PDF file in the filesystem
     """
+    numero_documento = registro.id if tipo == "recibo" else registro.n_factura
     filename = f"{tipo}_{registro.orden.id}_{int(time.time())}"
     context = {
         "current_work_path_python": os.getcwd(),
@@ -40,6 +41,8 @@ def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str) -> str:
             "estudio__tipo", "estudio__codigo"
         ),
         "pagos": registro.orden.pagos.all().order_by("created_at"),
+        "tipo_documento": tipo.capitalize(),
+        "numero_documento": numero_documento,
         **registro.orden.balance,
         **registro.pdf_reder_context,
     }
