@@ -47,7 +47,6 @@
             }
 
             .logo_container {
-
                 -webkit-flex-wrap: wrap;
                 -webkit-align-items: center;
                 -webkit-align-content: center;
@@ -62,46 +61,50 @@
             }
 
             .recibo_factura_id_container {
-                -webkit-flex-wrap: wrap;
-                -webkit-align-items: center;
-                -webkit-align-content: center;
-                -webkit-justify-content: center;
-                -webkit-box-orient: vertical;
-                -webkit-box-pack: center;
-
-                display: -webkit-box;
-                display: flex;
-                align-items: center;
-                align-content: center;
-                justify-content: center;
                 margin-left: 5mm;
                 width: 50mm;
+                display: -webkit-box;
 
+
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                    -ms-flex-align: center;
+                        align-items: center;
+                -webkit-box-pack: center;
+                    -ms-flex-pack: center;
+                        justify-content: center;
+            }
+
+            .recibo_factura_id_container_center {
+                width:90%;
             }
 
             .recibo_factura_id_legend {
-                border: 1px solid blue;
-                background-color: green;
+                text-align:center;
             }
 
+
             .recibo_factura_id_number {
-                border-radius: 20px;
-                padding: 1mm 1mm;
-                margin-top: 2mm;
-                border: 1px solid red;
                 background-color: #EAE9E9;
+                text-align:center;
+                padding: 5px 10px;
+                border-radius: 10px;
+                -webkit-border-radius: 10px;
             }
 
         </style>
     </head>
-    <body style="border: 1px solid red;">
+    <body>
         <div class="header_container">
             <div class="upper_div">
                 <div class="logo_container"><img src="{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/logo.png" alt=""></div>
                 <div class="banner_container">><img src="{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/header.png" alt=""></div>
                 <div class="recibo_factura_id_container">
-                    <p class="recibo_factura_id_legend">N Recibo</p>
-                    <p class="recibo_factura_id_number">0000000000</p>
+                    <div class="recibo_factura_id_container_center">
+                        <p class="recibo_factura_id_legend">N Recibo</p>
+                        <p class="recibo_factura_id_number">0000000000</p>
+                    </div>
                 </div>
             </div>
             <div><img src="{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/Objeto-inteligente-vectorial.gif" alt=""></div>
