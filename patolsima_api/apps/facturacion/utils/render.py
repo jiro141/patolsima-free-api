@@ -43,6 +43,7 @@ def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str) -> str:
         "pagos": registro.orden.pagos.all().order_by("created_at"),
         "tipo_documento": tipo.capitalize(),
         "numero_documento": numero_documento,
+        "fecha_emision": registro.created_at.date().isoformat(),
         **registro.orden.balance,
         **registro.pdf_reder_context,
     }
@@ -55,7 +56,6 @@ def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str) -> str:
             "wkhtmltopdf_options": {
                 "--page-size": "A5",
                 "--orientation": "Landscape",
-                "--footer-left": "[page]/[topage]",
                 "--header-spacing": "5",
                 "--footer-spacing": "5",
                 "--margin-left": "50px",

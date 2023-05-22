@@ -4,9 +4,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <style type="text/css">
             body {
-                background-image: url("{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/body_fondo.gif");
-                -webkit-background-image: url("{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/body_fondo.gif");
-                -moz-background-image: url("{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/body_fondo.gif");
+                background-image: url("{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/body_fondo.png");
+                -webkit-background-image: url("{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/body_fondo.png");
+                -moz-background-image: url("{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/body_fondo.png");
 
                 background-repeat: no-repeat;
                 background-position: center;
@@ -25,6 +25,7 @@
         align-content: flex-start;
                 width: 100%;
                 line-height: 0.5em;
+                padding-top: 15px;
             }
 
             .cliente_left_container {
@@ -128,7 +129,7 @@
                 <tr>
                     <td class="table_content">{{ item_orden.estudio.codigo }}</td>
                     <td class="table_content">{{ fix_tipo_estudio(item_orden.estudio.tipo) }}</td>
-                    <td class="table_content">{{ item_orden.monto_usd }}</td>
+                    <td class="table_content">{{ item_orden.monto_bs }}</td>
                     <td class="table_content"></td>
                 </tr>
             {% endfor %}

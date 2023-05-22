@@ -3,6 +3,7 @@ from django.db.models.signals import pre_save
 from decimal import Decimal
 from simple_history.models import HistoricalRecords
 from patolsima_api.utils.models import AuditableMixin, TelefonoMixin, DireccionMixin
+from patolsima_api.utils.quantize import round_2_decimals
 from patolsima_api.apps.core.models import Estudio
 from patolsima_api.apps.uploaded_file_management.models import UploadedFile
 from .cliente import Cliente
@@ -45,11 +46,13 @@ class Orden(AuditableMixin):
         cambio = obtener_cambio_usd_bs_mas_reciente()
         return {
             "total_usd": importe_orden_usd,
-            "total_bs": importe_orden_usd * cambio,
+            "total_bs": round_2_decimals(importe_orden_usd * cambio),
             "pagado_usd": importe_pagado_usd,
-            "pagado_bs": importe_pagado_usd * cambio,
+            "pagado_bs": round_2_decimals(importe_pagado_usd * cambio),
             "por_pagar_usd": (importe_orden_usd - importe_pagado_usd),
-            "por_pagar_bs": (importe_orden_usd - importe_pagado_usd) * cambio,
+            "por_pagar_bs": round_2_decimals(
+                (importe_orden_usd - importe_pagado_usd) * cambio
+            ),
         }
 
 
@@ -74,6 +77,14 @@ class ItemOrden(AuditableMixin):
             raise Exception(
                 "No se puede cambiar el ItemOrden de una Orden luego de estar pagada."
             )
+
+    @property
+    def monto_bs(self):
+        from patolsima_api.apps.facturacion.utils.cambios import (
+            obtener_cambio_usd_bs_mas_reciente,
+        )
+
+        return round_2_decimals(self.monto_usd * obtener_cambio_usd_bs_mas_reciente())
 
 
 pre_save.connect(ItemOrden.pre_save, ItemOrden)
