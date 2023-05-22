@@ -7,13 +7,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from patolsima_api.apps.core.models import (
     Estudio,
     Informe,
-    InformeGenerado,
     ResultadoInmunostoquimica,
 )
 from patolsima_api.apps.core.serializers import (
     InformeSerializer,
     InformeListSerializer,
-    InformeGeneradoSerializer,
     ResultadoInmunostoquimicaSerializer,
 )
 from patolsima_api.apps.core.utils.informes import (
@@ -52,23 +50,6 @@ class InformeViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["GET"])
     def generate_pdf(self, request, pk=None):
         return Response(status=200, data=generar_y_guardar_informe(self.get_object()))
-
-
-class InformeGeneradoViewSet(viewsets.ModelViewSet):
-    queryset = InformeGenerado.objects.all()
-    serializer_class = InformeGeneradoSerializer
-    permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
-
-    def list(self, request, *args, **kwargs):
-        """
-        There is no reason to include a list method because the ids will be accessible using the detail for each
-        Informe instance.
-        :param request:
-        :param args:
-        :param kwargs:
-        :return:
-        """
-        return method_not_allowed()
 
 
 class ResultadoInmunostoquimicaViewSet(viewsets.ModelViewSet):

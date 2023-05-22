@@ -2,20 +2,11 @@ from rest_framework.serializers import ModelSerializer, ReadOnlyField, Validatio
 from patolsima_api.apps.core.models import (
     Estudio,
     Informe,
-    InformeGenerado,
     ResultadoInmunostoquimica,
 )
 from patolsima_api.apps.uploaded_file_management.serializers import (
     UploadedFileSerializer,
 )
-
-
-class InformeGeneradoSerializer(ModelSerializer):
-    s3_file = UploadedFileSerializer(read_only=True)
-
-    class Meta:
-        model = InformeGenerado
-        fields = "__all__"
 
 
 class ResultadoInmunostoquimicaSerializer(ModelSerializer):
@@ -51,7 +42,7 @@ class ResultadoInmunostoquimicaSerializer(ModelSerializer):
 
 
 class InformeSerializer(ModelSerializer):
-    informes_generados = InformeGeneradoSerializer(many=True, read_only=True)
+    informes_generado = UploadedFileSerializer(read_only=True)
     resultadod_inmunostoquimica = ResultadoInmunostoquimicaSerializer(
         many=True, read_only=True
     )

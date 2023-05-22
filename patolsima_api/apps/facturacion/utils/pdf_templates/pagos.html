@@ -1,0 +1,33 @@
+<table style="border-collapse: collapse; width: 100%; height: 36px;" border="1">
+<tbody>
+    <tr style="height: 18px;">
+    <td style="width: 20%; height: 18px;">Monto USD</td>
+    <td style="width: 20%; height: 18px;">Pendiente por pagar</td>
+    <td style="width: 20%; height: 18px;">Fecha y Hora</td>
+</tr>
+{% for pago in pagos %}
+    <tr style="height: 18px;">
+        <td style="width: 20%; height: 18px;">{{ pago.monto_usd }}</td>
+        <td style="width: 20%; height: 18px;">{{ pago.pendiente_por_pagar_usd }}</td>
+        <td style="width: 20%; height: 18px;">{{ pago.created_at_human_readable }}</td>
+    </tr>
+{% endfor %}
+
+
+
+
+</tbody>
+</table>
+
+
+
+
+
+{% for item_orden in items_orden %}
+                <tr>
+                <td>{{ item_orden.estudio.codigo }}</td>
+                <td>{{ fix_tipo_estudio(item_orden.estudio.tipo) }}</td>
+                <td>{{ item_orden.monto_usd }}</td>
+                <td></td>
+                </tr>
+            {% endfor %}

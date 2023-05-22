@@ -15,6 +15,7 @@ def generar_nota_de_pago(pago: Pago) -> NotaPago:
         nota_pago.s3_file = upload_from_local_filesystem(
             render_nota_de_pago(nota_pago),
             path_prefix=f"ordenes/{pago.orden.id}/notas_de_pago",
+            delete_original_after_upload=True,
         )
         nota_pago.save()
 

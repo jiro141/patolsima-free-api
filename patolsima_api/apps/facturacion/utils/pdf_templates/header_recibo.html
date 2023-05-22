@@ -8,21 +8,105 @@
                 padding: 0;
                 line-height: 1;
                 font-size: 12pt;
-                height: 50mm; /* set it to your bottom margin */
+                height: 60mm; /* set it to your bottom margin */
             }
 
-            .footer {
+            .header_container {
                 position: absolute;
                 bottom: 0;
                 left: 0;
                 right: 0;
             }
+
+            .upper_div {
+                display: -webkit-box;
+                display: flex;
+                -webkit-flex-flow: row;
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: normal;
+                -webkit-flex-wrap: wrap;
+                flex-flow: row wrap;
+            }
+
+            .banner_container {
+
+                -webkit-flex-wrap: wrap;
+                -webkit-align-items: center;
+                -webkit-align-content: center;
+                -webkit-justify-content: center;
+                -webkit-box-orient: vertical;
+                -webkit-box-pack: center;
+
+                display: -webkit-box;
+                display: flex;
+                align-items: center;
+                align-content: center;
+                justify-content: center;
+                padding-right: 0;
+                margin-left: 10mm;
+            }
+
+            .logo_container {
+                -webkit-flex-wrap: wrap;
+                -webkit-align-items: center;
+                -webkit-align-content: center;
+                -webkit-justify-content: center;
+                -webkit-box-orient: vertical;
+                -webkit-box-pack: center;
+                display: -webkit-box;
+                display: flex;
+                align-items: center;
+                align-content: center;
+                justify-content: center;
+            }
+
+            .recibo_factura_id_container {
+                margin-left: 5mm;
+                width: 50mm;
+                display: -webkit-box;
+
+
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-align: center;
+                    -ms-flex-align: center;
+                        align-items: center;
+                -webkit-box-pack: center;
+                    -ms-flex-pack: center;
+                        justify-content: center;
+            }
+
+            .recibo_factura_id_container_center {
+                width:90%;
+            }
+
+            .recibo_factura_id_legend {
+                text-align:center;
+            }
+
+
+            .recibo_factura_id_number {
+                background-color: #EAE9E9;
+                text-align:center;
+                padding: 5px 10px;
+                border-radius: 10px;
+                -webkit-border-radius: 10px;
+                font-weight: bold;
+            }
+
         </style>
     </head>
-    <body style="border: 1px solid red;">
-        <div class="footer">
+    <body>
+        <div class="header_container">
             <div class="upper_div">
-                <div><img src="{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/Header.png" alt=""></div>
+                <div class="logo_container"><img height="175px" src="{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/logo2.png" alt=""></div>
+                <div class="banner_container"><img src="{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/header.png" alt=""></div>
+                <div class="recibo_factura_id_container">
+                    <div class="recibo_factura_id_container_center">
+                        <p class="recibo_factura_id_legend"><strong>{{ tipo_documento }} Nro.</strong></p>
+                        <p class="recibo_factura_id_number">{{ numero_documento }}</p>
+                    </div>
+                </div>
             </div>
             <div><img src="{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/Objeto-inteligente-vectorial.gif" alt=""></div>
         </div>
