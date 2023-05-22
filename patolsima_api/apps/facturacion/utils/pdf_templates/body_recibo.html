@@ -3,6 +3,16 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <style type="text/css">
+            body {
+                background-image: url("{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/body_fondo.gif");
+                -webkit-background-image: url("{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/body_fondo.gif");
+                -moz-background-image: url("{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/body_fondo.gif");
+
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 350px auto;
+            }
+
             .texto_pegao {
                 line-height: 0.5em;
             }
@@ -66,6 +76,10 @@
             }
 
             .texto_total {
+                margin-left: 60%;
+            }
+
+            .total_item {
 
             }
             
@@ -74,12 +88,12 @@
             }
 
             .total_item_right {
-
+                margin-left: 80px;
             }
 
         </style>
     </head>
-    <body style="border: 2px solid red;">
+    <body>
         <div class="cliente_container texto_pegao">
             <div class="cliente_left_container">
                 <p class="cliente_left_container_item"><strong>Nombre y Apellido o Razon Social:</strong> {{ cliente.razon_social }}</p>
@@ -110,29 +124,24 @@
             </tr>
         </thead>
         <tbody class="tabla_precios_body">
-            <tr>
-                <td class="table_content">ashkjdg</td>
-                <td class="table_content">ashkjdg</td>
-                <td class="table_content">ashkjdg</td>
-                <td class="table_content">ashkjdg</td>
-            </tr>
-            <tr>
-                <td class="table_content">ashkjdg</td>
-                <td class="table_content">ashkjdg</td>
-                <td class="table_content">ashkjdg</td>
-                <td class="table_content">ashkjdg</td>
-            </tr>
+            {% for item_orden in items_orden %}
+                <tr>
+                    <td class="table_content">{{ item_orden.estudio.codigo }}</td>
+                    <td class="table_content">{{ fix_tipo_estudio(item_orden.estudio.tipo) }}</td>
+                    <td class="table_content">{{ item_orden.monto_usd }}</td>
+                    <td class="table_content"></td>
+                </tr>
+            {% endfor %}
         </tbody>
         </table>
 
         <br>
-        <br>
 
         <div class="texto_total">
-            <p class="total_item_left">Sut-Total Bs:</p>
-            <p class="total_item_right"> {{ total_bs }}</p>
-            <p class="total_item_left">Total Bs:</p>
-            <p class="total_item_right">{{ total_bs }}</p>
+            <p class="total_item total_item_left texto_pegao">Sut-Total Bs:</p>
+            <p class="total_item total_item_right texto_pegao"> {{ total_bs }}</p>
+            <p class="total_item total_item_left texto_pegao">Total Bs:</p>
+            <p class="total_item total_item_right texto_pegao">{{ total_bs }}</p>
         </div>
 
         <br>
@@ -143,7 +152,7 @@
         <div class="texto_abajo_container texto_pegao">
             <div class="texto_abajo_container_left">
                 <p>Por favor llamar antes de venir</p>
-                <p>Llamar el dia:  /  /  </p>
+                <p>Llamar el dia:{{ "    /    /  " }}</p>
                 La fecha expuesta es aproximada
             </div>
             <div class="texto_abajo_container_right">
