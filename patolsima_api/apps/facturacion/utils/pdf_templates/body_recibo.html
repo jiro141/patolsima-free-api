@@ -80,6 +80,10 @@
                 margin-left: 60%;
             }
 
+            .tabla_total_nota_de_pago {
+                margin-left: 40%;
+            }
+
             .total_item {
 
             }
@@ -120,7 +124,13 @@
             <tr>
                 <th class="table_content table_header_content">Descripcion</th>
                 <th class="table_content table_header_content">Tipo de Estudio</th>
-                <th class="table_content table_header_content">Precio</th>
+                <th class="table_content table_header_content">
+                    {% if tipo_documento == 'Nota de Pago' %}
+                            Precio (USD)
+                        {% else %}
+                            Precio
+                        {% endif %}
+                </th>
                 <th class="table_content table_header_content">Detalles</th>
             </tr>
         </thead>
@@ -129,7 +139,13 @@
                 <tr>
                     <td class="table_content">{{ item_orden.estudio.codigo }}</td>
                     <td class="table_content">{{ fix_tipo_estudio(item_orden.estudio.tipo) }}</td>
-                    <td class="table_content">{{ item_orden.monto_bs }}</td>
+                    <td class="table_content">
+                        {% if tipo_documento == 'Nota de Pago' %}
+                            {{ item_orden.monto_usd }}
+                        {% else %}
+                            {{ item_orden.monto_bs }}
+                        {% endif %}
+                    </td>
                     <td class="table_content"></td>
                 </tr>
             {% endfor %}
@@ -138,12 +154,11 @@
 
         <br>
 
-        <div class="texto_total">
-            <p class="total_item total_item_left texto_pegao">Sut-Total Bs:</p>
-            <p class="total_item total_item_right texto_pegao"> {{ total_bs }}</p>
-            <p class="total_item total_item_left texto_pegao">Total Bs:</p>
-            <p class="total_item total_item_right texto_pegao">{{ total_bs }}</p>
-        </div>
+        {% if tipo_documento == 'Nota de Pago' %}
+            {% include 'nota_de_pago_total.html' with context %}
+        {% else %}
+            {% include 'factura_recibo_total.html' with context %}
+        {% endif %}
 
         <br>
         <br>
@@ -153,11 +168,13 @@
         <div class="texto_abajo_container texto_pegao">
             <div class="texto_abajo_container_left">
                 <p>Por favor llamar antes de venir</p>
-                <p>Llamar el dia:{{ "    /    /  " }}</p>
+                <p>Llamar el dia:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/</p>
                 La fecha expuesta es aproximada
             </div>
             <div class="texto_abajo_container_right">
-                <p><b>Copia sin derecho a<br>credito fiscal</b></p>
+                {% if tipo_documento == 'Recibo' %}
+                    <p><b>Copia sin derecho a<br>credito fiscal</b></p>
+                {% endif %}
             </div>
         </div>
     </body>

@@ -1,0 +1,20 @@
+<div class="tabla_inmunostoquimica_container">
+    <table class="tabla_inmunostoquimica">
+        <thead class="tabla_inmunostoquimica_header">
+            <tr>
+                <th class="tabla_inmunostoquimica_header_item">Procedimiento</th>
+                <th class="tabla_inmunostoquimica_header_item">Reacción</th>
+                <th class="tabla_inmunostoquimica_header_item">Diagnóstico y Observaciones</th>
+            </tr>
+        </thead>
+        <tbody class="tabla_inmunostoquimica_body">
+            {% for resultado in resultados_inmunostoquimica %}
+                <tr>
+                    <td class="tabla_inmunostoquimica_body_item">{{ resultado.procedimiento }}</td>
+                    <td class="tabla_inmunostoquimica_body_item">{{ resultado.reaccion }}</td>
+                    <td class="tabla_inmunostoquimica_body_item">{{ resultado.diagnostico_observaciones }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

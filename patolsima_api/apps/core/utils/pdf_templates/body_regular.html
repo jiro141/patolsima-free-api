@@ -1,0 +1,32 @@
+<div class="body_regular_container">
+    {% if informe.descripcion_macroscopica %}
+    <div class="titulo_seccion"><h4 class="titulo_seccion_texto">Descipción Macroscópica</h4></div>
+        <div class="cuerpo_seccion">{{ informe.descripcion_macroscopica }}</div>
+    {% endif %}
+
+    {% if informe.descripcion_microscopica %}
+    <div class="titulo_seccion"><h4 class="titulo_seccion_texto">Descipción Microscópica</h4></div>
+        <div class="cuerpo_seccion">{{ informe.descripcion_microscopica }}</div>
+    {% endif %}
+
+    {% if informe.diagnostico %}
+    <div class="titulo_seccion"><h4 class="titulo_seccion_texto">Diagnóstico</h4></div>
+        <div class="cuerpo_seccion">{{ informe.diagnostico }}</div>
+    {% endif %}
+
+    {% if informe.notas %}
+    <div class="titulo_seccion"><h4 class="titulo_seccion_texto">Notas</h4></div>
+        <div class="cuerpo_seccion">{{ informe.notas }}</div>
+    {% endif %}
+
+    {% if informe.anexos %}
+    <div class="titulo_seccion"><h4 class="titulo_seccion_texto">Anexos</h4></div>
+        <div class="cuerpo_seccion">{{ informe.anexos }}</div>
+    {% endif %}
+
+    {% if informe.bibliografia %}
+    <div class="titulo_seccion"><h4 class="titulo_seccion_texto">Bibliografía</h4></div>
+        <div class="cuerpo_seccion">{{ informe.bibliografia }}</div>
+
+    {% endif %}
+</div>

@@ -1,5 +1,6 @@
 import os
 import time
+from datetime import datetime
 from django.http import FileResponse
 from django.db import transaction
 from rest_framework.exceptions import ValidationError
@@ -69,18 +70,19 @@ def render_informe(informe: Informe, preview_only: bool = False) -> str:
 
     filename = f"informe_{informe.estudio.id}_{int(time.time())}"
 
-    templates = (
-        INFORME_INMUNOSTOQUIMICA_TEMPLATES
-        if informe.estudio.tipo == Estudio.TipoEstudio.INMUNOSTOQUIMICA
-        else INFORME_REGULAR_TEMPLATES
-    )
-
     return render_pdf(
         context={
             "current_work_path_python": os.getcwd(),
-            "tipo_estudio_titulo": "Citologia Ginecologica",
+            "tipo_estudio_titulo": "Inmunostoquimica",
+            "estudio": informe.estudio,
+            "informe": informe,
+            "paciente": informe.estudio.paciente,
+            "medico": informe.estudio.medico_tratante,
+            "fecha_ingreso": informe.estudio.created_at.date().isoformat(),
+            "today": datetime.now().date().isoformat(),
+            "resultados_inmunostoquimica": informe.resultados_inmunostoquimica.all(),
         },
-        templates=templates,
+        templates=INFORME_REGULAR_TEMPLATES,
         destination=filename,
         extra_args={
             "wkhtmltopdf_options": {

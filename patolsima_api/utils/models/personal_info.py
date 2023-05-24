@@ -5,6 +5,10 @@ class NombreMixin(models.Model):
     nombres = models.CharField(max_length=255, db_index=True)
     apellidos = models.CharField(max_length=255, db_index=True)
 
+    @property
+    def nombre_completo(self):
+        return f"{self.apellidos} {self.nombres}"
+
     class Meta:
         abstract = True
 
