@@ -19,10 +19,6 @@ class Paciente(AuditableMixin, PersonalInfoMixin):
         return f"({self.id})({self.ci}) {self.apellidos} {self.nombres}"
 
     @property
-    def nombre_completo(self):
-        return f"{self.apellidos} {self.nombres}"
-
-    @property
     def edad(self):
         today = date.today()
         return (
