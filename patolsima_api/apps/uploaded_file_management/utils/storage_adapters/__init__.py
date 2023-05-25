@@ -8,6 +8,7 @@ def get_default_storage_adapter():
     if not (settings.AWS_ACCESS_KEY and settings.AWS_SECRET_KEY):
         return LocalFileSystemStorageAdapter()
 
+    print("using S3")
     return S3StorageAdapter()
 
 

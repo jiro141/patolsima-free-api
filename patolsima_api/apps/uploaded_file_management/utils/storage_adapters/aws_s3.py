@@ -2,15 +2,24 @@ from typing import BinaryIO, Dict, Any
 import boto3
 from django.conf import settings
 from patolsima_api.apps.uploaded_file_management.models import UploadedFile
-from .abstract_storage_adapter import AbstractStorageUnitAdapter
+from .abstract_storage_adapter import (
+    AbstractStorageUnitAdapter,
+    SingletonForStorageAdapter,
+)
 
 
-class S3StorageAdapter(AbstractStorageUnitAdapter):
+class S3StorageAdapter(
+    AbstractStorageUnitAdapter, metaclass=SingletonForStorageAdapter
+):
     storage_unit_identifier = UploadedFile.StorageUnit.AWS_S3
 
     def __init__(self):
         super().__init__()
-        self.s3_client = boto3.client("s3")
+        self.s3_client = boto3.client(
+            "s3",
+            aws_access_key_id=settings.AWS_ACCESS_KEY,
+            aws_secret_access_key=settings.AWS_SECRET_KEY,
+        )
 
     def _check_bucket(self, bucket_name: str):
         if bucket_name not in settings.S3_BUCKETS:
@@ -42,3 +51,7 @@ class S3StorageAdapter(AbstractStorageUnitAdapter):
         # Falta a;adir el caso en el que el archivo no existe en S3
         response = self.s3_client.delete_object(Bucket=bucket, Key=object_key)
         print(response)
+
+    @classmethod
+    def get_uri_for_file(cls, file: UploadedFile):
+        return "Not URI"
