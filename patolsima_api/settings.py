@@ -171,8 +171,8 @@ S3_BUCKETS = [
 # Binary streams chunk size (e.g. for downloading/uploading files without collapsing the system due to lack of memory
 # resources)
 
-DEFAULT_BINARY_STREAMS_CHUNK_SIZE = os.environ.get(
-    "DEFAULT_BINARY_STREAMS_CHUNK_SIZE", 4096
+DEFAULT_BINARY_STREAMS_CHUNK_SIZE = int(
+    os.environ.get("DEFAULT_BINARY_STREAMS_CHUNK_SIZE", 4096)
 )
 
 # Cambios de Dolares a Bolivares

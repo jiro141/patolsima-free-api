@@ -1,6 +1,7 @@
 import abc
 from typing import Iterable, BinaryIO, Dict, Any
 from patolsima_api.apps.uploaded_file_management.models import UploadedFile
+from patolsima_api.utils.singleton import Singleton
 
 
 class AbstractStorageUnitAdapter(abc.ABC):
@@ -52,3 +53,9 @@ class AbstractStorageUnitAdapter(abc.ABC):
     @classmethod
     def get_uri_for_file(cls, file: UploadedFile):
         raise NotImplementedError()
+
+
+class SingletonForStorageAdapter(abc.ABCMeta, Singleton):
+    """
+    This class solves metaclass inheritance problems for all the singletons (storage adapters)
+    """
