@@ -31,4 +31,6 @@ class MedicoTratanteListSerializer(serializers.ModelSerializer):
             "nombres",
             "apellidos",
             "especialidad",
+            "email",
+            "telefono_celular",
         ]
