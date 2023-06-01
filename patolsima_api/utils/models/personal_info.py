@@ -38,16 +38,26 @@ class TelefonoMixin(models.Model):
 class NCOMEDMixin(models.Model):
     """
     Holds the NCOMED (numero/codigo del colegio de medicos de Venezuela
+    You must ensure unicity of NCOMED field in the concrete model only if it is an Auditable model.
     """
 
-    ncomed = models.CharField(
-        max_length=32, unique=True, db_index=True, null=True, blank=True
-    )
+    ncomed = models.CharField(max_length=32, db_index=True, null=True, blank=True)
 
     class Meta:
         abstract = True
 
 
 class PersonalInfoMixin(NombreMixin, TelefonoMixin, DireccionMixin, EmailMixin):
+    class Meta:
+        abstract = True
+
+
+class CIMixin(models.Model):
+    """
+    You must ensure unicity of CI field in the concrete model only if it is an Auditable model.
+    """
+
+    ci = models.PositiveIntegerField(null=True, db_index=True)
+
     class Meta:
         abstract = True

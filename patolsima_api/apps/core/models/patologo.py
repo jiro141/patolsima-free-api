@@ -8,6 +8,15 @@ from patolsima_api.apps.uploaded_file_management.models import UploadedFile
 class Patologo(AuditableMixin, NombreMixin, NCOMEDMixin):
     firma = models.ForeignKey(UploadedFile, on_delete=models.DO_NOTHING, null=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["ncomed"],
+                condition=models.Q(deleted_at=None),
+                name="patologo_ncomed_unique_when_not_deleted",
+            )
+        ]
+
     def __str__(self):
         return f"({self.id})({self.ncomed}) {self.apellidos} {self.nombres}"
 

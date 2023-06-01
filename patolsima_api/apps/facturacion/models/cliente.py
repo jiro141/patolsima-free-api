@@ -13,3 +13,12 @@ class Cliente(AuditableMixin, TelefonoMixin, DireccionMixin, EmailMixin):
     ci_rif = models.CharField(max_length=32, unique=True, db_index=True)
 
     history = HistoricalRecords()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["ci_rif"],
+                condition=models.Q(deleted_at=None),
+                name="unique_ci_rif_non_deleted_only",
+            )
+        ]
