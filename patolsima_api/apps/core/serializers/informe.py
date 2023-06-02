@@ -1,8 +1,10 @@
 from rest_framework.serializers import ModelSerializer, ReadOnlyField, ValidationError
+from django.db import transaction
 from patolsima_api.apps.core.models import (
     Estudio,
     Informe,
     ResultadoInmunostoquimica,
+    Patologo,
 )
 from patolsima_api.apps.uploaded_file_management.serializers import (
     UploadedFileSerializer,
@@ -46,6 +48,25 @@ class InformeSerializer(ModelSerializer):
     resultadod_inmunostoquimica = ResultadoInmunostoquimicaSerializer(
         many=True, read_only=True
     )
+
+    def create(self, validated_data):
+        user = self.context["request"].user
+        if not user.groups.filter(name="patologo").exists():
+            raise ValidationError(f"{user} can not create Informes.")
+
+        patologo = Patologo.objects.filter(user=user).first()
+        if not patologo:
+            raise ValidationError(
+                f"{user} is in 'patologo' group but does not have a record as Patologo in the system."
+            )
+
+        with transaction.atomic():
+            new_informe = super().create(validated_data)
+            estudio = new_informe.estudio
+            estudio.patologo = patologo
+            estudio.save()
+
+        return new_informe
 
     class Meta:
         model = Informe
