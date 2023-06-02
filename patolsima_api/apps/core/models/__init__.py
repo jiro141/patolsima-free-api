@@ -7,12 +7,12 @@ from .fase_muestra import FaseMuestra
 from .informe import Informe, ResultadoInmunostoquimica
 
 __all__ = [
-    Paciente,
-    Estudio,
-    MedicoTratante,
-    Muestra,
-    FaseMuestra,
-    Patologo,
-    Informe,
-    ResultadoInmunostoquimica,
+    "Paciente",
+    "Estudio",
+    "MedicoTratante",
+    "Muestra",
+    "FaseMuestra",
+    "Patologo",
+    "Informe",
+    "ResultadoInmunostoquimica",
 ]

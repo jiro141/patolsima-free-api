@@ -28,3 +28,4 @@ Puede ser ejecutado usando Docker (recomendado) o como un servidor comun y silve
 6. Agregue un superusuario con `docker compose run api python manage.py createsuperuser`.
 7. Ahora agregue la data de prueba utilizando `docker compose run api make addtestdata`.
 8. Cree los directorios auxiliares utilizando `docker compose run api make createauxdirectories`.
+9. Cree los grupos de usuarios de patolsima con sus permisos usando el comando `docker compose run api python manage.py create_default_patolsima_users_and_group`.
