@@ -283,7 +283,6 @@ class Command(BaseCommand):
             change_paciente_permission,
             delete_paciente_permission,
             view_paciente_permission,
-            add_informe_permission,
             change_informe_permission,
             delete_informe_permission,
             view_informe_permission,
