@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from rest_framework.permissions import DjangoModelPermissions, DjangoObjectPermissions
+from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
@@ -24,7 +24,7 @@ from patolsima_api.utils.responses import method_not_allowed
 class InformeViewSet(viewsets.ModelViewSet):
     queryset = Informe.objects.all().order_by("-created_at")
     serializer_class = InformeSerializer
-    permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
+    permission_classes = [DjangoModelPermissions]
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ("estudio__codigo", "completado", "aprobado")
 
@@ -55,7 +55,7 @@ class InformeViewSet(viewsets.ModelViewSet):
 class ResultadoInmunostoquimicaViewSet(viewsets.ModelViewSet):
     queryset = ResultadoInmunostoquimica.objects.all()
     serializer_class = ResultadoInmunostoquimicaSerializer
-    permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
+    permission_classes = [DjangoModelPermissions]
 
     def list(self, request, *args, **kwargs):
         """

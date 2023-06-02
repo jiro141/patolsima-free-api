@@ -1,5 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.permissions import DjangoModelPermissions, DjangoObjectPermissions
+from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
@@ -13,7 +13,7 @@ from patolsima_api.apps.facturacion.utils.pago import generar_nota_de_pago
 
 
 class PagoViewSet(ModelViewSet):
-    permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
+    permission_classes = [DjangoModelPermissions]
     queryset = Pago.objects.order_by("created_at")
     serializer_class = PagoSerializer
     filter_backends = (DjangoFilterBackend,)

@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from rest_framework.permissions import DjangoModelPermissions, DjangoObjectPermissions
+from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.filters import SearchFilter
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -20,7 +20,7 @@ from patolsima_api.apps.core.utils.estudio import append_new_adjunto, remove_adj
 class EstudioViewSet(viewsets.ModelViewSet):
     queryset = Estudio.objects.order_by("created_at")
     serializer_class = EstudioSerializer
-    permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
+    permission_classes = [DjangoModelPermissions]
     filter_backends = (SearchFilter, DjangoFilterBackend)
     search_fields = ["paciente__ci", "paciente__nombres", "paciente__apellidos"]
     filterset_fields = ["paciente_id", "codigo", "tipo", "confirmado"]

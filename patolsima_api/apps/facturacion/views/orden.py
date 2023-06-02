@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.request import Request
-from rest_framework.permissions import DjangoModelPermissions, DjangoObjectPermissions
+from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.filters import SearchFilter
 from rest_framework.decorators import action
 from django_filters.rest_framework import DjangoFilterBackend
@@ -25,7 +25,7 @@ from patolsima_api.utils.responses import method_not_allowed
 
 
 class OrdenViewSet(ModelViewSet):
-    permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
+    permission_classes = [DjangoModelPermissions]
     queryset = Orden.objects.order_by("-created_at")
     serializer_class = OrdenSerializer
     filter_backends = (SearchFilter, DjangoFilterBackend)
@@ -76,7 +76,7 @@ class OrdenViewSet(ModelViewSet):
 
 
 class ItemOrdenViewSet(ModelViewSet):
-    permission_classes = [DjangoModelPermissions & DjangoObjectPermissions]
+    permission_classes = [DjangoModelPermissions]
     queryset = ItemOrden.objects.order_by("-orden_id", "-created_at")
     serializer_class = ItemOrdenSerializer
 
