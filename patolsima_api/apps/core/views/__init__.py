@@ -8,6 +8,7 @@ from .informe import (
     InformeViewSet,
     ResultadoInmunostoquimicaViewSet,
 )
+from .users import GetUserGroups
 
 __all__ = [
     PacienteViewSet,
@@ -18,4 +19,5 @@ __all__ = [
     MedicoTratanteViewSet,
     InformeViewSet,
     ResultadoInmunostoquimicaViewSet,
+    GetUserGroups,
 ]

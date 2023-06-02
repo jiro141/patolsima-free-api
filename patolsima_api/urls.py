@@ -21,6 +21,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
     TokenVerifyView,
 )
+from patolsima_api.apps.core.views import GetUserGroups
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -28,6 +29,7 @@ urlpatterns = [
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     path("v1/core/", include("patolsima_api.apps.core.urls")),
+    path("v1/users/groups/", GetUserGroups.as_view(), name="user_groups"),
     path("v1/facturacion/", include("patolsima_api.apps.facturacion.urls")),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
 ]
