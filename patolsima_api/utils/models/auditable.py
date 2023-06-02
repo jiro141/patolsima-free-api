@@ -21,3 +21,11 @@ class AuditableMixin(SoftDeleteObject, models.Model):
     @property
     def created_at_human_readable(self):
         return date_to_admin_readable(self.created_at)
+
+    @property
+    def updated_at_human_readable(self):
+        return date_to_admin_readable(self.updated_at)
+
+    @property
+    def deleted_at_human_readable(self):
+        return date_to_admin_readable(self.deleted_at)
