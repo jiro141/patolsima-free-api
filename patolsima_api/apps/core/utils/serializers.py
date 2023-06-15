@@ -10,8 +10,14 @@ def get_fk_objects_for_estudio_CU_serializers(validated_data):
     )
     try:
         paciente = Paciente.objects.get(id=paciente_id)
-        medico_tratante = MedicoTratante.objects.get(id=medico_tratante_id)
-        patologo = Patologo.objects.get(id=patologo_id)
+
+        medico_tratante = None
+        if medico_tratante_id:
+            medico_tratante = MedicoTratante.objects.get(id=medico_tratante_id)
+
+        patologo = None
+        if patologo_id:
+            patologo = Patologo.objects.get(id=patologo_id)
     except Paciente.DoesNotExist:
         raise serializers.ValidationError(f"paciente {paciente_id} not found.")
     except MedicoTratante.DoesNotExist:

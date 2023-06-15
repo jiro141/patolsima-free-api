@@ -44,7 +44,9 @@ class Estudio(AuditableMixin):
         BAJA = "BAJA"
 
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
-    medico_tratante = models.ForeignKey(MedicoTratante, on_delete=models.DO_NOTHING)
+    medico_tratante = models.ForeignKey(
+        MedicoTratante, on_delete=models.DO_NOTHING, null=True
+    )
     patologo = models.ForeignKey(Patologo, on_delete=models.DO_NOTHING, null=True)
     adjuntos = models.ManyToManyField(UploadedFile)
     codigo = models.CharField(max_length=32, unique=True, db_index=True)
