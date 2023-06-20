@@ -27,4 +27,12 @@ class MuestraListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Muestra
-        fields = ["id", "estudio", "estudio_codigo", "tipo_de_muestra", "estado"]
+        fields = [
+            "id",
+            "estudio",
+            "estudio_codigo",
+            "tipo_de_muestra",
+            "estado",
+            "created_at",
+            "updated_at",
+        ]

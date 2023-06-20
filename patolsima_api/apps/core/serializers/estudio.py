@@ -142,6 +142,8 @@ class EstudioListSerializer(serializers.ModelSerializer):
             "tipo",
             "prioridad",
             "confirmado",
+            "created_at",
+            "updated_at",
         ]
 
 

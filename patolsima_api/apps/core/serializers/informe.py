@@ -95,4 +95,6 @@ class InformeListSerializer(ModelSerializer):
             "estudio_prioridad",
             "completado",
             "aprobado",
+            "created_at",
+            "updated_at",
         ]
