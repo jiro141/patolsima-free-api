@@ -1,7 +1,10 @@
 from django.db import models
+from django.db.models import F, Sum, Value
+from django.db.models.functions import Coalesce
 from django.db.models.signals import pre_save
 from decimal import Decimal
 from simple_history.models import HistoricalRecords
+from softdelete.models import SoftDeleteManager
 from patolsima_api.utils.models import AuditableMixin, TelefonoMixin, DireccionMixin
 from patolsima_api.utils.quantize import round_2_decimals
 from patolsima_api.apps.core.models import Estudio
@@ -9,11 +12,35 @@ from patolsima_api.apps.uploaded_file_management.models import UploadedFile
 from .cliente import Cliente
 
 
+class OrdenListManager(SoftDeleteManager):
+    def get_queryset(self):
+        from patolsima_api.apps.facturacion.utils.cambios import (
+            obtener_cambio_usd_bs_mas_reciente,
+        )
+
+        cambio = obtener_cambio_usd_bs_mas_reciente()
+        return (
+            super()
+            .get_queryset()
+            .annotate(
+                fecha_recepcion=F("created_at"),
+                fecha_impresion=Coalesce(
+                    F("factura__fecha_generacion"),
+                    F("recibo__fecha_generacion"),
+                ),
+                total_usd=Sum("items_orden__monto_usd"),
+                total_bs=(Sum("items_orden__monto_usd") * Value(cambio)),
+            )
+        )
+
+
 class Orden(AuditableMixin):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     confirmada = models.BooleanField(default=False)
     pagada = models.BooleanField(default=False)
     history = HistoricalRecords()
+
+    lista_ordenes = OrdenListManager()
 
     @property
     def importe_orden_usd(self) -> Decimal:

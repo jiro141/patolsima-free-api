@@ -87,6 +87,10 @@ class OrdenCreateSerializer(serializers.Serializer):
 
 class OrdenListSerializer(serializers.ModelSerializer):
     cliente = ClienteListSerializer(read_only=True)
+    fecha_recepcion = serializers.ReadOnlyField()
+    fecha_impresion = serializers.ReadOnlyField()
+    total_usd = serializers.ReadOnlyField()
+    total_bs = serializers.ReadOnlyField()
 
     class Meta:
         model = Orden
@@ -95,6 +99,10 @@ class OrdenListSerializer(serializers.ModelSerializer):
             "cliente",
             "confirmada",
             "pagada",
+            "fecha_recepcion",
+            "fecha_impresion",
+            "total_usd",
+            "total_bs",
             # "n_estudios",
             # "total",
             # "deauda"

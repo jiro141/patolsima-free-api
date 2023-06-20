@@ -34,6 +34,7 @@ class OrdenViewSet(ModelViewSet):
 
     def list(self, request: Request, *args, **kwargs):
         self.serializer_class = OrdenListSerializer
+        self.queryset = Orden.lista_ordenes.order_by("-created_at")
         return super().list(request, *args, **kwargs)
 
     def create(self, request: Request, *args, **kwargs):
