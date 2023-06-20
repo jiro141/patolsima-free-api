@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import transaction
 from rest_framework.serializers import ValidationError
 from patolsima_api.apps.facturacion.models import Orden, Factura, Recibo
@@ -40,13 +41,16 @@ def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Rec
     if hasattr(orden, tipo_documento) and getattr(orden, tipo_documento).s3_file:
         return getattr(orden, tipo_documento)
 
-    intancia_de_documento, created = (
+    instancia_de_documento, created = (
         Recibo if tipo_documento == "recibo" else Factura
     ).objects.get_or_create(orden=orden, defaults=kwargs)
-    intancia_de_documento.s3_file = upload_from_local_filesystem(
-        render_recibo_factura(intancia_de_documento, tipo_documento),
+
+    instancia_de_documento.fecha_generacion = datetime.now()
+
+    instancia_de_documento.s3_file = upload_from_local_filesystem(
+        render_recibo_factura(instancia_de_documento, tipo_documento),
         path_prefix=f"ordenes/{orden.id}",
         delete_original_after_upload=True,
     )
-    intancia_de_documento.save()
-    return intancia_de_documento
+    instancia_de_documento.save()
+    return instancia_de_documento
