@@ -1,5 +1,5 @@
 from .paciente import Paciente
-from .estudio import Estudio
+from .estudio import Estudio, EstudioCodigoOffset
 from .medico_tratante import MedicoTratante
 from .muestra import Muestra
 from .patologo import Patologo
@@ -15,4 +15,5 @@ __all__ = [
     "Patologo",
     "Informe",
     "ResultadoInmunostoquimica",
+    "EstudioCodigoOffset",
 ]

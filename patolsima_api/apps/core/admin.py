@@ -7,6 +7,7 @@ from patolsima_api.apps.core.models import (
     MedicoTratante,
     Patologo,
     Estudio,
+    EstudioCodigoOffset,
     Muestra,
     FaseMuestra,
     Informe,
@@ -135,6 +136,24 @@ class EstudioAdmin(SimpleHistoryAdmin):
         return bool(obj.informe)
 
 
+class EstudioCodigoOffsetAdmin(SimpleHistoryAdmin):
+    list_display = (
+        "id",
+        "tipo_estudio",
+        "offset",
+        "created_at_formatted",
+        "updated_at_formatted",
+    )
+
+    @admin.display(ordering="created_at", description="Creado el")
+    def created_at_formatted(self, obj: Estudio):
+        return date_to_admin_readable(obj.created_at)
+
+    @admin.display(ordering="updated_at", description="Actualizado el")
+    def updated_at_formatted(self, obj: Estudio):
+        return date_to_admin_readable(obj.updated_at)
+
+
 class FaseMuestraAdmin(SimpleHistoryAdmin):
     list_display = ("id", "muestra_id", "estado", "created_at", "updated_at")
 
@@ -175,6 +194,7 @@ admin.site.register(Paciente, PacienteAdmin)
 admin.site.register(MedicoTratante, MedicoTratanteAdmin)
 admin.site.register(Patologo, PatologoAdmin)
 admin.site.register(Estudio, EstudioAdmin)
+admin.site.register(EstudioCodigoOffset, EstudioCodigoOffsetAdmin)
 admin.site.register(Muestra, MuestraAdmin)
 admin.site.register(FaseMuestra, FaseMuestraAdmin)
 admin.site.register(Informe, InformeAdmin)

@@ -89,17 +89,42 @@ class Estudio(AuditableMixin):
             cls.TipoEstudio.INMUNOSTOQUIMICA: "IHQ",
         }
         year = datetime.now().year
+        start_of_this_year = make_aware(datetime(year, 1, 1))
+        offset_record = (
+            EstudioCodigoOffset.objects.filter(
+                created_at__gte=start_of_this_year, tipo_estudio=instance.tipo
+            )
+            .order_by("-created_at")
+            .first()
+        )
+
         filter_ = {
             "tipo": instance.tipo,
-            "created_at__gte": make_aware(datetime(year, 1, 1)),
+            "created_at__gte": start_of_this_year
+            if not offset_record
+            else offset_record.created_at,
         }
+
         count_estudios = (
             cls.objects.filter(**filter_) | cls.objects.deleted_set().filter(**filter_)
         ).count()
+
+        if offset_record:
+            count_estudios += offset_record.offset
+
         instance.codigo = (
             f"{prefixes[instance.tipo]}:{str(count_estudios).zfill(3)}-{year}"
         )
         instance.save()
+
+
+class EstudioCodigoOffset(AuditableMixin):
+    tipo_estudio = models.CharField(
+        max_length=32,
+        choices=Estudio.TipoEstudio.choices,
+        default=Estudio.TipoEstudio.BIOPSIA,
+    )
+    offset = models.PositiveIntegerField()
 
 
 post_save.connect(Estudio.post_create, sender=Estudio)
