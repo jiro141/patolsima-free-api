@@ -120,6 +120,14 @@ def generar_informe_preview(
 
 @transaction.atomic
 def generar_y_guardar_informe(informe: Informe) -> Dict[str, Any]:
+    """
+    Generates the definitive PDF for Informe instance (or returns a previous generated one)
+    :param informe: instance for what the PDF is going to ve generated.
+    :return: representation of the uploaded PDF file (S3).
+    """
+    if informe.informes_generado:
+        return UploadedFileSerializer(informe.informes_generado).data
+
     filepath = render_informe(informe)
     informe.informes_generado = upload_from_local_filesystem(
         file_path=filepath, path_prefix="informes", delete_original_after_upload=True
