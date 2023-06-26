@@ -50,13 +50,13 @@ def _check_errors_before_generar_informe(informe: Informe):
     if not estudio.confirmado:
         raise ValidationError("El Estudio necesita estar confirmado.")
 
-    if estudio.items_orden.orden.pagada:
+    if not estudio.items_orden.orden.pagada:
         raise ValidationError("La Orden a la que pertenece el Estudio no esta pagada.")
 
-    if informe.completado:
+    if not informe.completado:
         raise ValidationError("El Informe no se ha completado.")
 
-    if informe.aprobado:
+    if not informe.aprobado:
         raise ValidationError("El Informe debe estar aprobado por el patologo.")
 
 
