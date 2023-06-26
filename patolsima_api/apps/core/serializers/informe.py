@@ -6,6 +6,7 @@ from patolsima_api.apps.core.models import (
     ResultadoInmunostoquimica,
     Patologo,
 )
+from patolsima_api.apps.core.utils.patologo import check_user_is_patologo
 from patolsima_api.apps.uploaded_file_management.serializers import (
     UploadedFileSerializer,
 )
@@ -50,16 +51,7 @@ class InformeSerializer(ModelSerializer):
     )
 
     def create(self, validated_data):
-        user = self.context["request"].user
-        if not user.groups.filter(name="patologo").exists():
-            raise ValidationError(f"{user} can not create Informes.")
-
-        patologo = Patologo.objects.filter(user=user).first()
-        if not patologo:
-            raise ValidationError(
-                f"{user} is in 'patologo' group but does not have a record as Patologo in the system."
-            )
-
+        patologo = check_user_is_patologo(self.context["request"].user)
         with transaction.atomic():
             new_informe = super().create(validated_data)
             estudio = new_informe.estudio
