@@ -22,7 +22,7 @@ from patolsima_api.apps.uploaded_file_management.utils.upload import (
 from patolsima_api.apps.uploaded_file_management.serializers import (
     UploadedFileSerializer,
 )
-from patolsima_api.utils.users import check_user_is_in_groups
+from patolsima_api.utils.users import check_user_is_in_any_group
 
 
 INFORME_REGULAR_TEMPLATES = {
@@ -129,9 +129,10 @@ def generar_y_guardar_informe(informe: Informe) -> Dict[str, Any]:
 
 
 def completar_informe(informe: Informe, user: User) -> bool:
-    if not check_user_is_in_groups(user, ["patologo", "administracion"]):
+    if not check_user_is_in_any_group(user, ["patologo", "administracion"]):
         raise ValidationError("User can not perform this action")
     informe.completado = True
+    informe.save()
     return True
 
 
@@ -142,4 +143,5 @@ def aprobar_informe(informe: Informe, user: User) -> bool:
             "The pathologist who is approving the report is not the same pathologist assigned to the study"
         )
     informe.aprobado = True
+    informe.save()
     return True

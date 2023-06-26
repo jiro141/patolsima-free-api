@@ -54,16 +54,18 @@ class InformeViewSet(viewsets.ModelViewSet):
     def generate_pdf(self, request, pk=None):
         return Response(status=200, data=generar_y_guardar_informe(self.get_object()))
 
-    @action(detail=True, methods=["POST"])
+    @action(detail=True, methods=["PUT"])
     def completado(self, request: Request, pk=None):
         return Response(
-            status=200, data={"confirm": completar_informe(self.get_object())}
+            status=200,
+            data={"confirm": completar_informe(self.get_object(), request.user)},
         )
 
-    @action(detail=True, methods=["POST"])
+    @action(detail=True, methods=["PUT"])
     def aprobar(self, request: Request, pk=None):
         return Response(
-            status=200, data={"confirm": aprobar_informe(self.get_object())}
+            status=200,
+            data={"confirm": aprobar_informe(self.get_object(), request.user)},
         )
 
 

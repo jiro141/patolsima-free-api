@@ -6,7 +6,7 @@ from patolsima_api.utils.users import check_user_is_in_group
 
 def check_user_is_patologo(user: User) -> Patologo:
     if not check_user_is_in_group(user, "patologo"):
-        raise ValidationError(f"{user} can not create Informes.")
+        raise ValidationError(f"{user} can not create/approve Informes.")
 
     patologo = Patologo.objects.filter(user=user).first()
     if not patologo:
