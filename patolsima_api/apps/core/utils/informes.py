@@ -3,10 +3,12 @@ import time
 from datetime import datetime
 from django.http import FileResponse
 from django.db import transaction
+from django.contrib.auth.models import User
 from rest_framework.exceptions import ValidationError
 from typing import Dict, Any, Generator
 from patolsima_api.apps.core.models import Informe, Estudio
 from patolsima_api.apps.core.serializers import InformeSerializer
+from patolsima_api.apps.core.utils.patologo import check_user_is_patologo
 from patolsima_api.apps.core.utils.jinja_templates import (
     informe_body_template,
     informe_footer_template,
@@ -20,6 +22,7 @@ from patolsima_api.apps.uploaded_file_management.utils.upload import (
 from patolsima_api.apps.uploaded_file_management.serializers import (
     UploadedFileSerializer,
 )
+from patolsima_api.utils.users import check_user_is_in_any_group
 
 
 INFORME_REGULAR_TEMPLATES = {
@@ -123,3 +126,22 @@ def generar_y_guardar_informe(informe: Informe) -> Dict[str, Any]:
     )
     informe.save()
     return UploadedFileSerializer(informe.informes_generado).data
+
+
+def completar_informe(informe: Informe, user: User) -> bool:
+    if not check_user_is_in_any_group(user, ["patologo", "administracion"]):
+        raise ValidationError("User can not perform this action")
+    informe.completado = True
+    informe.save()
+    return True
+
+
+def aprobar_informe(informe: Informe, user: User) -> bool:
+    patologo = check_user_is_patologo(user)
+    if patologo.id != informe.estudio.patologo.id:
+        raise ValidationError(
+            "The pathologist who is approving the report is not the same pathologist assigned to the study"
+        )
+    informe.aprobado = True
+    informe.save()
+    return True

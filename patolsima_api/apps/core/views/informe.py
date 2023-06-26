@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.request import Request
 from django_filters.rest_framework import DjangoFilterBackend
 
 from patolsima_api.apps.core.models import (
@@ -17,6 +18,8 @@ from patolsima_api.apps.core.serializers import (
 from patolsima_api.apps.core.utils.informes import (
     generar_informe_preview,
     generar_y_guardar_informe,
+    completar_informe,
+    aprobar_informe,
 )
 from patolsima_api.utils.responses import method_not_allowed
 
@@ -50,6 +53,20 @@ class InformeViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["GET"])
     def generate_pdf(self, request, pk=None):
         return Response(status=200, data=generar_y_guardar_informe(self.get_object()))
+
+    @action(detail=True, methods=["PUT"])
+    def completado(self, request: Request, pk=None):
+        return Response(
+            status=200,
+            data={"confirm": completar_informe(self.get_object(), request.user)},
+        )
+
+    @action(detail=True, methods=["PUT"])
+    def aprobar(self, request: Request, pk=None):
+        return Response(
+            status=200,
+            data={"confirm": aprobar_informe(self.get_object(), request.user)},
+        )
 
 
 class ResultadoInmunostoquimicaViewSet(viewsets.ModelViewSet):
