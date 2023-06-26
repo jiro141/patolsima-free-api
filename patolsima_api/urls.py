@@ -29,9 +29,11 @@ urlpatterns = [
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     path("v1/core/", include("patolsima_api.apps.core.urls")),
-    path("v1/users/groups/", GetUserGroups.as_view(), name="user_groups"),
     path("v1/facturacion/", include("patolsima_api.apps.facturacion.urls")),
+    path(
+        "v1/filesmanagement/",
+        include("patolsima_api.apps.uploaded_file_management.urls"),
+    ),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    path("v1/users/groups/", GetUserGroups.as_view(), name="user_groups"),
 ]
-# from pprint import pprint
-# pprint(urlpatterns)

@@ -36,6 +36,5 @@ class LocalFileSystemStorageAdapter(AbstractStorageUnitAdapter):
     def delete_file(self, bucket: str, object_key: str):
         os.remove(f"{settings.S3_LOCALE_PATH}/{bucket}/{object_key}")
 
-    @classmethod
-    def get_uri_for_file(cls, file: UploadedFile):
+    def get_uri_for_file(self, file: UploadedFile):
         return f"file://{settings.S3_LOCALE_PATH}/{file.bucket_name}/{file.object_key}"

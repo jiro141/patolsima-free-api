@@ -13,9 +13,9 @@ def get_default_storage_adapter():
 
 def get_uri_from_storage_adapter(file: UploadedFile):
     if file.storage_unit == UploadedFile.StorageUnit.LOCAL_STORAGE:
-        return LocalFileSystemStorageAdapter.get_uri_for_file(file)
+        return LocalFileSystemStorageAdapter().get_uri_for_file(file)
 
-    return S3StorageAdapter.get_uri_for_file(file)
+    return S3StorageAdapter().get_uri_for_file(file)
 
 
 __all__ = [get_default_storage_adapter, get_uri_from_storage_adapter]

@@ -1,7 +1,8 @@
 import pytz
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import BinaryIO, Dict, Any
 import boto3
+from botocore.client import Config
 from django.conf import settings
 from patolsima_api.apps.uploaded_file_management.models import UploadedFile
 from .abstract_storage_adapter import (
@@ -41,7 +42,9 @@ class S3StorageAdapter(
             aws_session_token=role_response["Credentials"]["SessionToken"],
         )
 
-        self.s3_client = session_as_patolsima.client("s3")
+        self.s3_client = session_as_patolsima.client(
+            "s3", region_name="us-east-2", config=Config(signature_version="s3v4")
+        )
 
     def _check_session_expiration(self):
         if (
@@ -76,7 +79,6 @@ class S3StorageAdapter(
         self._check_session_expiration()
         self._check_bucket(bucket)
         s3_object = self.s3_client.get_object(Bucket=bucket, Key=object_key)
-        print(s3_object)
         return s3_object["Body"]
 
     def delete_file(self, bucket: str, object_key: str):
@@ -85,6 +87,28 @@ class S3StorageAdapter(
         self._check_bucket(bucket)
         response = self.s3_client.delete_object(Bucket=bucket, Key=object_key)
 
-    @classmethod
-    def get_uri_for_file(cls, file: UploadedFile):
-        return "Not URI"
+    def get_uri_for_file(self, file: UploadedFile):
+        if (
+            file.extra
+            and "presigned_url" in file.extra
+            and "presigned_url_expiration" in file.extra
+        ):
+            if datetime.now() < datetime.fromisoformat(
+                file.extra["presigned_url_expiration"]
+            ):
+                return file.extra["presigned_url"]
+        self._check_session_expiration()
+        expiration = timedelta(days=5)
+        request_time = datetime.now()
+        presigned_url = self.s3_client.generate_presigned_url(
+            "get_object",
+            Params={"Bucket": file.bucket_name, "Key": file.object_key},
+            ExpiresIn=int(expiration.total_seconds()),
+        )
+
+        if file.extra is None:
+            file.extra = dict()
+        file.extra["presigned_url"] = presigned_url
+        file.extra["presigned_url_expiration"] = (request_time + expiration).isoformat()
+        file.save()
+        return presigned_url

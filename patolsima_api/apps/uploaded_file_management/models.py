@@ -1,5 +1,7 @@
 from uuid import uuid4
 from django.db import models
+from django.conf import settings
+from simple_history.models import HistoricalRecords
 from patolsima_api.utils.models import AuditableMixin
 
 # Create your models here.
@@ -26,8 +28,10 @@ class UploadedFile(AuditableMixin):
     content_type = models.CharField(max_length=64, null=True, blank=True)
     object_key = models.CharField(max_length=512, null=True, blank=True)
     bucket_name = models.CharField(max_length=256, null=True, blank=True)
+    extra = models.JSONField(blank=True, null=True)
 
     last_time_requested = models.DateTimeField(null=True, blank=True)
+    history = HistoricalRecords()
 
     @property
     def file_extension(self):
@@ -35,8 +39,4 @@ class UploadedFile(AuditableMixin):
 
     @property
     def uri(self):
-        from patolsima_api.apps.uploaded_file_management.utils.storage_adapters import (
-            get_uri_from_storage_adapter,
-        )
-
-        return get_uri_from_storage_adapter(self)
+        return f"{settings.API_HOST}/v1/filesmanagement/file/{self.uuid}/"

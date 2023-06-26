@@ -25,4 +25,3 @@ router.register(
     basename="resultados-inmunostoquimica",
 )
 urlpatterns = router.urls
-# print(urlpatterns)
