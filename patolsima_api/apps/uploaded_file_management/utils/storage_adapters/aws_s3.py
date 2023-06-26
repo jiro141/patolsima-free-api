@@ -85,6 +85,6 @@ class S3StorageAdapter(
         self._check_bucket(bucket)
         response = self.s3_client.delete_object(Bucket=bucket, Key=object_key)
 
-    @classmethod
-    def get_uri_for_file(cls, file: UploadedFile):
+    def get_uri_for_file(self, file: UploadedFile):
+        self._check_session_expiration()
         return "Not URI"

@@ -50,8 +50,8 @@ class AbstractStorageUnitAdapter(abc.ABC):
         :return:
         """
 
-    @classmethod
-    def get_uri_for_file(cls, file: UploadedFile):
+    @abc.abstractmethod
+    def get_uri_for_file(self, file: UploadedFile):
         raise NotImplementedError()
 
 
