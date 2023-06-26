@@ -15,7 +15,3 @@ router.register(r"ordenes", OrdenViewSet, basename="orden")
 router.register(r"itemsorden", ItemOrdenViewSet, basename="item-orden")
 router.register(r"pagos", PagoViewSet, basename="pago")
 urlpatterns = [path(r"cambiodeldia", CambioDelDiaView.as_view()), *router.urls]
-
-# from pprint import pprint
-
-# pprint(urlpatterns)
