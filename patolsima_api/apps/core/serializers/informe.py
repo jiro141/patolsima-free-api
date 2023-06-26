@@ -60,6 +60,14 @@ class InformeSerializer(ModelSerializer):
 
         return new_informe
 
+    def update(self, instance, validated_data):
+        for field_name, field_value in validated_data.items():
+            if field_name in ("completado", "aprobado"):
+                continue
+            setattr(instance, field_name, field_value)
+
+        return instance
+
     class Meta:
         model = Informe
         fields = "__all__"
