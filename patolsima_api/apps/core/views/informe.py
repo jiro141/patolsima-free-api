@@ -3,6 +3,7 @@ from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.request import Request
+from rest_framework.exceptions import ValidationError
 from django_filters.rest_framework import DjangoFilterBackend
 
 from patolsima_api.apps.core.models import (
@@ -20,8 +21,10 @@ from patolsima_api.apps.core.utils.informes import (
     generar_y_guardar_informe,
     completar_informe,
     aprobar_informe,
+    agregar_imagen_al_informe,
 )
 from patolsima_api.utils.responses import method_not_allowed
+from patolsima_api.utils.serializers import FileSerializer
 
 
 class InformeViewSet(viewsets.ModelViewSet):
@@ -66,6 +69,16 @@ class InformeViewSet(viewsets.ModelViewSet):
         return Response(
             status=200,
             data={"confirm": aprobar_informe(self.get_object(), request.user)},
+        )
+
+    @action(methods=["POST"], detail=True, serializer_class=FileSerializer)
+    def fields_image_upload(self, request, pk=None):
+        if "file" not in request.FILES:
+            raise ValidationError("'file' field missing")
+
+        return Response(
+            status=200,
+            data=agregar_imagen_al_informe(self.get_object(), request.FILES["file"]),
         )
 
 

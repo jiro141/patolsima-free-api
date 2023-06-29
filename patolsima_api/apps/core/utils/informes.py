@@ -4,6 +4,7 @@ from datetime import datetime
 from django.http import FileResponse
 from django.db import transaction
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from rest_framework.exceptions import ValidationError
 from typing import Dict, Any, Generator
 from patolsima_api.apps.core.models import Informe, Estudio
@@ -18,6 +19,7 @@ from patolsima_api.utils.render_pdf import render_pdf
 from patolsima_api.utils.file import FileResponseWithTemporalFileDeletion
 from patolsima_api.apps.uploaded_file_management.utils.upload import (
     upload_from_local_filesystem,
+    upload_from_request,
 )
 from patolsima_api.apps.uploaded_file_management.serializers import (
     UploadedFileSerializer,
@@ -153,3 +155,20 @@ def aprobar_informe(informe: Informe, user: User) -> bool:
     informe.aprobado = True
     informe.save()
     return True
+
+
+def agregar_imagen_al_informe(
+    informe: Informe, file: InMemoryUploadedFile
+) -> Dict[str, Any]:
+    """
+    Uploads an image to S3 and returns its URL to add the image to any field that uses CKEditor rich text editor.
+    :param informe: Informe that owns the image that's being uploaded
+    :param file: Memory representation of the file that is being uploaded.
+    :return: The URL to access the image file in S3.
+    """
+
+    uploaded_file = upload_from_request(
+        file, path_prefix=f"informes/{informe.estudio.id}/images"
+    )
+    informe.images_for_rich_text.add(uploaded_file)
+    return UploadedFileSerializer(uploaded_file).data
