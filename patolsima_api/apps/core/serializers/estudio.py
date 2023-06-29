@@ -6,6 +6,7 @@ from patolsima_api.apps.core.utils.serializers import (
 from patolsima_api.apps.uploaded_file_management.serializers import (
     UploadedFileSerializer,
 )
+from patolsima_api.utils.serializers import FileSerializer
 from .paciente import PacienteListSerializer
 from .medico_tratante import MedicoTratanteListSerializer
 from .patologo import PatologoListSerializer
@@ -147,11 +148,5 @@ class EstudioListSerializer(serializers.ModelSerializer):
         ]
 
 
-class ArchivoAdjuntoEstudio(serializers.Serializer):
-    file = serializers.FileField()
-
-    def update(self, instance, validated_data):
-        raise NotImplementedError()
-
-    def create(self, validated_data):
-        pass
+class ArchivoAdjuntoEstudio(FileSerializer):
+    pass
