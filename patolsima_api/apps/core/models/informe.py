@@ -47,7 +47,11 @@ class Informe(AuditableMixin):
         Estudio, on_delete=models.DO_NOTHING, primary_key=True
     )
     informes_generado = models.ForeignKey(
-        UploadedFile, on_delete=models.CASCADE, null=True, blank=True
+        UploadedFile,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="informes_generados",
     )
     # Campos de texto enriquecido
     descripcion_macroscopica = models.TextField(max_length=10240, null=True, blank=True)
@@ -56,6 +60,9 @@ class Informe(AuditableMixin):
     notas = models.TextField(max_length=10240, null=True, blank=True)
     anexos = models.TextField(max_length=10240, null=True, blank=True)
     bibliografia = models.TextField(max_length=10240, null=True, blank=True)
+
+    # Imagenes hosteadas para renderizar en los campos de texto enriquecido
+    images_for_rich_text = models.ManyToManyField(UploadedFile)
 
     # Control de flujo de escritura
     completado = models.BooleanField(default=False)

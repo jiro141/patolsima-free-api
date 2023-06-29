@@ -37,6 +37,7 @@ class ResultadoInmunostoquimicaSerializer(ModelSerializer):
         for field_name, field_value in validated_data.items():
             setattr(instance, field_name, field_value)
 
+        instance.save()
         return instance
 
     class Meta:
@@ -65,12 +66,12 @@ class InformeSerializer(ModelSerializer):
             if field_name in ("completado", "aprobado"):
                 continue
             setattr(instance, field_name, field_value)
-
+        instance.save()
         return instance
 
     class Meta:
         model = Informe
-        fields = "__all__"
+        exclude = ("images_for_rich_text",)
 
 
 class InformeListSerializer(ModelSerializer):
