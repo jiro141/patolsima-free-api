@@ -1,5 +1,6 @@
 from rest_framework.serializers import ModelSerializer, ReadOnlyField, ValidationError
 from django.db import transaction
+from simple_history.utils import update_change_reason
 from patolsima_api.apps.core.models import (
     Estudio,
     Informe,
@@ -59,14 +60,19 @@ class InformeSerializer(ModelSerializer):
             estudio.patologo = patologo
             estudio.save()
 
+        update_change_reason(new_informe, f"Creado por {patologo.nombre_completo}")
+
         return new_informe
 
     def update(self, instance, validated_data):
+        fields_m = []
         for field_name, field_value in validated_data.items():
             if field_name in ("completado", "aprobado"):
                 continue
             setattr(instance, field_name, field_value)
+            fields_m.append(field_name)
         instance.save()
+        update_change_reason(instance, f"Fields modified: {fields_m}")
         return instance
 
     class Meta:
