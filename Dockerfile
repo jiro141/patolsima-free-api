@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.10-bullseye
 LABEL Name=patolsima_api
 
 #https://github.com/wkhtmltopdf/wkhtmltopdf/releases
