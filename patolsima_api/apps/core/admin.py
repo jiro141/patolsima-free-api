@@ -113,15 +113,21 @@ class EstudioAdmin(SimpleHistoryAdmin):
 
     @admin.display(ordering="paciente__apellidos", description="Nombre Completo")
     def paciente_full_name(self, obj: Estudio):
-        return f"{obj.paciente.apellidos} {obj.paciente.nombres}"
+        if obj.paciente:
+            return f"{obj.paciente.apellidos} {obj.paciente.nombres}"
+        return "-"
 
     @admin.display(ordering="patologo__apellidos", description="Patologo")
     def patologo_full_name(self, obj: Estudio):
-        return f"{obj.patologo.apellidos} {obj.patologo.nombres}"
+        if obj.patologo:
+            return f"{obj.patologo.apellidos} {obj.patologo.nombres}"
+        return "-"
 
     @admin.display(ordering="medico_tratante__ncomed", description="NCOMED Medico")
     def medico_tratante_ncomed(self, obj: Estudio):
-        return obj.paciente.ci
+        if obj.medico_tratante:
+            return obj.medico_tratante.ncomed
+        return "-"
 
     @admin.display(ordering="created_at", description="Creado el")
     def created_at_formatted(self, obj: Estudio):
