@@ -25,6 +25,7 @@ from patolsima_api.apps.core.utils.informes import (
 )
 from patolsima_api.utils.responses import method_not_allowed
 from patolsima_api.utils.serializers import FileSerializer
+from patolsima_api.utils.historical_records import get_history_of_instance
 
 
 class InformeViewSet(viewsets.ModelViewSet):
@@ -80,6 +81,10 @@ class InformeViewSet(viewsets.ModelViewSet):
             status=200,
             data=agregar_imagen_al_informe(self.get_object(), request.FILES["file"]),
         )
+
+    @action(methods=["GET"], detail=True)
+    def history(self, request, pk=None):
+        return Response(status=200, data=get_history_of_instance(self.get_object()))
 
 
 class ResultadoInmunostoquimicaViewSet(viewsets.ModelViewSet):
