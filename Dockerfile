@@ -16,6 +16,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 RUN rm /wkhtmltox_0.12.5-1.buster_amd64.deb  \
     && apt-get remove -y gcc build-essential git-core  \
-    && apt autoremove -y
+    && apt autoremove -y \
+RUN make createauxdirectories
 EXPOSE 8000
 CMD ["python","manage.py","runserver","0.0.0.0:8000"]
