@@ -5,6 +5,7 @@ from .fase_muestra import FaseMuestraSerializer
 
 class MuestraSerializer(serializers.ModelSerializer):
     fases = FaseMuestraSerializer(many=True, read_only=True)
+    archived = serializers.ReadOnlyField()
 
     class Meta:
         model = Muestra
@@ -15,6 +16,7 @@ class MuestraSerializer(serializers.ModelSerializer):
             "descripcion",
             "notas",
             "estado",
+            "archived",
             "fases",
             "created_at",
             "updated_at",
@@ -33,6 +35,7 @@ class MuestraListSerializer(serializers.ModelSerializer):
             "estudio_codigo",
             "tipo_de_muestra",
             "estado",
+            "archived",
             "created_at",
             "updated_at",
         ]

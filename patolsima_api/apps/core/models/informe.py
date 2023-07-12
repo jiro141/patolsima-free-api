@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models import functions as model_functions
 from django.utils.timezone import make_aware
 from simple_history.models import HistoricalRecords
-from patolsima_api.utils.models import AuditableMixin
+from patolsima_api.utils.models import AuditableMixin, ArchivableMixing
 from patolsima_api.apps.uploaded_file_management.models import UploadedFile
 from .estudio import Estudio
 
@@ -42,7 +42,7 @@ class InformesManager(models.Manager):
         )
 
 
-class Informe(AuditableMixin):
+class Informe(AuditableMixin, ArchivableMixing):
     estudio = models.OneToOneField(
         Estudio, on_delete=models.DO_NOTHING, primary_key=True
     )

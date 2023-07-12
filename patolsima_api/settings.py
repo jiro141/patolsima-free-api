@@ -129,6 +129,7 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+    "EXCEPTION_HANDLER": "patolsima_api.utils.error_handling.general_error_handler",
 }
 
 SIMPLE_JWT = {

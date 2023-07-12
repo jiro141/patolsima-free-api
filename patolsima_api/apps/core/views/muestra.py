@@ -13,7 +13,7 @@ class MuestraViewSet(viewsets.ModelViewSet):
     permission_classes = [DjangoModelPermissions]
     filter_backends = (SearchFilter, DjangoFilterBackend)
     search_fields = ["estudio__codigo"]
-    filterset_fields = ["estudio_id", "estado"]
+    filterset_fields = ("estudio_id", "estado", "archived")
 
     def list(self, *args, **kwargs):
         self.serializer_class = MuestraListSerializer

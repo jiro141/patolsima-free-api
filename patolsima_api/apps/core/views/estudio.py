@@ -23,7 +23,7 @@ class EstudioViewSet(viewsets.ModelViewSet):
     permission_classes = [DjangoModelPermissions]
     filter_backends = (SearchFilter, DjangoFilterBackend)
     search_fields = ["paciente__ci", "paciente__nombres", "paciente__apellidos"]
-    filterset_fields = ["paciente_id", "codigo", "tipo", "confirmado"]
+    filterset_fields = ["paciente_id", "codigo", "tipo", "confirmado", "archived"]
 
     def list(self, *args, **kwargs):
         self.serializer_class = EstudioListSerializer

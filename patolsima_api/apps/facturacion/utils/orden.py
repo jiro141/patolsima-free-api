@@ -34,6 +34,17 @@ def confirm_orden(orden: Orden):
 
 
 @transaction.atomic
+def archivar_orden(orden: Orden):
+    """
+    Modifies Orden.archivada to True. This operation is applicable to non payed orders or non desired orders.
+    :param orden: Order instance to be archived
+    :return: None
+    """
+    orden.archive()
+    return True
+
+
+@transaction.atomic
 def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Recibo:
     if not orden.pagada:
         raise ValidationError("La orden no ha sido pagada todavia.")

@@ -1,14 +1,13 @@
-from django.db import models
+from django.db import models, transaction
 from django.db.models import F, Sum, Value
 from django.db.models.functions import Coalesce
 from django.db.models.signals import pre_save
 from decimal import Decimal
 from simple_history.models import HistoricalRecords
 from softdelete.models import SoftDeleteManager
-from patolsima_api.utils.models import AuditableMixin, TelefonoMixin, DireccionMixin
+from patolsima_api.utils.models import AuditableMixin, ArchivableMixing
 from patolsima_api.utils.quantize import round_2_decimals
 from patolsima_api.apps.core.models import Estudio
-from patolsima_api.apps.uploaded_file_management.models import UploadedFile
 from .cliente import Cliente
 
 
@@ -34,7 +33,7 @@ class OrdenListManager(SoftDeleteManager):
         )
 
 
-class Orden(AuditableMixin):
+class Orden(AuditableMixin, ArchivableMixing):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     confirmada = models.BooleanField(default=False)
     pagada = models.BooleanField(default=False)
@@ -82,8 +81,15 @@ class Orden(AuditableMixin):
             ),
         }
 
+    @transaction.atomic
+    def archive(self, save_=True):
+        for item in self.items_orden.all():
+            item.archive(save_=save_)
 
-class ItemOrden(AuditableMixin):
+        super().archive(save_=save_)
+
+
+class ItemOrden(AuditableMixin, ArchivableMixing):
     estudio = models.OneToOneField(
         Estudio, on_delete=models.CASCADE, related_name="items_orden"
     )
@@ -112,6 +118,12 @@ class ItemOrden(AuditableMixin):
         )
 
         return round_2_decimals(self.monto_usd * obtener_cambio_usd_bs_mas_reciente())
+
+    @transaction.atomic
+    def archive(self, save_=True):
+        if hasattr(self, "estudio"):
+            self.estudio.archive(save_=save_)
+        super().archive(save_=save_)
 
 
 pre_save.connect(ItemOrden.pre_save, ItemOrden)

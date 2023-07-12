@@ -88,6 +88,7 @@ class InformeListSerializer(ModelSerializer):
     estudio_patologo_id = ReadOnlyField()
     estudio_patologo_name = ReadOnlyField()
     estudio_prioridad = ReadOnlyField()
+    archived = ReadOnlyField()
 
     class Meta:
         model = Informe
@@ -102,6 +103,7 @@ class InformeListSerializer(ModelSerializer):
             "estudio_prioridad",
             "completado",
             "aprobado",
+            "archived",
             "created_at",
             "updated_at",
         ]
