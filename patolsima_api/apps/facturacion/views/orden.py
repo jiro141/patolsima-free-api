@@ -20,6 +20,7 @@ from patolsima_api.apps.facturacion.serializers import (
 from patolsima_api.apps.facturacion.utils.orden import (
     confirm_orden,
     generar_recibo_o_factura,
+    archivar_orden,
 )
 from patolsima_api.utils.responses import method_not_allowed
 
@@ -30,7 +31,7 @@ class OrdenViewSet(ModelViewSet):
     serializer_class = OrdenSerializer
     filter_backends = (SearchFilter, DjangoFilterBackend)
     search_fields = ("cliente__razon_social", "cliente__ci_rif")
-    filterset_fields = ("confirmada", "pagada")
+    filterset_fields = ("confirmada", "pagada", "archived")
 
     def list(self, request: Request, *args, **kwargs):
         self.serializer_class = OrdenListSerializer
@@ -47,6 +48,10 @@ class OrdenViewSet(ModelViewSet):
     @action(detail=True, methods=["post"])
     def confirmar(self, request: Request, pk=None):
         return Response(status=200, data={"confirm": confirm_orden(self.get_object())})
+
+    @action(detail=True, methods=["post"])
+    def archivar(self, request: Request, pk=None):
+        return Response(status=200, data={"confirm": archivar_orden(self.get_object())})
 
     @action(detail=True, methods=["post"])
     def recibo(self, request: Request, pk=None):

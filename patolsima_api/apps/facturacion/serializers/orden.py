@@ -9,6 +9,8 @@ from .recibo_y_factura import FacturaSerializer, ReciboSerializer
 
 
 class ItemOrdenSerializer(serializers.ModelSerializer):
+    archived = serializers.ReadOnlyField()
+
     class Meta:
         model = ItemOrden
         fields = "__all__"
@@ -35,6 +37,7 @@ class OrdenSerializer(serializers.ModelSerializer):
 
     confirmada = serializers.ReadOnlyField()
     pagada = serializers.ReadOnlyField()
+    archived = serializers.ReadOnlyField()
 
     factura = FacturaSerializer(read_only=True)
     recibo = ReciboSerializer(read_only=True)
@@ -91,6 +94,7 @@ class OrdenListSerializer(serializers.ModelSerializer):
     fecha_impresion = serializers.ReadOnlyField()
     total_usd = serializers.ReadOnlyField()
     total_bs = serializers.ReadOnlyField()
+    archived = serializers.ReadOnlyField()
 
     class Meta:
         model = Orden
@@ -99,6 +103,7 @@ class OrdenListSerializer(serializers.ModelSerializer):
             "cliente",
             "confirmada",
             "pagada",
+            "archived",
             "fecha_recepcion",
             "fecha_impresion",
             "total_usd",

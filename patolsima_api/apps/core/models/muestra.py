@@ -1,11 +1,11 @@
 from django.db import models
 from django.db.models.signals import post_save
 from simple_history.models import HistoricalRecords
-from patolsima_api.utils.models import AuditableMixin
+from patolsima_api.utils.models import AuditableMixin, ArchivableMixing
 from patolsima_api.apps.core.models.estudio import Estudio
 
 
-class Muestra(AuditableMixin):
+class Muestra(AuditableMixin, ArchivableMixing):
     class Estados(models.TextChoices):
         RECIBIDA = "RECIBIDA"
         DESCRIPCION_MACROSCOPICA = "DESCRIPCION_MACROSCOPICA"

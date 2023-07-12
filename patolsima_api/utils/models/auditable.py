@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.db import transaction
 from django.db import models
 
 # from django.contrib.auth.models import User
@@ -29,3 +29,23 @@ class AuditableMixin(SoftDeleteObject, models.Model):
     @property
     def deleted_at_human_readable(self):
         return date_to_admin_readable(self.deleted_at)
+
+
+class ArchivableMixing(models.Model):
+    archived = models.BooleanField(default=False)
+
+    class Meta:
+        abstract = True
+
+    @transaction.atomic
+    def archive(self, save_=True):
+        """
+        Sets archived=True and saves
+        :return: If successful then the instance will be archived after this step
+        """
+        if self.archived:
+            return
+
+        self.archived = True
+        if save_:
+            self.save()

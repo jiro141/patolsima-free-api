@@ -33,7 +33,7 @@ class InformeViewSet(viewsets.ModelViewSet):
     serializer_class = InformeSerializer
     permission_classes = [DjangoModelPermissions]
     filter_backends = (DjangoFilterBackend,)
-    filterset_fields = ("estudio__codigo", "completado", "aprobado")
+    filterset_fields = ("estudio__codigo", "completado", "aprobado", "archived")
 
     def list(self, *args, **kwargs):
         self.serializer_class = InformeListSerializer

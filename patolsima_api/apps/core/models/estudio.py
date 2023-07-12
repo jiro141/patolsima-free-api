@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
-from django.db import models
+from django.db import models, transaction
 from django.db.models.signals import post_save
 from django.utils.timezone import make_aware
 from simple_history.models import HistoricalRecords
 from softdelete.models import SoftDeleteManager
-from patolsima_api.utils.models import AuditableMixin
+from patolsima_api.utils.models import AuditableMixin, ArchivableMixing
 from patolsima_api.apps.uploaded_file_management.models import UploadedFile
 from patolsima_api.apps.core.models.medico_tratante import MedicoTratante
 from patolsima_api.apps.core.models.patologo import Patologo
@@ -31,7 +31,7 @@ class EstudiosManager(SoftDeleteManager):
         )
 
 
-class Estudio(AuditableMixin):
+class Estudio(AuditableMixin, ArchivableMixing):
     class TipoEstudio(models.TextChoices):
         BIOPSIA = "BIOPSIA"
         CITOLOGIA_GINECOLOGICA = "CITOLOGIA_GINECOLOGICA"
@@ -116,6 +116,15 @@ class Estudio(AuditableMixin):
             f"{prefixes[instance.tipo]}:{str(count_estudios).zfill(3)}-{year}"
         )
         instance.save()
+
+    @transaction.atomic
+    def archive(self, save_=True):
+        if hasattr(self, "informe"):
+            self.informe.archive(save_=save_)
+
+        for muestra in self.muestras.all():
+            muestra.archive(save_=save_)
+        super().archive(save_=save_)
 
 
 class EstudioCodigoOffset(AuditableMixin):
