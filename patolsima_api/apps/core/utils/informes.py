@@ -87,6 +87,7 @@ def render_informe(informe: Informe, preview_only: bool = False) -> str:
             "fecha_ingreso": informe.estudio.created_at.date().isoformat(),
             "today": datetime.now().date().isoformat(),
             "resultados_inmunostoquimica": informe.resultados_inmunostoquimica.all(),
+            "patologo": informe.estudio.patologo,
         },
         templates=INFORME_REGULAR_TEMPLATES,
         destination=filename,

@@ -9,6 +9,10 @@ class NombreMixin(models.Model):
     def nombre_completo(self):
         return f"{self.apellidos} {self.nombres}"
 
+    @property
+    def nombre_completo_nombre_primero(self):
+        return f"{self.nombres} {self.apellidos}"
+
     class Meta:
         abstract = True
 
