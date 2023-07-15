@@ -34,9 +34,12 @@ class UploadedFile(AuditableMixin):
     history = HistoricalRecords()
 
     @property
-    def file_extension(self):
+    def file_extension(self) -> str:
         return self.file_name.split(".")[-1]
 
     @property
-    def uri(self):
+    def uri(self) -> str:
         return f"{settings.API_HOST}/v1/filesmanagement/file/{self.uuid}/"
+
+    def __str__(self) -> str:
+        return self.file_name
