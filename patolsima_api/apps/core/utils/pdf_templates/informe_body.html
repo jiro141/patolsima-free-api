@@ -69,6 +69,15 @@
                 text-align: center;
                 border: 1px solid black;
             }
+
+            .firma_container {
+                text-align: center;
+            }
+
+            .firma_patologo {
+                width: 300px;
+            }
+
         </style>
     </head>
     <body>
@@ -135,5 +144,9 @@
         {% else %}
             {% include 'body_regular.html' with context %}
         {% endif %}
+
+        <br>
+        <br>
+        {% include 'firma_patologo.html' with context %}
     </body>
 </html>

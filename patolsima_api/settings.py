@@ -101,6 +101,9 @@ WSGI_APPLICATION = "patolsima_api.wsgi.application"
 DATABASES = {
     "default": dj_database_url.config(conn_max_age=600, conn_health_checks=True)
 }
+DATABASES["default"][
+    "CONN_MAX_AGE"
+] = 0  # Supress DB connection error when a lot of clients still active
 
 
 # Password validation

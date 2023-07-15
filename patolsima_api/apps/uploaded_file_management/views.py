@@ -1,5 +1,7 @@
 import uuid
+from datetime import datetime
 from django.shortcuts import render
+from django.utils.timezone import make_aware
 from django.http import HttpResponseRedirect
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
@@ -25,4 +27,6 @@ class RedirectToResource(APIView):
         if not file:
             return NotFound("File not found")
         resource_presigned_url = get_uri_from_storage_adapter(file)
+        file.last_time_requested = make_aware(datetime.now())
+        file.save()
         return HttpResponseRedirect(redirect_to=resource_presigned_url)
