@@ -174,6 +174,7 @@ S3_BUCKETS = [
     S3_DEFAULT_BUCKET,
     *[bucket for bucket in os.environ.get("S3_BUCKETS", "").split(",") if bucket],
 ]
+S3_DEFAULT_REGION = os.environ.get("S3_DEFAULT_REGION", "us-east-2")
 
 # Binary streams chunk size (e.g. for downloading/uploading files without collapsing the system due to lack of memory
 # resources)
@@ -197,3 +198,8 @@ PDFKIT_VERBOSE_OUTPUT = bool(int(os.environ.get("PDFKIT_VERBOSE_OUTPUT", 0)))
 
 # API Host
 API_HOST = os.environ.get("API_HOST", "http://localhost:8000")
+
+# Uploaded file expiration time
+UPLOADED_FILE_EXPIRATION_TIME_SECONDS = int(
+    os.environ.get("UPLOADED_FILE_EXPIRATION_TIME_SECONDS", "3600")
+)

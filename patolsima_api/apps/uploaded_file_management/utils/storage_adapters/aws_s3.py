@@ -4,6 +4,7 @@ from typing import BinaryIO, Dict, Any
 import boto3
 from botocore.client import Config
 from django.conf import settings
+from django.utils.timezone import make_aware
 from patolsima_api.apps.uploaded_file_management.models import UploadedFile
 from .abstract_storage_adapter import (
     AbstractStorageUnitAdapter,
@@ -43,7 +44,9 @@ class S3StorageAdapter(
         )
 
         self.s3_client = session_as_patolsima.client(
-            "s3", region_name="us-east-2", config=Config(signature_version="s3v4")
+            "s3",
+            region_name=settings.S3_DEFAULT_REGION,
+            config=Config(signature_version="s3v4"),
         )
 
     def _check_session_expiration(self):
@@ -91,24 +94,43 @@ class S3StorageAdapter(
         if (
             file.extra
             and "presigned_url" in file.extra
-            and "presigned_url_expiration" in file.extra
+            and "presigned_url_expiration_time" in file.extra
         ):
-            if datetime.now() < datetime.fromisoformat(
-                file.extra["presigned_url_expiration"]
+            if make_aware(datetime.now()) < datetime.fromisoformat(
+                file.extra["presigned_url_expiration_time"]
             ):
                 return file.extra["presigned_url"]
+
         self._check_session_expiration()
-        expiration = timedelta(days=5)
-        request_time = datetime.now()
+        system_expiration = timedelta(
+            seconds=min(
+                settings.UPLOADED_FILE_EXPIRATION_TIME_SECONDS,
+                int(
+                    abs(
+                        (
+                            pytz.utc.localize(datetime.now()) - self.session_expiration
+                        ).total_seconds()
+                    )
+                ),
+            )
+        )  # Basically if the STS session expires, the file will no longer be available, so including the difference
+        # between now and the expiration of the session will ensure the signed URL will not expire after the token used
+        # to generate the sign is already expired
+
+        request_time = make_aware(datetime.now())
         presigned_url = self.s3_client.generate_presigned_url(
             "get_object",
             Params={"Bucket": file.bucket_name, "Key": file.object_key},
-            ExpiresIn=int(expiration.total_seconds()),
+            ExpiresIn=int(system_expiration.total_seconds()),
         )
 
         if file.extra is None:
             file.extra = dict()
+
         file.extra["presigned_url"] = presigned_url
-        file.extra["presigned_url_expiration"] = (request_time + expiration).isoformat()
+        file.extra["presigned_url_generated_at"] = request_time.isoformat()
+        file.extra["presigned_url_expiration_time"] = (
+            request_time + system_expiration
+        ).isoformat()
         file.save()
         return presigned_url
