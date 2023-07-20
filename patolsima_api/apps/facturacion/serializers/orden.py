@@ -88,6 +88,29 @@ class OrdenCreateSerializer(serializers.Serializer):
         return OrdenSerializer(self.instance).data
 
 
+class OrdenUpdateSerializer(serializers.Serializer):
+    cliente_id = serializers.IntegerField(required=True, allow_null=False)
+
+    def update(self, instance: Orden, validated_data):
+        cliente_id = validated_data["cliente_id"]
+
+        if instance.pagada:
+            raise ValueError(
+                f"Orden {instance.id} is already payed. Cliente can not be changed if it's payed"
+            )
+
+        with transaction.atomic():
+            cliente = Cliente.objects.get(id=cliente_id)
+            instance.cliente = cliente
+            instance.save()
+
+        return instance
+
+    @property
+    def data(self):
+        return OrdenSerializer(self.instance).data
+
+
 class OrdenListSerializer(serializers.ModelSerializer):
     cliente = ClienteListSerializer(read_only=True)
     fecha_recepcion = serializers.ReadOnlyField()
