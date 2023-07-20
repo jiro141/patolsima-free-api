@@ -33,9 +33,11 @@ class EstudioCreateSerializer(serializers.Serializer):
     paciente_id = serializers.IntegerField(write_only=True)
     medico_tratante_id = serializers.IntegerField(write_only=True, allow_null=True)
     patologo_id = serializers.IntegerField(write_only=True, allow_null=True)
-    notas = serializers.CharField(write_only=True)
-    urgente = serializers.BooleanField(write_only=True)
-    envio_digital = serializers.BooleanField(write_only=True)
+    notas = serializers.CharField(
+        write_only=True, required=False, allow_null=True, allow_blank=True
+    )
+    urgente = serializers.BooleanField(write_only=True, required=False)
+    envio_digital = serializers.BooleanField(write_only=True, required=False)
     tipo = serializers.ChoiceField(Estudio.TipoEstudio, write_only=True)
     estudio_asociado = serializers.CharField(write_only=True, required=False)
 
