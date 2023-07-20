@@ -46,9 +46,9 @@ def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str) -> str:
         "pagos": registro.orden.pagos.all().order_by("created_at"),
         "tipo_documento": tipo.capitalize(),
         "numero_documento": numero_documento,
-        "fecha_emision": date_to_admin_readable(
-            registro.fecha_generacion.astimezone(CARACAS_TIMEZONE)
-        ),
+        "fecha_emision": registro.fecha_generacion.astimezone(CARACAS_TIMEZONE)
+        .date()
+        .isoformat(),
         **registro.orden.balance,
         **registro.pdf_reder_context,
     }
@@ -91,9 +91,9 @@ def render_nota_de_pago(nota_pago: NotaPago) -> str:
         "pagos": orden.pagos.all().order_by("created_at"),
         "tipo_documento": "Nota de Pago",
         "numero_documento": nota_pago.id,
-        "fecha_emision": date_to_admin_readable(
-            nota_pago.created_at.astimezone(CARACAS_TIMEZONE)
-        ),
+        "fecha_emision": nota_pago.created_at.astimezone(CARACAS_TIMEZONE)
+        .date()
+        .isoformat(),
         **orden.balance,
     }
     pdf_filename = render_pdf(
