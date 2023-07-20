@@ -5,6 +5,7 @@ from .orden import (
     ItemOrdenUpdateSerializer,
     OrdenCreateSerializer,
     OrdenListSerializer,
+    OrdenUpdateSerializer,
 )
 from .recibo_y_factura import (
     FacturaSerializer,
@@ -19,6 +20,7 @@ __all__ = [
     ClienteListSerializer,
     OrdenSerializer,
     OrdenCreateSerializer,
+    OrdenUpdateSerializer,
     OrdenListSerializer,
     ItemOrdenSerializer,
     ItemOrdenUpdateSerializer,

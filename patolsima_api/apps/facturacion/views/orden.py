@@ -10,6 +10,7 @@ from patolsima_api.apps.facturacion.models import Orden, ItemOrden
 from patolsima_api.apps.facturacion.serializers import (
     OrdenSerializer,
     OrdenCreateSerializer,
+    OrdenUpdateSerializer,
     OrdenListSerializer,
     ItemOrdenSerializer,
     ItemOrdenUpdateSerializer,
@@ -43,7 +44,8 @@ class OrdenViewSet(ModelViewSet):
         return super().create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
-        return method_not_allowed()
+        self.serializer_class = OrdenUpdateSerializer
+        return super().update(request, *args, *kwargs)
 
     @action(detail=True, methods=["post"])
     def confirmar(self, request: Request, pk=None):
