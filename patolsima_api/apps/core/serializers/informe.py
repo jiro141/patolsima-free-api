@@ -85,6 +85,7 @@ class InformeListSerializer(ModelSerializer):
     estudio_codigo = ReadOnlyField()
     estudio_paciente_id = ReadOnlyField()
     estudio_paciente_ci = ReadOnlyField()
+    estudio_paciente_name = ReadOnlyField()
     estudio_patologo_id = ReadOnlyField()
     estudio_patologo_name = ReadOnlyField()
     estudio_prioridad = ReadOnlyField()
@@ -98,6 +99,7 @@ class InformeListSerializer(ModelSerializer):
             "estudio_codigo",
             "estudio_paciente_id",
             "estudio_paciente_ci",
+            "estudio_paciente_name",
             "estudio_patologo_id",
             "estudio_patologo_name",
             "estudio_prioridad",

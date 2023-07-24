@@ -17,6 +17,14 @@ class InformesManager(models.Manager):
             .annotate(estudio_codigo=models.F("estudio__codigo"))
             .annotate(estudio_paciente_id=models.F("estudio__id"))
             .annotate(estudio_paciente_ci=models.F("estudio__paciente__ci"))
+            .annotate(
+                estudio_paciente_name=model_functions.Concat(
+                    models.F("estudio__paciente__nombres"),
+                    models.Value(" "),
+                    models.F("estudio__paciente__apellidos"),
+                    output_field=models.CharField(),
+                )
+            )
             .annotate(estudio_patologo_id=models.F("estudio__patologo_id"))
             .annotate(
                 estudio_patologo_name=model_functions.Concat(
