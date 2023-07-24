@@ -79,7 +79,7 @@ def render_informe(informe: Informe, preview_only: bool = False) -> str:
     return render_pdf(
         context={
             "current_work_path_python": os.getcwd(),
-            "tipo_estudio_titulo": "Inmunostoquimica",
+            "tipo_estudio_titulo": informe.estudio.tipo.replace("_", " ").title(),
             "estudio": informe.estudio,
             "informe": informe,
             "paciente": informe.estudio.paciente,
