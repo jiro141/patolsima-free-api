@@ -15,7 +15,7 @@ class InformesManager(models.Manager):
             .get_queryset()
             .annotate(estudio_tipo=models.F("estudio__tipo"))
             .annotate(estudio_codigo=models.F("estudio__codigo"))
-            .annotate(estudio_paciente_id=models.F("estudio__id"))
+            .annotate(estudio_paciente_id=models.F("estudio__paciente_id"))
             .annotate(estudio_paciente_ci=models.F("estudio__paciente__ci"))
             .annotate(
                 estudio_paciente_name=model_functions.Concat(
