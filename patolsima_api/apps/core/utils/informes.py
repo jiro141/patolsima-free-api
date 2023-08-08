@@ -75,19 +75,26 @@ def render_informe(informe: Informe, preview_only: bool = False) -> str:
         _check_errors_before_generar_informe(informe)
 
     filename = f"informe_{informe.estudio.id}_{int(time.time())}"
-
+    estudio = informe.estudio
     return render_pdf(
         context={
             "current_work_path_python": os.getcwd(),
-            "tipo_estudio_titulo": informe.estudio.tipo.replace("_", " ").title(),
-            "estudio": informe.estudio,
+            "tipo_estudio_titulo": estudio.tipo.replace("_", " ").title(),
+            "estudio": estudio,
             "informe": informe,
-            "paciente": informe.estudio.paciente,
-            "medico": informe.estudio.medico_tratante,
-            "fecha_ingreso": informe.estudio.created_at.date().isoformat(),
+            "paciente": estudio.paciente,
+            "medico": estudio.medico_tratante,
+            "fecha_ingreso": estudio.created_at.date().isoformat(),
             "today": datetime.now().date().isoformat(),
             "resultados_inmunostoquimica": informe.resultados_inmunostoquimica.all(),
-            "patologo": informe.estudio.patologo,
+            "patologo": estudio.patologo,
+            "tipo_de_muestra": " / ".join(
+                [
+                    muestra.tipo_de_muestra
+                    for muestra in estudio.muestras.all()
+                    if muestra.tipo_de_muestra
+                ]
+            ),
         },
         templates=INFORME_REGULAR_TEMPLATES,
         destination=filename,
