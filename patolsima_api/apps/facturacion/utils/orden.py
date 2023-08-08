@@ -23,11 +23,7 @@ def confirm_orden(orden: Orden):
         )
 
     estudios_id = [item.estudio_id for item in orden.items_orden.all()]
-    estudios = Estudio.objects.select_for_update().filter(id__in=estudios_id)
-    for estudio in estudios:
-        estudio.confirmado = True
-        estudio.save()
-
+    Estudio.objects.filter(id__in=estudios_id).update(confirmado=True)
     orden.confirmada = True
     orden.save()
     return True
