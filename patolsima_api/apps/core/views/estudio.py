@@ -29,13 +29,32 @@ class EstudioViewSet(viewsets.ModelViewSet):
         self.serializer_class = EstudioListSerializer
         request = args[0]
         params = request.query_params
-        if (
-            params
-            and "prioridad" in params
-            and isinstance(params["prioridad"], str)
-            and params["prioridad"].upper() in Estudio.Prioridad
-        ):
-            self.queryset = self.queryset.filter(prioridad=params["prioridad"].upper())
+        if params:
+            if (
+                "prioridad" in params
+                and isinstance(params["prioridad"], str)
+                and params["prioridad"].upper() in Estudio.Prioridad
+            ):
+                self.queryset = self.queryset.filter(
+                    prioridad=params["prioridad"].upper()
+                )
+            if "informe_existe" in params and isinstance(params["informe_existe"], str):
+                self.queryset = self.queryset.filter(
+                    informe_existe=(params["informe_existe"].lower() == "true")
+                )
+            if "informe_aprobado" in params and isinstance(
+                params["informe_aprobado"], str
+            ):
+                self.queryset = self.queryset.filter(
+                    informe_aprobado=(params["informe_aprobado"].lower() == "true")
+                )
+            if "informe_completado" in params and isinstance(
+                params["informe_completado"], str
+            ):
+                self.queryset = self.queryset.filter(
+                    informe_completado=(params["informe_completado"].lower() == "true")
+                )
+
         return super().list(self, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
