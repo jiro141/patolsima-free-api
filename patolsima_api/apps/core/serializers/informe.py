@@ -48,7 +48,7 @@ class ResultadoInmunostoquimicaSerializer(ModelSerializer):
 
 class InformeSerializer(ModelSerializer):
     informes_generado = UploadedFileSerializer(read_only=True)
-    resultadod_inmunostoquimica = ResultadoInmunostoquimicaSerializer(
+    resultados_inmunostoquimica = ResultadoInmunostoquimicaSerializer(
         many=True, read_only=True
     )
 
