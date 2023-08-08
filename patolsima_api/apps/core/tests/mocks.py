@@ -43,7 +43,7 @@ def create_paciente(
     if not ci:
         ci = randint(1, 40000000)
     return Paciente.objects.create(
-        ci=ci,
+        ci=str(ci),
         nombres=nombres,
         apellidos=apellidos,
         fecha_nacimiento=fecha_nacimiento,
@@ -73,7 +73,7 @@ def create_medico_tratante(
     if not ci:
         ci = randint(1000000, 30000000)
     return MedicoTratante.objects.create(
-        ci=ci,
+        ci=str(ci),
         nombres=nombres,
         apellidos=apellidos,
         ncomed=ncomed,

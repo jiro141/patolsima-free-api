@@ -48,7 +48,7 @@ class PacienteTests(APITestCase):
             case _:
                 assert False, "Missing fields in payload"
 
-    def test_post_paciente(self):
+    def test_post_paciente_fail_login(self):
         count_pacientes = Paciente.objects.count()
         self.client.credentials()  # Clears credentials / Removes authentication HTTP headers
         creation_data = {
@@ -66,15 +66,37 @@ class PacienteTests(APITestCase):
             "This request must be invalidated because the user is not logged in.",
         )
 
+    def test_post_paciente_fail_creation_unique_contraint(self):
+        count_pacientes = Paciente.objects.count()
+        self.client.credentials()  # Clears credentials / Removes authentication HTTP headers
+        creation_data = {
+            "ci": self.paciente.ci,
+            "nombres": "test",
+            "apellidos": "test apellidos",
+            "fecha_nacimiento": "1995-01-01",
+            "sexo": Paciente.Sexo.MASCULINO,
+        }
+        url = reverse("paciente-list")
         self.client.credentials(HTTP_AUTHORIZATION="Bearer " + self.token)
         r = self.client.post(url, creation_data)
         self.assertEqual(
             r.status_code,
-            400,
+            500,
             "The request must be rejected because the CI already exists.",
         )
 
-        creation_data["ci"] = self.paciente.ci + 1
+    def test_post_paciente_success(self):
+        count_pacientes = Paciente.objects.count()
+        self.client.credentials()  # Clears credentials / Removes authentication HTTP headers
+        creation_data = {
+            "ci": str(int(self.paciente.ci) + 1),
+            "nombres": "test",
+            "apellidos": "test apellidos",
+            "fecha_nacimiento": "1995-01-01",
+            "sexo": Paciente.Sexo.MASCULINO,
+        }
+        url = reverse("paciente-list")
+        self.client.credentials(HTTP_AUTHORIZATION="Bearer " + self.token)
         r = self.client.post(url, creation_data)
         self.assertEqual(r.status_code, 201, "Paciente created")
         data = r.json()

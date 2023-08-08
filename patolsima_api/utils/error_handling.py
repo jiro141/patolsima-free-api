@@ -1,9 +1,13 @@
+import logging
 from rest_framework.exceptions import ValidationError
 from rest_framework.views import exception_handler
 from rest_framework.response import Response
 
+logger = logging.getLogger(__name__)
+
 
 def general_error_handler(exception: Exception, context):
+    logger.error(exception)
     response_from_framework_handler = exception_handler(exception, context)
 
     return (

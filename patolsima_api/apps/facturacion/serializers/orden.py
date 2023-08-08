@@ -69,7 +69,7 @@ class OrdenCreateSerializer(serializers.Serializer):
 
         estudio1 = estudios.first()
         cliente, created = Cliente.objects.get_or_create(
-            ci_rif=f"V{estudio1.paciente.ci}",
+            ci_rif=f"{estudio1.paciente.ci}",
             defaults={
                 "razon_social": estudio1.paciente.nombre_completo,
                 "telefono_fijo": estudio1.paciente.telefono_fijo,
