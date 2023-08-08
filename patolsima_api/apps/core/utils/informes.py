@@ -74,12 +74,17 @@ def render_informe(informe: Informe, preview_only: bool = False) -> str:
     if not preview_only:
         _check_errors_before_generar_informe(informe)
 
-    filename = f"informe_{informe.estudio.id}_{int(time.time())}"
     estudio = informe.estudio
+    filename = f"informe_{estudio.id}_{int(time.time())}"
+    tipo_estudio_titulo = estudio.tipo.replace("_", " ").title()
+    if estudio.tipo == Estudio.TipoEstudio.INMUNOSTOQUIMICA:
+        # El nombre originalmente era este pero hubo un error en la documentación y ahora todo el proyecto dice inmunostoquimica en vez de inmunohistoquimica
+        tipo_estudio_titulo = "Inmunohistoquímica"
+
     return render_pdf(
         context={
             "current_work_path_python": os.getcwd(),
-            "tipo_estudio_titulo": estudio.tipo.replace("_", " ").title(),
+            "tipo_estudio_titulo": tipo_estudio_titulo,
             "estudio": estudio,
             "informe": informe,
             "paciente": estudio.paciente,
