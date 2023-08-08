@@ -2,9 +2,9 @@
     <table class="tabla_inmunostoquimica">
         <thead class="tabla_inmunostoquimica_header">
             <tr>
-                <th class="tabla_inmunostoquimica_header_item">Procedimiento</th>
-                <th class="tabla_inmunostoquimica_header_item">Reacción</th>
-                <th class="tabla_inmunostoquimica_header_item">Diagnóstico y Observaciones</th>
+                <th class="tabla_inmunostoquimica_header_item">Estudio</th>
+                <th class="tabla_inmunostoquimica_header_item">Resultados</th>
+                <th class="tabla_inmunostoquimica_header_item">Interpretación</th>
             </tr>
         </thead>
         <tbody class="tabla_inmunostoquimica_body">
@@ -17,4 +17,16 @@
             {% endfor %}
         </tbody>
     </table>
+</div>
+<div class="body_regular_container">
+    {% if informe.notas %}
+    <div class="titulo_seccion"><h4 class="titulo_seccion_texto">Notas</h4></div>
+        <div class="cuerpo_seccion">{{ informe.notas }}</div>
+    {% endif %}
+
+    {% if informe.bibliografia %}
+    <div class="titulo_seccion"><h4 class="titulo_seccion_texto">Bibliografía</h4></div>
+        <div class="cuerpo_seccion">{{ informe.bibliografia }}</div>
+
+    {% endif %}
 </div>

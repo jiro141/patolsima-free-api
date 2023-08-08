@@ -134,6 +134,9 @@ class EstudioListSerializer(serializers.ModelSerializer):
     codigo = serializers.ReadOnlyField()
     confirmado = serializers.ReadOnlyField()
     archived = serializers.ReadOnlyField()
+    informe_existe = serializers.ReadOnlyField()
+    informe_aprobado = serializers.ReadOnlyField()
+    informe_completado = serializers.ReadOnlyField()
 
     class Meta:
         model = Estudio
@@ -147,6 +150,9 @@ class EstudioListSerializer(serializers.ModelSerializer):
             "prioridad",
             "confirmado",
             "archived",
+            "informe_existe",
+            "informe_aprobado",
+            "informe_completado",
             "created_at",
             "updated_at",
         ]

@@ -28,6 +28,24 @@ class EstudiosManager(SoftDeleteManager):
                     default=models.Value(Estudio.Prioridad.BAJA),
                 )
             )
+            .annotate(
+                informe_existe=models.Case(
+                    models.When(informe__isnull=False, then=models.Value(True)),
+                    default=models.Value(False),
+                )
+            )
+            .annotate(
+                informe_aprobado=models.Case(
+                    models.When(informe__aprobado=True, then=models.Value(True)),
+                    default=models.Value(False),
+                )
+            )
+            .annotate(
+                informe_completado=models.Case(
+                    models.When(informe__completado=True, then=models.Value(True)),
+                    default=models.Value(False),
+                )
+            )
         )
 
 
