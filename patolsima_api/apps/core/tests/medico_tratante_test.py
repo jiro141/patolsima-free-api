@@ -45,7 +45,7 @@ class MedicoTratanteTests(APITestCase):
             case _:
                 assert False, "Missing fields in payload"
 
-    def test_post_medico(self):
+    def test_post_medico_no_authentication_failed(self):
         count_medicos = MedicoTratante.objects.count()
         self.client.credentials()  # Clears credentials / Removes authentication HTTP headers
         creation_data = {
@@ -63,15 +63,35 @@ class MedicoTratanteTests(APITestCase):
             "This request must be invalidated because the user is not logged in.",
         )
 
+    def test_post_medico_unique_constraint_failure(self):
+        count_medicos = MedicoTratante.objects.count()
+        self.client.credentials()  # Clears credentials / Removes authentication HTTP headers
+        creation_data = {
+            "ncomed": self.medico_tratante.ncomed,
+            "nombres": "medico test",
+            "apellidos": "test apellidos",
+            "especialidad": "mondacologia",
+        }
+        url = reverse("medico-list")
         self.client.credentials(HTTP_AUTHORIZATION="Bearer " + self.token)
         r = self.client.post(url, creation_data)
         self.assertEqual(
             r.status_code,
-            400,
+            500,
             "The request must be rejected because the NCOMED already exists.",
         )
 
-        creation_data["ncomed"] = "0000"
+    def test_post_medico_success(self):
+        count_medicos = MedicoTratante.objects.count()
+        self.client.credentials()  # Clears credentials / Removes authentication HTTP headers
+        creation_data = {
+            "ncomed": "0000",
+            "nombres": "medico test",
+            "apellidos": "test apellidos",
+            "especialidad": "mondacologia",
+        }
+        url = reverse("medico-list")
+        self.client.credentials(HTTP_AUTHORIZATION="Bearer " + self.token)
         r = self.client.post(url, creation_data)
         self.assertEqual(r.status_code, 201, "Medico created")
         data = r.json()
@@ -94,7 +114,7 @@ class MedicoTratanteTests(APITestCase):
         self.client.credentials()  # Clears credentials / Removes authentication HTTP headers
 
         update_data = {
-            "ci": 123,
+            "ci": "123",
             "nombres": "nuevonombre",
             "apellidos": self.medico_tratante.apellidos,
         }

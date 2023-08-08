@@ -61,7 +61,7 @@ class CIMixin(models.Model):
     You must ensure unicity of CI field in the concrete model only if it is an Auditable model.
     """
 
-    ci = models.PositiveIntegerField(null=True, db_index=True)
+    ci = models.CharField(null=True, blank=True, max_length=16, db_index=True)
 
     class Meta:
         abstract = True
