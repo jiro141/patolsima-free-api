@@ -7,7 +7,9 @@ logger = logging.getLogger(__name__)
 
 
 def general_error_handler(exception: Exception, context):
-    logger.error(exception)
+    logger.error(
+        exception, exc_info=(type(exception), exception, exception.__traceback__)
+    )
     response_from_framework_handler = exception_handler(exception, context)
 
     return (
