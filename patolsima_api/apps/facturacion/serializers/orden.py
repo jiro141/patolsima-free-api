@@ -94,10 +94,10 @@ class OrdenUpdateSerializer(serializers.Serializer):
     def update(self, instance: Orden, validated_data):
         cliente_id = validated_data["cliente_id"]
 
-        if instance.pagada:
-            raise ValueError(
-                f"Orden {instance.id} is already payed. Cliente can not be changed if it's payed"
-            )
+        # if instance.pagada:
+        #     raise ValueError(
+        #         f"Orden {instance.id} is already payed. Cliente can not be changed if it's payed"
+        #     )
 
         with transaction.atomic():
             cliente = Cliente.objects.get(id=cliente_id)
