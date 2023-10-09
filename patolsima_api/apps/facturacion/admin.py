@@ -12,6 +12,8 @@ from patolsima_api.apps.facturacion.models import (
     NotaPago,
     CambioUSDBS,
 )
+
+from patolsima_api.apps.facturacion.models.recibo_y_factura import FacturaOffset
 from patolsima_api.utils.admin import date_to_admin_readable
 from patolsima_api.utils.models.admin import AuditableAdmin
 
@@ -141,6 +143,17 @@ class CambioUSDAdmin(AuditableAdmin, SimpleHistoryAdmin):
         "created_at_formatted",
         "updated_at_formatted",
     )
+    
+class FacturaoffsetAdmin(SimpleHistoryAdmin):
+    list_display = (
+        "id",
+        "factura_offset",
+        "created_at_formatted",
+    )
+    
+    @admin.display(ordering="created_at", description="Creado el")
+    def created_at_formatted(self,obj:Factura):
+        return date_to_admin_readable(obj.created_at)
 
 
 admin.site.register(Cliente, ClienteAdmin)
@@ -148,3 +161,4 @@ admin.site.register(Orden, OrdenAdmin)
 admin.site.register(Factura, FacturaAdmin)
 admin.site.register(Recibo, ReciboAdmin)
 admin.site.register(CambioUSDBS, CambioUSDAdmin)
+admin.site.register(FacturaOffset, FacturaoffsetAdmin)

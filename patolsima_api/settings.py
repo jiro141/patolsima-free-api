@@ -180,7 +180,8 @@ S3_DEFAULT_REGION = os.environ.get("S3_DEFAULT_REGION", "us-east-2")
 # resources)
 
 DEFAULT_BINARY_STREAMS_CHUNK_SIZE = int(
-    os.environ.get("DEFAULT_BINARY_STREAMS_CHUNK_SIZE", 4096)
+    # os.environ.get("DEFAULT_BINARY_STREAMS_CHUNK_SIZE", 4096)
+    100
 )
 
 # Cambios de Dolares a Bolivares

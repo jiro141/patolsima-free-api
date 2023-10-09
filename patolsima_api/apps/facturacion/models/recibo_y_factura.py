@@ -25,7 +25,18 @@ class Factura(AbstractRecibo):
 
     @property
     def pdf_reder_context(self):
+        if self.n_factura is None:
+            try:
+                last_instance = Factura.objects.latest('n_factura')
+            except Factura.DoesNotExist:
+                last_instance = None
+            if last_instance is not None:
+                self.n_factura = last_instance + 1
+            else:
+                self.n_factura = FacturaOffset.objects.filter("-created_at").last() + 1
         return {"n_factura": self.n_factura}
+    
+ 
 
 
 class Recibo(AbstractRecibo):
@@ -34,3 +45,12 @@ class Recibo(AbstractRecibo):
     @property
     def pdf_reder_context(self):
         return {"n_recibo": self.id}
+
+class FacturaOffset(AuditableMixin):
+    factura_offset = models.PositiveIntegerField()
+    
+    
+class NotaCredito(AbstractRecibo):
+    factura = models.OneToOneField(Factura, on_delete=models.CASCADE)
+
+
