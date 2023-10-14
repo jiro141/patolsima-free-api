@@ -52,5 +52,6 @@ class FacturaOffset(AuditableMixin):
     
 class NotaCredito(AbstractRecibo):
     factura = models.OneToOneField(Factura, on_delete=models.CASCADE)
+    n_notacredito = models.PositiveBigIntegerField()
 
 

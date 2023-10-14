@@ -12,16 +12,17 @@ from .recibo_y_factura import Factura
 
 
 
-class Transaccion( AuditableMixin, ArchivableMixing):
-    Cliente = models.ForeignKey(Cliente, on_delete= models.CASCADE)
-    class TipoTransaccion(models.TextChoices):
-        FACTURA = "FACTURA"
-        NOTADEBITO = "NOTA DEBITO"
-        NOTACREDITO = "NOTA CREDITO"
+# class Transaccion( AuditableMixin, ArchivableMixing):
+#     Cliente = models.ForeignKey(Cliente, on_delete= models.CASCADE)
+#     class TipoTransaccion(models.TextChoices):
+#         FACTURA = "FACTURA"
+#         NOTADEBITO = "NOTA DEBITO"
+#         NOTACREDITO = "NOTA CREDITO"
         
-    tipo = models.CharField(
-        max_length=32,
-        choices=TipoTransaccion.choices,
-        default=TipoTransaccion.FACTURA,
-    )
-    
+#     tipo = models.CharField(
+#         max_length=32,
+#         choices=TipoTransaccion.choices,
+#         default=TipoTransaccion.FACTURA,
+#     )
+#     #agregar numero de tipo de transacion
+#     #monto facturado en bolivares
