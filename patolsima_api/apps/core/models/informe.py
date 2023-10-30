@@ -64,6 +64,7 @@ class Informe(AuditableMixin, ArchivableMixing):
     # Campos de texto enriquecido
     descripcion_macroscopica = models.TextField(max_length=10240, null=True, blank=True)
     descripcion_microscopica = models.TextField(max_length=10240, null=True, blank=True)
+    muestra_recibida = models.TextField(max_length=10240, null=True, blank=True)
     diagnostico = models.TextField(max_length=10240, null=True, blank=True)
     notas = models.TextField(max_length=10240, null=True, blank=True)
     anexos = models.TextField(max_length=10240, null=True, blank=True)

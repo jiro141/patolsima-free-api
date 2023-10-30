@@ -12,17 +12,14 @@ from .recibo_y_factura import Factura
 
 
 
-# class Transaccion( AuditableMixin, ArchivableMixing):
-#     Cliente = models.ForeignKey(Cliente, on_delete= models.CASCADE)
-#     class TipoTransaccion(models.TextChoices):
-#         FACTURA = "FACTURA"
-#         NOTADEBITO = "NOTA DEBITO"
-#         NOTACREDITO = "NOTA CREDITO"
-        
-#     tipo = models.CharField(
-#         max_length=32,
-#         choices=TipoTransaccion.choices,
-#         default=TipoTransaccion.FACTURA,
-#     )
-#     #agregar numero de tipo de transacion
-#     #monto facturado en bolivares
+class Transaccion( AuditableMixin, ArchivableMixing):
+    rifci = models.CharField(max_length=50)
+    cliente = models.CharField(max_length=50)
+    tipo = models.CharField(max_length=32)
+    n_control = models.PositiveIntegerField(unique=True, db_index=True)
+    monto = models.DecimalField(
+        max_digits=14, decimal_places=2, default=Decimal("0.00")
+    )
+    monto_impuesto = models.DecimalField(
+        max_digits=14, decimal_places=2, default=Decimal("0.00"))
+    fecha_emision = models.DateField(auto_now_add=True)

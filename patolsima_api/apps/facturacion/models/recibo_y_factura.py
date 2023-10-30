@@ -4,6 +4,7 @@ from simple_history.models import HistoricalRecords
 from patolsima_api.utils.models import AuditableMixin
 from patolsima_api.apps.uploaded_file_management.models import UploadedFile
 from .orden import Orden
+from .pago import Pago
 
 
 class AbstractRecibo(AuditableMixin):
@@ -22,6 +23,14 @@ class AbstractRecibo(AuditableMixin):
 class Factura(AbstractRecibo):
     n_factura = models.PositiveIntegerField(unique=True, db_index=True)
     history = HistoricalRecords()
+    monto = models.DecimalField(
+        max_digits=14, decimal_places=2, default=Decimal("0.00")
+    )
+
+    @classmethod
+    def pre_save(cls,sender, instance,*args,**kwargs):
+        notaPago = instance.notaPago
+        monto = instance.pago.total_usd
 
     @property
     def pdf_reder_context(self):
@@ -50,8 +59,21 @@ class FacturaOffset(AuditableMixin):
     factura_offset = models.PositiveIntegerField()
     
     
+
+
 class NotaCredito(AbstractRecibo):
     factura = models.OneToOneField(Factura, on_delete=models.CASCADE)
-    n_notacredito = models.PositiveBigIntegerField()
+    n_notacredito = models.PositiveIntegerField(unique=True, db_index=True)
+    pago = models.OneToOneField(Pago, on_delete=models.CASCADE, related_name="nota_de_credito")
+    monto = models.DecimalField(
+        max_digits=14, decimal_places=2, default=Decimal(" 0.00")
+    )
 
+class NotaDebito(AbstractRecibo):
+    n_notadebito = models.PositiveIntegerField(unique=True, db_index=True)
+    factura = models.OneToOneField(Factura, on_delete=models.CASCADE)
+    pago = models.OneToOneField(Pago, on_delete=models.CASCADE, related_name="nota_de_debitos")
+    monto = models.DecimalField(
+        max_digits=14, decimal_places=2, default=Decimal(" 0.00")
+    )
 
