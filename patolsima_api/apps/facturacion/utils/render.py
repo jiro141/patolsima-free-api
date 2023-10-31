@@ -18,6 +18,7 @@ RECIBO_TEMPLATES = {
 # Factura does not contain header or footer because Patolsima already owns the format in paper with those elements
 FACTURA_TEMPLATES = {
     "body": {"pre_render": True, "template_obj": recibo_body_template},
+    "body": {"pre_render": True, "template_obj": recibo_body_template},
 }
 
 NOTA_DE_PAGO_TEMPLATES = {
