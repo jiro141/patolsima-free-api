@@ -22,7 +22,7 @@ class FacturaViewSet(ModelViewSet):
 
 class FacturaOffsetViewSet(ModelViewSet):
     permission_classes = [DjangoModelPermissions]
-    queryset = FacturaOffset.objects.order_by("factura_offset").latest
+    queryset = FacturaOffset.objects.all().order_by("factura_offset").first
     # queryset2 = FacturaOffset.objects.order_by("n_factura").latest
     # queryset = queryset1 if queryset1 > queryset2 else queryset2
     serializer_class = FacturaOffsetSerializer
