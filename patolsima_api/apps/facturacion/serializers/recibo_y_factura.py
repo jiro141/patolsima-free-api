@@ -4,7 +4,7 @@ from patolsima_api.apps.uploaded_file_management.serializers import (
     UploadedFileSerializer,
 )
 
-from patolsima_api.apps.facturacion.models.recibo_y_factura import NotaCredito, NotaDebito
+from patolsima_api.apps.facturacion.models.recibo_y_factura import NotaCredito, NotaDebito, FacturaOffset
 
 
 class ReciboSerializer(serializers.ModelSerializer):
@@ -25,9 +25,15 @@ class FacturaSerializer(serializers.ModelSerializer):
 
 class FacturaCreateSerializer(serializers.Serializer):
     n_factura = serializers.IntegerField(min_value=1)
+    class Meta:
+        model = FacturaOffset
+        fields = '__all__'
 
 class FacturaOffsetSerializer(serializers.Serializer):
-    factura_offset = serializers.IntegerField(min_value=1)
+
+    class Meta:
+        model = FacturaOffset
+        fields = '__all__'
 
 class NotaCreditoSerializer(serializers.ModelSerializer):
     s3_file = UploadedFileSerializer(read_only=True)

@@ -10,13 +10,14 @@ from patolsima_api.apps.facturacion.views import (
 
 )
 
-from patolsima_api.apps.facturacion.views.recibo_y_factura import FacturaViewSet
+from patolsima_api.apps.facturacion.views.recibo_y_factura import FacturaViewSet, FacturaOffsetViewSet
 
 router = routers.DefaultRouter()
 router.register(r"clientes", ClienteViewSet, basename="cliente")
 router.register(r"facturas", FacturaViewSet, basename="factura")
-router.register(r"offsetfactura", FacturaViewSet, basename="offsetfactura")
+router.register(r"offsetfactura", FacturaOffsetViewSet, basename="offsetfactura")
 router.register(r"ordenes", OrdenViewSet, basename="orden")
 router.register(r"itemsorden", ItemOrdenViewSet, basename="item-orden")
 router.register(r"pagos", PagoViewSet, basename="pago")
 urlpatterns = [path(r"cambiodeldia", CambioDelDiaView.as_view()), *router.urls]
+ 
