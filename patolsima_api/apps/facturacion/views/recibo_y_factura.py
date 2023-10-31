@@ -21,7 +21,7 @@ class FacturaViewSet(ModelViewSet):
     filterset_fields = ("n_factura",)
  
 class FacturaOffsetViewSet(ModelViewSet):
-    queryset = FacturaOffset.objects.all().order_by("-factura_offset")
+    queryset = FacturaOffset.objects.order_by("-factura_offset").last()
     serializer_class = FacturaOffsetSerializer
 
 
