@@ -1,10 +1,11 @@
 import pytz
 import time
 from typing import Union
-from patolsima_api.apps.facturacion.models import Orden, Factura, Recibo, NotaPago, Pago, NotaCredito, NotaDebito
+from patolsima_api.apps.facturacion.models import Orden, Factura, Recibo, NotaPago, Pago
 from patolsima_api.apps.facturacion.utils.jinja_templates import *
 from patolsima_api.utils.render_pdf import render_pdf
 from patolsima_api.utils.admin import date_to_admin_readable
+from patolsima_api.apps.facturacion.models.recibo_y_factura import NotaCredito, NotaDebito
 
 CARACAS_TIMEZONE = pytz.timezone("America/Caracas")
 
