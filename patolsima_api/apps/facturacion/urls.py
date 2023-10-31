@@ -15,6 +15,7 @@ from patolsima_api.apps.facturacion.views.recibo_y_factura import FacturaViewSet
 router = routers.DefaultRouter()
 router.register(r"clientes", ClienteViewSet, basename="cliente")
 router.register(r"facturas", FacturaViewSet, basename="factura")
+router.register(r"offsetfactura", FacturaViewSet, basename="offsetfactura")
 router.register(r"ordenes", OrdenViewSet, basename="orden")
 router.register(r"itemsorden", ItemOrdenViewSet, basename="item-orden")
 router.register(r"pagos", PagoViewSet, basename="pago")
