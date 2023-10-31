@@ -54,6 +54,7 @@ def generar_notadebito(pago:Pago, factura:facturacion,monto) -> NotaDebito:
     
     #revisar la factura
     
+    
     with transaction.atomic() as current_transaction:
         nota_debito, created = NotaDebito.objects.get_or_create(pago=pago,factura=factura, monto=monto, defaults={})
         nota_debito.s3_file = upload_from_local_filesystem(

@@ -26,6 +26,9 @@ class FacturaSerializer(serializers.ModelSerializer):
 class FacturaCreateSerializer(serializers.Serializer):
     n_factura = serializers.IntegerField(min_value=1)
 
+class FacturaOffsetSerializer(serializers.Serializer):
+    factura_offset = serializers.IntegerField(min_value=1)
+
 class NotaCreditoSerializer(serializers.ModelSerializer):
     s3_file = UploadedFileSerializer(read_only=True)
 
