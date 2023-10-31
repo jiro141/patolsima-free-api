@@ -29,8 +29,7 @@ class FacturaCreateSerializer(serializers.Serializer):
         model = FacturaOffset
         fields = '__all__'
 
-class FacturaOffsetSerializer(serializers.Serializer):
-
+class FacturaOffsetSerializer(serializers.ModelSerializer):
     class Meta:
         model = FacturaOffset
         fields = '__all__'

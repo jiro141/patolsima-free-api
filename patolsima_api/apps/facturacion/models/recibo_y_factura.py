@@ -56,6 +56,7 @@ class Recibo(AbstractRecibo):
         return {"n_recibo": self.id}
 
 class FacturaOffset(AuditableMixin):
+    # factura_offset_id = models.PositiveBigIntegerField(unique=True,default=0)
     factura_offset = models.PositiveIntegerField()
     
     

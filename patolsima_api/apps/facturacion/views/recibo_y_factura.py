@@ -21,8 +21,7 @@ class FacturaViewSet(ModelViewSet):
     filterset_fields = ("n_factura",)
  
 class FacturaOffsetViewSet(ModelViewSet):
-    permission_classes = [DjangoModelPermissions]
-    queryset = FacturaOffset.objects.all().order_by("factura_offset").first  # Obtener todos los registros
+    queryset = FacturaOffset.objects.all().order_by("-factura_offset")
     serializer_class = FacturaOffsetSerializer
 
 
