@@ -53,7 +53,7 @@ def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str) -> str:
     context = {
         "current_work_path_python": os.getcwd(),
         "cliente": registro.orden.cliente,
-        "orden": registro.orden,
+        "orden": numero_documento if documento_tipo == "Factura" else registro.orden,
         "documento_tipo": documento_tipo,
         "items_orden": registro.orden.items_orden.all().order_by(
             "estudio__tipo", "estudio__codigo"
