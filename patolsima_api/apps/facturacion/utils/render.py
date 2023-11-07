@@ -31,7 +31,6 @@ NOTA_DEBITO_TEMPLATES = {
 # Factura does not contain header or footer because Patolsima already owns the format in paper with those elements
 FACTURA_TEMPLATES = {
     "body": {"pre_render": True, "template_obj": recibo_body_template},
-    "body": {"pre_render": True, "template_obj": recibo_body_template},
 }
 
 NOTA_DE_PAGO_TEMPLATES = {
@@ -49,11 +48,12 @@ def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str) -> str:
     """
     numero_documento = registro.id if tipo == "recibo" else registro.n_factura 
     documento_tipo = "Orden" if tipo == "recibo" else "Factura"
+    orden = numero_documento if documento_tipo == "Factura" else registro.orden
     filename = f"{tipo}_{registro.orden.id}_{int(time.time())}"
     context = {
         "current_work_path_python": os.getcwd(),
         "cliente": registro.orden.cliente,
-        "orden": numero_documento if documento_tipo == "Factura" else registro.orden,
+        "orden": orden,
         "documento_tipo": documento_tipo,
         "items_orden": registro.orden.items_orden.all().order_by(
             "estudio__tipo", "estudio__codigo"
