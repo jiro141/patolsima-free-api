@@ -48,11 +48,13 @@ def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str) -> str:
     :return: the path of the PDF file in the filesystem
     """
     numero_documento = registro.id if tipo == "recibo" else registro.n_factura 
+    documento_tipo = "Orden" if tipo == "recibo" else "Factura"
     filename = f"{tipo}_{registro.orden.id}_{int(time.time())}"
     context = {
         "current_work_path_python": os.getcwd(),
         "cliente": registro.orden.cliente,
         "orden": registro.orden,
+        "documento_tipo": documento_tipo,
         "items_orden": registro.orden.items_orden.all().order_by(
             "estudio__tipo", "estudio__codigo"
         ),

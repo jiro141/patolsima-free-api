@@ -106,7 +106,7 @@
                 <p class="cliente_left_container_item"><strong>Dirección:</strong> {{ cliente.direccion }}</p>
             </div>
             <div class="cliente_right_container">
-                <p class="cliente_right_container_item"><strong>No. de Factura:</strong> {{ orden.id }}</p>
+                <p class="cliente_right_container_item"><strong>No. de {{documento_tipo}}:</strong> {{ orden.id }}</p>
                 <p class="cliente_right_container_item"><strong>Fecha de Emisión:</strong> {{ fecha_emision }}</p>
                 {% if cliente.telefono_celular %}
                     <p class="cliente_right_container_item"><strong>Teléfono:</strong> {{ cliente.telefono_celular }}</p>
@@ -123,10 +123,9 @@
             <tr>
                 <th class="table_content table_header_content">Descripción</th>
                 <th class="table_content table_header_content">Cantidad</th>
-                <th class="table_content table_header_content">Detalles</th>
                 <th class="table_content table_header_content">
                     {% if tipo_documento == 'Nota de Pago' %}
-                            Precio (USD)
+                            Precio (Bs)
                         {% endif %}
                 </th>
                 <th class="table_content table_header_content">Detalles</th>
@@ -137,14 +136,10 @@
                 <tr>
                     <td class="table_content">{{ fix_tipo_estudio(item_orden.estudio.tipo) }}</td>
                     <td class="table_content">1</td>
-                    <td class="table_content">{{ item_orden.estudio.codigo }}</td>
                     <td class="table_content">
-                        {% if tipo_documento == 'Nota de Pago' %}
-                            {{ item_orden.monto_usd }}
-                        {% else %}
-                            {{ item_orden.monto_bs }}
-                        {% endif %}
+                        {{ item_orden.monto_bs }}
                     </td>
+                    <td class="table_content">{{ item_orden.estudio.codigo }}</td>
                     <td class="table_content"></td>
                 </tr>
             {% endfor %}
