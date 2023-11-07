@@ -104,7 +104,8 @@ def render_nota_de_pago(nota_pago: NotaPago) -> str:
             "estudio__tipo", "estudio__codigo"
         ),
         "pagos": orden.pagos.all().order_by("created_at"),
-        "documento_tipo": "Nota de Pago",
+        "documento_tipo": "orden",
+        "tipo_documento": "Nota de Pago",
         "numero_documento": nota_pago.id,
         "fecha_emision": nota_pago.created_at.astimezone(CARACAS_TIMEZONE)
         .date()
