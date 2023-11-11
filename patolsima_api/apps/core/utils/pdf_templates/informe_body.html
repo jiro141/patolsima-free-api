@@ -140,9 +140,7 @@
                         </tr>
                         <tr>
                             <td class="datos_estudio_table_item"><strong>Código del Estudio:</strong> {{ estudio.codigo }}</td>
-                            {% if tipo_de_muestra%}
-                                <td class="datos_estudio_table_item"><strong>Tipo de Muestra:</strong> {{ tipo_de_muestra }}</td>
-                            {% endif %}
+                            <td class="datos_estudio_table_item"><strong>Tipo de Muestra:</strong> {{ tipo_de_muestra }}</td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -151,7 +149,9 @@
         </div>
 
         {% if estudio.tipo == "INMUNOSTOQUIMICA" %}
-        <strong>Muestra Recibida:</strong> {{ muestra_recibida }}
+        {% if muestra_recibida %}
+            <strong>Muestra Recibida:</strong> {{ muestra_recibida }}
+        {% endif %}
             {% include 'body_inmunostoquimica.html' with context %}
         {% else %}
             {% include 'body_regular.html' with context %}
