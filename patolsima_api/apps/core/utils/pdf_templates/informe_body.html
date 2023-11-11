@@ -140,7 +140,9 @@
                         </tr>
                         <tr>
                             <td class="datos_estudio_table_item"><strong>Código del Estudio:</strong> {{ estudio.codigo }}</td>
-                            <td class="datos_estudio_table_item"><strong>Tipo de Muestra:</strong> {{ tipo_de_muestra }}</td>
+                            {% if tipo_de_muestra%}
+                                <td class="datos_estudio_table_item"><strong>Tipo de Muestra:</strong> {{ tipo_de_muestra }}</td>
+                            {% endif %}
                             <td></td>
                         </tr>
                     </tbody>
