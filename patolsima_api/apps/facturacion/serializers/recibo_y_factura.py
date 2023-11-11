@@ -26,7 +26,7 @@ class FacturaSerializer(serializers.ModelSerializer):
 class FacturaCreateSerializer(serializers.Serializer):
     n_factura = serializers.IntegerField(min_value=1)
     class Meta:
-        model = FacturaOffset
+        model = Factura
         fields = '__all__'
 
 class FacturaOffsetSerializer(serializers.ModelSerializer):
