@@ -132,7 +132,7 @@ def render_nota_de_pago(nota_pago: NotaPago) -> str:
     return pdf_filename
 
 
-def render_notacredito(registro: Union[NotaCredito, Recibo], tipo: str) -> str:
+def render_notacredito(registro: Union[NotasCredito, Recibo], tipo: str) -> str:
     """
     This method takes a Factura/Recibo instance and renders its associated pdf.
     :param registro: Factura/Recibo instance. The Orden instance associated must be pagada=True.
@@ -176,7 +176,7 @@ def render_notacredito(registro: Union[NotaCredito, Recibo], tipo: str) -> str:
     )
     return pdf_filename
 
-def render_notadebito(registro: Union[NotaDebito, Recibo], tipo: str) -> str:
+def render_notadebito(registro: Union[NotasDebito, Recibo], tipo: str) -> str:
     """
     This method takes a Factura/Recibo instance and renders its associated pdf.
     :param registro: Factura/Recibo instance. The Orden instance associated must be pagada=True.
