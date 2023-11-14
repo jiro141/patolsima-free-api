@@ -29,6 +29,8 @@ class FacturaCreateSerializer(serializers.Serializer):
         model = Factura
         fields = '__all__'
 
+
+
 class FacturaOffsetSerializer(serializers.ModelSerializer):
     class Meta:
         model = FacturaOffset
@@ -48,3 +50,16 @@ class NotaDebitoSerializer(serializers.ModelSerializer):
     class Meta:
         model = NotaDebito
         fields = "__all__"
+
+class NotaDebitoCreateSerializer(serializers.Serializer):
+    n_factura = serializers.IntegerField(min_value=1)
+    monto = serializers.IntegerField(min_value=1)
+    class Meta:
+        model = NotaDebito
+        fields = '__all__'
+
+class NotaCreditoCreateSerializer(serializers.Serializer):
+    n_factura = serializers.IntegerField(min_value=1)
+    class Meta:
+        model = NotaCredito
+        fields = '__all__'
