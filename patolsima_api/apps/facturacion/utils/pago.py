@@ -51,10 +51,10 @@ def generar_notacredito(factura:Factura) -> NotaCredito:
 
 def generar_notadebito(orden:Orden,monto,**kwargs) -> NotaDebito:  
 
-    n_factura=Factura.objects.get(orden=orden).n_factura
+    factura=Factura.objects.get(orden=orden).n_factura
     
     with transaction.atomic() as current_transaction:
-        nota_debito, created = NotaDebito.objects.get_or_create(n_factura=n_factura, monto=monto, defaults={})
+        nota_debito, created = NotaDebito.objects.get_or_create(factura=factura, monto=monto,n_factura = factura.n_factura, defaults={})
         nota_debito.s3_file = upload_from_local_filesystem(
             render_nota_de_pago(nota_debito),
             path_prefix=f"ordenes/{orden.id}/notas_de_debito",
