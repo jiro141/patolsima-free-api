@@ -51,7 +51,7 @@ def generar_notacredito(factura:Factura) -> NotaCredito:
 
 def generar_notadebito(orden:Orden,monto,**kwargs) -> NotaDebito:  
 
-    factura=Factura.objects.get(orden=orden).n_factura
+    factura=Factura.objects.get(orden=orden)
     
     with transaction.atomic() as current_transaction:
         nota_debito, created = NotaDebito.objects.get_or_create(factura=factura, monto=monto,n_factura = factura.n_factura, defaults={})
