@@ -1,3 +1,4 @@
+from patolsima_api.apps.facturacion.models.recibo_y_factura import Factura
 from patolsima_api.apps.facturacion.serializers.recibo_y_factura import NotaCreditoCreateSerializer, NotaCreditoSerializer, NotaDebitoCreateSerializer, NotaDebitoSerializer
 from patolsima_api.apps.facturacion.utils.pago import generar_notacredito, generar_notadebito
 from rest_framework.viewsets import ModelViewSet
@@ -93,8 +94,8 @@ class OrdenViewSet(ModelViewSet):
                 "confirm": NotaDebitoSerializer(
                     generar_notadebito(
                         self.get_object(),
-                        "notadebito",
-                        n_factura=request_data.get("n_factura"),
+                        factura=Factura.objects.get(n_factura = request_data.get("n_factura")),
+                        monto=request_data.get("monto"),
                     )
                 ).data
             },
@@ -109,8 +110,7 @@ class OrdenViewSet(ModelViewSet):
                 "confirm": NotaCreditoSerializer(
                     generar_notacredito(
                         self.get_object(),
-                        "notacredito",
-                        n_factura=request_data.get("n_factura"),
+                        factura=Factura.objects.get(n_factura = request_data.get("n_factura")),
                     )
                 ).data
             },
