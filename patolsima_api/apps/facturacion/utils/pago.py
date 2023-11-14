@@ -2,6 +2,7 @@ import datetime
 from django.db import transaction
 from patolsima_api.apps import facturacion
 from patolsima_api.apps.facturacion.models import Pago, NotaPago
+from patolsima_api.apps.facturacion.models.orden import Orden
 from patolsima_api.apps.facturacion.models.recibo_y_factura import NotaCredito, NotaDebito, Factura
 from patolsima_api.apps.uploaded_file_management.utils.upload import (
     upload_from_local_filesystem,
@@ -48,9 +49,9 @@ def generar_notacredito(factura:Factura) -> NotaCredito:
     return nota_credito
 
 
-def generar_notadebito(n_factura,monto,**kwargs) -> NotaDebito:  
+def generar_notadebito(orden:Orden,monto,**kwargs) -> NotaDebito:  
 
-    factura=Factura.objects.get(n_factura=n_factura)
+    factura=Factura.objects.get(orden=orden)
     
     with transaction.atomic() as current_transaction:
         nota_debito, created = NotaDebito.objects.get_or_create(factura=factura, monto=monto, defaults={})
