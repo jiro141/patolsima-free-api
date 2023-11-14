@@ -93,7 +93,7 @@ class OrdenViewSet(ModelViewSet):
             data={
                 "confirm": NotaDebitoSerializer(
                     generar_notadebito(
-                        self.get_object(),
+                        # self.get_object(),
                         factura=Factura.objects.get(n_factura = request_data.get("n_factura")),
                         monto=request_data.get("monto"),
                     )
