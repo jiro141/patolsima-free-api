@@ -73,7 +73,6 @@ class NotasCredito(AbstractRecibo):
 class NotasDebito(AbstractRecibo):
     n_notadebito = models.AutoField(primary_key=True)
     n_factura =models.PositiveIntegerField(default=0)
-    # factura = models.OneToOneField(Factura, on_delete=models.CASCADE)
     monto = models.DecimalField(
         max_digits=14, decimal_places=2, default=Decimal(" 0.00")
     )
