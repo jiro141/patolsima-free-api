@@ -79,13 +79,13 @@ class NotasDebito(AbstractRecibo):
     )
 
 
-# class NotaCredito(AbstractRecibo):
-#     n_factura =models.PositiveIntegerField(default=0)
-#     n_notacredito = models.AutoField(primary_key=True)
-#     pago = models.OneToOneField(Pago, on_delete=models.CASCADE, related_name="nota_de_credito")
-#     monto = models.DecimalField(
-#         max_digits=14, decimal_places=2, default=Decimal(" 0.00")
-#     )
+class NotaCredito(AbstractRecibo):
+    n_factura =models.PositiveIntegerField(default=0)
+    n_notacredito = models.AutoField(primary_key=True)
+    pago = models.OneToOneField(Pago, on_delete=models.CASCADE, related_name="nota_de_credito")
+    monto = models.DecimalField(
+        max_digits=14, decimal_places=2, default=Decimal(" 0.00")
+    )
 
 # class NotaDebito(AbstractRecibo):
 #     n_notadebito = models.AutoField(primary_key=True)

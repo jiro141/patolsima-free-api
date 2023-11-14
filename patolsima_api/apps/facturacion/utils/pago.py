@@ -33,7 +33,7 @@ def generar_notacredito(factura:Factura) -> NotasCredito:
         nota_credito, created = NotasCredito.objects.get_or_create(orden=Factura.orden,factura=factura, monto=factura.monto, defaults={})
         nota_credito.s3_file = upload_from_local_filesystem(
             render_nota_de_pago(nota_credito),
-            path_prefix=f"ordenes/{factura.orden.id}/notas_de_credito",
+            path_prefix=f"ordenes/{orden.id}/notas_de_credito",
             delete_original_after_upload=True,
         )
         nota_credito.fecha_generacion = datetime.now()
