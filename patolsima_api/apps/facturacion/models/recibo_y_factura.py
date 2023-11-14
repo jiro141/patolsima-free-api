@@ -65,15 +65,16 @@ class FacturaOffset(AuditableMixin):
 class NotaCredito(AbstractRecibo):
     factura = models.OneToOneField(Factura, on_delete=models.CASCADE)
     n_notacredito = models.PositiveIntegerField(unique=True, db_index=True)
-    # pago = models.OneToOneField(Pago, on_delete=models.CASCADE, related_name="nota_de_credito")
+    pago = models.OneToOneField(Pago, on_delete=models.CASCADE, related_name="nota_de_credito")
     monto = models.DecimalField(
         max_digits=14, decimal_places=2, default=Decimal(" 0.00")
     )
 
 class NotaDebito(AbstractRecibo):
     n_notadebito = models.PositiveIntegerField(unique=True, db_index=True)
-    factura = models.OneToOneField(Factura, on_delete=models.CASCADE)
-    # pago = models.OneToOneField(Pago, on_delete=models.CASCADE, related_name="nota_de_debitos")
+    n_factura =models.PositiveIntegerField(unique=True)
+    # factura = models.OneToOneField(Factura, on_delete=models.CASCADE)
+    pago = models.OneToOneField(Pago, on_delete=models.CASCADE, related_name="nota_de_debitos")
     monto = models.DecimalField(
         max_digits=14, decimal_places=2, default=Decimal(" 0.00")
     )
