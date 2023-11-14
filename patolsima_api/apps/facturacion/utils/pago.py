@@ -48,7 +48,7 @@ def generar_notacredito(factura:Factura) -> NotaCredito:
     return nota_credito
 
 
-def generar_notadebito(n_factura,monto) -> NotaDebito:  
+def generar_notadebito(n_factura,monto,**kwargs) -> NotaDebito:  
 
     factura=Factura.objects.get(n_factura=n_factura)
     
