@@ -52,7 +52,7 @@ class NotaDebitoSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class NotaDebitoCreateSerializer(serializers.Serializer):
-    # n_factura = serializers.IntegerField(min_value=1)
+    n_factura = serializers.IntegerField(min_value=1)
     monto = serializers.IntegerField(min_value=1)
     class Meta:
         model = NotaDebito
