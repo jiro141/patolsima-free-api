@@ -5,7 +5,7 @@ from rest_framework.permissions import DjangoModelPermissions
 from django_filters.rest_framework import DjangoFilterBackend
 from patolsima_api.apps.facturacion.serializers import FacturaSerializer
 from patolsima_api.apps.facturacion.models import Factura, NotaPago
-from patolsima_api.apps.facturacion.models.recibo_y_factura import NotaCredito, NotaDebito
+from patolsima_api.apps.facturacion.models.recibo_y_factura import NotasCredito, NotasDebito
 from patolsima_api.apps.facturacion.serializers.recibo_y_factura import NotaCreditoSerializer, NotaDebitoSerializer, FacturaOffsetSerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -28,7 +28,7 @@ class FacturaOffsetViewSet(ModelViewSet):
 
 class NotaCreditoViewSet(ModelViewSet):
     permission_classes = [DjangoModelPermissions]
-    queryset = NotaCredito.objects.order_by("n_notacredito")
+    queryset = NotasCredito.objects.order_by("n_notacredito")
     serializer_class = NotaCreditoSerializer
     filter_backends = (SearchFilter, DjangoFilterBackend)
     search_fields = ("n_notacredito", "fecha_generacion")
@@ -45,7 +45,7 @@ class NotaCreditoViewSet(ModelViewSet):
 
 class NotaDebitoViewSet(ModelViewSet):
     permission_classes = [DjangoModelPermissions]
-    queryset = NotaDebito.objects.order_by("n_notadebito")
+    queryset = NotasDebito.objects.order_by("n_notadebito")
     serializer_class = NotaDebitoSerializer
     filter_backends = (SearchFilter, DjangoFilterBackend)
     search_fields = ("n_notadebito", "fecha_generacion")

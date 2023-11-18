@@ -56,7 +56,6 @@ class Recibo(AbstractRecibo):
         return {"n_recibo": self.id}
 
 class FacturaOffset(AuditableMixin):
-    factura_offset_id = models.PositiveBigIntegerField(unique=True,default=0)
     factura_offset = models.PositiveIntegerField()
     
     
@@ -78,21 +77,21 @@ class NotasDebito(AbstractRecibo):
     )
 
 
-class NotaCredito(AbstractRecibo):
-    n_factura =models.PositiveIntegerField(default=0)
-    n_notacredito = models.AutoField(primary_key=True)
-    pago = models.OneToOneField(Pago, on_delete=models.CASCADE, related_name="nota_de_credito")
-    monto = models.DecimalField(
-        max_digits=14, decimal_places=2, default=Decimal(" 0.00")
-    )
+# class NotaCredito(AbstractRecibo):
+#     n_factura =models.PositiveIntegerField(default=0)
+#     n_notacredito = models.AutoField(primary_key=True)
+#     pago = models.OneToOneField(Pago, on_delete=models.CASCADE, related_name="nota_de_credito")
+#     monto = models.DecimalField(
+#         max_digits=14, decimal_places=2, default=Decimal(" 0.00")
+#     )
 
-class NotaDebito(AbstractRecibo):
-    n_notadebito = models.AutoField(primary_key=True)
-    n_factura =models.PositiveIntegerField(default=0)
-    factura = models.OneToOneField(Factura, on_delete=models.CASCADE)
-    pago = models.OneToOneField(Pago, on_delete=models.CASCADE, related_name="nota_de_debito")
-    monto = models.DecimalField(
-        max_digits=14, decimal_places=2, default=Decimal(" 0.00")
-    )
+# class NotaDebito(AbstractRecibo):
+#     n_notadebito = models.AutoField(primary_key=True)
+#     n_factura =models.PositiveIntegerField(default=0)
+#     factura = models.OneToOneField(Factura, on_delete=models.CASCADE)
+#     pago = models.OneToOneField(Pago, on_delete=models.CASCADE, related_name="nota_de_debito")
+#     monto = models.DecimalField(
+#         max_digits=14, decimal_places=2, default=Decimal(" 0.00")
+#     )
 
 
