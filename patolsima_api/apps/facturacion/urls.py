@@ -13,6 +13,7 @@ from patolsima_api.apps.facturacion.views import (
 
 from patolsima_api.apps.facturacion.views.recibo_y_factura import FacturaViewSet, FacturaOffsetViewSet, NotaCreditoViewSet, NotaDebitoViewSet
 
+
 router = routers.DefaultRouter()
 router.register(r"clientes", ClienteViewSet, basename="cliente")
 router.register(r"facturas", FacturaViewSet, basename="factura")

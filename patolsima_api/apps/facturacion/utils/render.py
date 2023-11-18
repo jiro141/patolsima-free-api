@@ -156,7 +156,7 @@ def render_notacredito(registro: Union[NotasCredito, Recibo], tipo: str) -> str:
         **registro.orden.balance,
         **registro.pdf_reder_context,
     }
-    templates = RECIBO_TEMPLATES if tipo == "recibo" else FACTURA_TEMPLATES
+    templates = FACTURA_TEMPLATES
     pdf_filename = render_pdf(
         context=context,
         templates=templates,
@@ -176,7 +176,7 @@ def render_notacredito(registro: Union[NotasCredito, Recibo], tipo: str) -> str:
     )
     return pdf_filename
 
-def render_notadebito(registro: Union[NotasDebito, Recibo], tipo: str) -> str:
+def render_notadebito(registro: NotasDebito,tipo:str) -> str:
     """
     This method takes a Factura/Recibo instance and renders its associated pdf.
     :param registro: Factura/Recibo instance. The Orden instance associated must be pagada=True.
@@ -200,7 +200,7 @@ def render_notadebito(registro: Union[NotasDebito, Recibo], tipo: str) -> str:
         **registro.orden.balance,
         **registro.pdf_reder_context,
     }
-    templates = RECIBO_TEMPLATES if tipo == "recibo" else FACTURA_TEMPLATES
+    templates = FACTURA_TEMPLATES
     pdf_filename = render_pdf(
         context=context,
         templates=templates,

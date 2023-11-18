@@ -1,6 +1,7 @@
 from datetime import datetime
 from django.db import transaction
 from patolsima_api.apps.facturacion.models.recibo_y_factura import FacturaOffset
+from patolsima_api.apps.facturacion.models.transaccion import Transaccion
 from rest_framework.serializers import ValidationError
 from patolsima_api.apps.facturacion.models import Orden, Factura, Recibo
 from patolsima_api.apps.core.models import Estudio
@@ -69,8 +70,34 @@ def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Rec
             n_factura = latest_frecord + 1
         else:
             n_factura = latest_ofrecord + 1
+
+        f_transaccion = Transaccion.objects.filter(tipo="FACTURA").order_by("-id").last()
+
+
+        if f_transaccion!=None:
+            if f_transaccion.n_control == n_factura:
+                n_factura+=1
         instancia_de_documento, created = (Factura).objects.get_or_create(orden=orden,n_factura=n_factura, defaults=kwargs)
         instancia_de_documento.monto = orden.importe_orden_bs
+
+  
+        transaccion, created = Transaccion.objects.get_or_create(
+            rifci = instancia_de_documento.orden.cliente.ci_rif,
+            cliente=instancia_de_documento.orden.cliente.razon_social,
+            tipo = "FACTURA",
+            monto = instancia_de_documento.monto,
+            n_control = instancia_de_documento.n_factura
+            )
+        
+        instancia_de_documento.fecha_generacion = datetime.now()
+
+        instancia_de_documento.s3_file = upload_from_local_filesystem(
+            render_recibo_factura(instancia_de_documento, tipo_documento),
+            path_prefix=f"ordenes/{orden.id}",
+            delete_original_after_upload=True,
+        )
+        instancia_de_documento.save()
+        return instancia_de_documento
         
         
 

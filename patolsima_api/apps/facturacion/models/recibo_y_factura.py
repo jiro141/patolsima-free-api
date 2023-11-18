@@ -17,7 +17,7 @@ class AbstractRecibo(AuditableMixin):
 
     @property
     def pdf_reder_context(self):
-        return {}
+        return {}  
 
 
 class Factura(AbstractRecibo):
