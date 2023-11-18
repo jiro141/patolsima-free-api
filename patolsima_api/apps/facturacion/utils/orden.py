@@ -49,15 +49,29 @@ def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Rec
     if hasattr(orden, tipo_documento) and getattr(orden, tipo_documento).s3_file:
         return getattr(orden, tipo_documento)
 
-    instancia_de_documento, created = (
-        Recibo if tipo_documento == "recibo" else Factura
-    ).objects.get_or_create(orden=orden, defaults=kwargs)
+    if tipo_documento == "recibo":
+        instancia_de_documento, created = (Recibo).objects.get_or_create(orden=orden, defaults=kwargs)
 
     if tipo_documento !="recibo":
+        latest_factura = Factura.objects.order_by('id').last()
+
+        if latest_factura and latest_factura.n_factura is not None:
+            latest_frecord = latest_factura.n_factura
+        else:
+            latest_frecord = 1
+        latest_offset = FacturaOffset.objects.order_by('factura_offset').last()
+        if latest_offset and latest_offset.factura_offset is not None:
+            latest_ofrecord = latest_offset.factura_offset
+        else:
+            latest_ofrecord = 1
+
+        if latest_frecord > latest_ofrecord:
+            n_factura = latest_frecord + 1
+        else:
+            n_factura = latest_ofrecord + 1
+        instancia_de_documento, created = (Factura).objects.get_or_create(orden=orden,n_factura=n_factura, defaults=kwargs)
         instancia_de_documento.monto = orden.importe_orden_bs
-        latest_frecord = Factura.objects.latest('fecha_generacion').n_factura
-        latest_ofrecord = FacturaOffset.objects.latest("factura_offset").factura_offset
-        instancia_de_documento.n_factura = 1 + latest_frecord if latest_frecord>latest_ofrecord else latest_ofrecord
+        
         
 
     instancia_de_documento.fecha_generacion = datetime.now()

@@ -26,24 +26,6 @@ class Factura(AbstractRecibo):
     monto = models.DecimalField(
         max_digits=14, decimal_places=2, default=Decimal("0.00")
     )
-
-    @classmethod
-    def pre_save(cls,sender, instance,*args,**kwargs):
-        notaPago = instance.notaPago
-        monto = instance.pago.total_usd
-
-    @property
-    def pdf_reder_context(self):
-        if self.n_factura is None:
-            try:
-                last_instance = Factura.objects.latest('n_factura')
-            except Factura.DoesNotExist:
-                last_instance = None
-            if last_instance is not None:
-                self.n_factura = last_instance + 1
-            else:
-                self.n_factura = FacturaOffset.objects.filter("-created_at").last() + 1
-        return {"n_factura": self.n_factura}
     
  
 

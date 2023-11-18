@@ -79,7 +79,7 @@ class OrdenViewSet(ModelViewSet):
                     generar_recibo_o_factura(
                         self.get_object(),
                         "factura",
-                        n_factura=request_data.get("n_factura"),
+                        # n_factura=request_data.get("n_factura"),
                     )
                 ).data
             },
