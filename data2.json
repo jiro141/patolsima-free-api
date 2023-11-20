@@ -1688,7 +1688,6 @@
             "is_active": true,
             "date_joined": "2023-08-14T15:33:49Z",
             "groups": [
-                2
             ],
             "user_permissions": []
         }
@@ -1708,7 +1707,6 @@
             "is_active": true,
             "date_joined": "2023-08-14T15:34:46Z",
             "groups": [
-                1
             ],
             "user_permissions": []
         }
@@ -1728,7 +1726,6 @@
             "is_active": true,
             "date_joined": "2023-08-14T15:36:05Z",
             "groups": [
-                1
             ],
             "user_permissions": []
         }
@@ -1748,7 +1745,6 @@
             "is_active": true,
             "date_joined": "2023-09-13T13:06:14Z",
             "groups": [
-                1
             ],
             "user_permissions": []
         }
@@ -1768,8 +1764,6 @@
             "is_active": true,
             "date_joined": "2023-09-14T16:40:30Z",
             "groups": [
-                3,
-                2
             ],
             "user_permissions": []
         }
@@ -1789,7 +1783,6 @@
             "is_active": true,
             "date_joined": "2023-10-30T21:39:11Z",
             "groups": [
-                1
             ],
             "user_permissions": []
         }
@@ -1809,7 +1802,6 @@
             "is_active": true,
             "date_joined": "2023-11-17T15:08:34Z",
             "groups": [
-                2
             ],
             "user_permissions": []
         }
