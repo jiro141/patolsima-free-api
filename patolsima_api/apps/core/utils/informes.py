@@ -1,6 +1,6 @@
 import os
 import time
-from PIL import Image
+# from PIL import Image
 import io
 from datetime import datetime
 from django.http import FileResponse
@@ -172,10 +172,10 @@ def aprobar_informe(informe: Informe, user: User) -> bool:
         return True
 
     patologo = check_user_is_patologo(user)
-    if patologo.id != informe.estudio.patologo.id:
-        raise ValidationError(
-            "The pathologist who is approving the report is not the same pathologist assigned to the study"
-        )
+    # if patologo.id != informe.estudio.patologo.id:
+    #     raise ValidationError(
+    #         "The pathologist who is approving the report is not the same pathologist assigned to the study"
+    #     )
     informe.aprobado = True
     informe.save()
     update_change_reason(informe, "Informe marcado como aprobado para impresion.")
@@ -192,16 +192,19 @@ def agregar_imagen_al_informe(
     :return: The URL to access the image file in S3.
     """
 
-    max_size = (300, 300)
-    image = Image.open(file)
-    image.thumbnail(max_size)
-    output = io.BytesIO()
-    image.save(output, format='JPEG')
-    resized_image_data = output.getvalue()
+    # max_size = (300, 300)
+    # image = Image.open(file)
+    # image.thumbnail(max_size)
+    # output = io.BytesIO()
+    # image.save(output, format='JPEG')
+    # resized_image_data = output.getvalue()
 
 
+    # uploaded_file = upload_from_request(
+    #     resized_image_data, path_prefix=f"informes/{informe.estudio.id}/images"
+    # )
     uploaded_file = upload_from_request(
-        resized_image_data, path_prefix=f"informes/{informe.estudio.id}/images"
+        file, path_prefix=f"informes/{informe.estudio.id}/images"
     )
     informe.images_for_rich_text.add(uploaded_file)
     informe.save()
