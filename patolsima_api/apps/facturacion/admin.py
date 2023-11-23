@@ -66,13 +66,6 @@ class FacturaAdminInline(admin.StackedInline):
     model = Factura
     readonly_fields = ("s3_file", "fecha_generacion", "n_factura")
 
-class NotaCreditoAdminInline(admin.StackedInline):
-    model = NotasCredito
-    readonly_fields = ("s3_file", "fecha_generacion", "n_factura", "n_notacredito")
-
-class NotaDebitoAdminInline(admin.StackedInline):
-    model = NotasDebito
-    readonly_fields = ("s3_file", "fecha_generacion", "n_factura", "n_notadebito")
 
 
 class ReciboAdminInline(admin.StackedInline):
@@ -164,6 +157,30 @@ class FacturaoffsetAdmin(SimpleHistoryAdmin):
     @admin.display(ordering="created_at", description="Creado el")
     def created_at_formatted(self,obj:Factura):
         return date_to_admin_readable(obj.created_at)
+    
+class NotasCreditoAdmin(SimpleHistoryAdmin):
+    list_display = (
+        "id",
+        "n_notacredito",
+        "n_factura",
+        "created_at_formatted",
+    )
+    
+    @admin.display(ordering="created_at", description="Creado el")
+    def created_at_formatted(self,obj:Factura):
+        return date_to_admin_readable(obj.created_at)
+    
+class NotasDebitoAdmin(SimpleHistoryAdmin):
+    list_display = (
+        "id",
+        "n_notadebito",
+        "n_factura",
+        "created_at_formatted",
+    )
+    
+    @admin.display(ordering="created_at", description="Creado el")
+    def created_at_formatted(self,obj:Factura):
+        return date_to_admin_readable(obj.created_at)
 
 
 admin.site.register(Cliente, ClienteAdmin)
@@ -172,5 +189,5 @@ admin.site.register(Factura, FacturaAdmin)
 admin.site.register(Recibo, ReciboAdmin)
 admin.site.register(CambioUSDBS, CambioUSDAdmin)
 admin.site.register(FacturaOffset, FacturaoffsetAdmin)
-admin.site.register(NotasCredito,NotaCreditoAdminInline)
-admin.site.register(NotasDebito,NotaDebitoAdminInline)
+admin.site.register(NotasCredito,NotasCreditoAdmin)
+admin.site.register(NotasDebito,NotasDebitoAdmin)
