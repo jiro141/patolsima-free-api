@@ -1,5 +1,7 @@
 import os
 import time
+from PIL import Image
+import io
 from datetime import datetime
 from django.http import FileResponse
 from django.db import transaction
@@ -190,8 +192,16 @@ def agregar_imagen_al_informe(
     :return: The URL to access the image file in S3.
     """
 
+    max_size = (300, 300)
+    image = Image.open(file)
+    image.thumbnail(max_size)
+    output = io.BytesIO()
+    image.save(output, format='JPEG')
+    resized_image_data = output.getvalue()
+
+
     uploaded_file = upload_from_request(
-        file, path_prefix=f"informes/{informe.estudio.id}/images"
+        resized_image_data, path_prefix=f"informes/{informe.estudio.id}/images"
     )
     informe.images_for_rich_text.add(uploaded_file)
     informe.save()

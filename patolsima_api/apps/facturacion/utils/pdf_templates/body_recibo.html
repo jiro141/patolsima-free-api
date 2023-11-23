@@ -122,13 +122,13 @@
         <thead class="tabla_precios_header">
             <tr>
                 <th class="table_content table_header_content">Descripción</th>
-                <th class="table_content table_header_content">Cantidad</th>
                 <th class="table_content table_header_content">
-                    {% if tipo_documento == 'Nota de Pago' %}
-                            Precio (Bs)
-                    {% endif %}
-
+                    <!-- {% if tipo_documento == 'Nota de Pago' %} -->
+                    Precio (Bs)
+                    <!-- {% endif %} -->
+                    
                 </th>
+                <th class="table_content table_header_content">Cantidad</th>
                 <th class="table_content table_header_content">Detalles</th>
             </tr>
         </thead>
@@ -136,12 +136,12 @@
             {% for item_orden in items_orden %}
                 <tr>
                     <td class="table_content">{{ fix_tipo_estudio(item_orden.estudio.tipo) }}</td>
-                    <td class="table_content">1</td>
                     <td class="table_content">
-                        {% if tipo_documento == 'Nota de Pago' %}
-                            {{ item_orden.monto_bs }}
-                        {% endif %}
+                        <!-- {% if tipo_documento == 'Nota de Pago' %} -->
+                        {{ item_orden.monto_bs }}
+                        <!-- {% endif %} -->
                     </td>
+                    <td class="table_content">1</td>
                     <td class="table_content">{{ item_orden.estudio.codigo }}</td>
                     <td class="table_content"></td>
                 </tr>

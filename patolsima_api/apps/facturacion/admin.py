@@ -13,6 +13,8 @@ from patolsima_api.apps.facturacion.models import (
     CambioUSDBS,
 )
 
+from patolsima_api.apps.facturacion.models.recibo_y_factura import NotasCredito, NotasDebito
+
 from patolsima_api.apps.facturacion.models.recibo_y_factura import FacturaOffset
 from patolsima_api.utils.admin import date_to_admin_readable
 from patolsima_api.utils.models.admin import AuditableAdmin
@@ -63,6 +65,14 @@ class PagoAdminInline(admin.TabularInline):
 class FacturaAdminInline(admin.StackedInline):
     model = Factura
     readonly_fields = ("s3_file", "fecha_generacion", "n_factura")
+
+class NotaCreditoAdminInline(admin.StackedInline):
+    model = NotasCredito
+    readonly_fields = ("s3_file", "fecha_generacion", "n_factura", "n_notacredito")
+
+class NotaDebitoAdminInline(admin.StackedInline):
+    model = NotasDebito
+    readonly_fields = ("s3_file", "fecha_generacion", "n_factura", "n_notadebito")
 
 
 class ReciboAdminInline(admin.StackedInline):

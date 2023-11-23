@@ -48,6 +48,10 @@ def render_pdf(
     if "footer" in templates:
         wkhtmltopdf_options["--footer-html"] = templates["footer"]["source"]
 
+    if "body_template" in templates:
+        templates["body_template_duplicate"] = templates["body_template"].copy()
+        templates["body_template_duplicate"]["source"] += templates["body_template"]["source"]
+
     output_filename = f"{settings.PDFKIT_RENDER_PATH}/{destination}.pdf"
     pdf_body_pages = [
         conf["source"] for t, conf in templates.items() if t not in ["footer", "header"]
