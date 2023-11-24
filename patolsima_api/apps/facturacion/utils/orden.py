@@ -79,7 +79,8 @@ def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Rec
         #         n_factura+=1
         instancia_de_documento, created = (Factura).objects.get_or_create(orden=orden,n_factura=n_factura, defaults=kwargs)
         instancia_de_documento.monto = orden.importe_orden_bs
-        n_control = Transaccion.objects.filter("n_control").last().n_control
+        n_controlobject = Transaccion.objects.filter("n_control").last()
+        n_control = n_controlobject.n_control + 1
   
         transaccion, created = Transaccion.objects.get_or_create(
             rifci = instancia_de_documento.orden.cliente.ci_rif,
