@@ -148,14 +148,14 @@
             </div>
         </div>
 
-        {% comment %} {% if estudio.tipo == "INMUNOSTOQUIMICA" %} {% endcomment %}
+
             {% if muestra_recibida %}
                 <strong>Muestra Recibida:</strong> {{ muestra_recibida }}
             {% endif %}
                 {% include 'body_inmunostoquimica.html' with context %}
-            {% comment %} {% else %} {% endcomment %}
+
                 {% include 'body_regular.html' with context %}
-        {% comment %} {% endif %} {% endcomment %}
+
 
 
         <br>
