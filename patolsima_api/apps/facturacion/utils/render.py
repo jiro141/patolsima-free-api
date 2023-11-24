@@ -200,6 +200,7 @@ def render_notadebito(registro: NotasDebito,tipo:str) -> str:
         "pagos": registro.orden.pagos.all().order_by("created_at"),
         "tipo_documento": tipo.capitalize(),
         "numero_documento": numero_documento,
+        "monto":registro.monto,
         "fecha_emision": registro.fecha_generacion.astimezone(CARACAS_TIMEZONE)
         .date()
         .isoformat(),
