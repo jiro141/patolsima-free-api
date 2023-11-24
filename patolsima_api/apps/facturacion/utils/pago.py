@@ -43,12 +43,14 @@ def generar_notacredito(orden:Orden) -> NotasCredito:
             delete_original_after_upload=True,
         )
         nota_credito.save()
+        n_controlobject = Transaccion.objects.last()
+        n_control = n_controlobject.n_control + 1
         transaccion, created = Transaccion.objects.get_or_create(
             rifci = nota_credito.orden.cliente.ci_rif,
             cliente=nota_credito.orden.cliente.razon_social,
             tipo = "NOTA CREDITO",
             monto = nota_credito.monto*-1,
-            n_control = (Transaccion.objects.filter("n_control").last().n_control + 1),
+            n_control = n_control,
             n_documento = nota_credito.n_notacredito
             )
     factura.delete()
@@ -75,13 +77,14 @@ def generar_notadebito(orden:Orden,monto,**kwargs) -> NotasDebito:
             delete_original_after_upload=True,
         )
         nota_debito.save()
-         
+        n_controlobject = Transaccion.objects.last()
+        n_control = n_controlobject.n_control + 1
         transaccion, created = Transaccion.objects.get_or_create(
             rifci = nota_debito.orden.cliente.ci_rif,
             cliente=nota_debito.orden.cliente.razon_social,
             tipo = "NOTA DEBITO",
             monto = nota_debito.monto,
-            n_control = (Transaccion.objects.filter("n_control").last().n_control + 1),
+            n_control = n_control,
             n_documento = nota_debito.nota_debito
             )
 
