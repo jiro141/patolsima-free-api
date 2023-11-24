@@ -12,8 +12,10 @@ from datetime import date
 
 
 class TransaccionesViewSet(ModelViewSet):
-    queryset = Transaccion.objects.all()  # Define the queryset
-    serializer_class = TransaccionSerializer  # Define your serializer class
+    queryset = Transaccion.objects.all()  
+    serializer_class = TransaccionSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    permission_classes = [DjangoModelPermissions]  
 
     @action(detail=False, methods=['get'])
     def download_csv(self, request):
@@ -26,17 +28,18 @@ class TransaccionesViewSet(ModelViewSet):
         start_date = date.fromisoformat(start_date_str) if start_date_str else None
         end_date = date.fromisoformat(end_date_str) if end_date_str else None
 
+        queryset = self.get_queryset()
+
         # Filter queryset based on date range if start_date and end_date are provided
         if start_date and end_date:
             queryset = queryset.filter(fecha_emision__range=(start_date, end_date))
         response = HttpResponse(
                 content_type="text/csv",
-                headers={"Content-Disposition": 'attachment; filename="somefilename.csv"'},
+                headers={"Content-Disposition": 'attachment; filename="reporte.csv"'},
                 )
         writer = csv.writer(response)
         writer.writerow(['rif/ci', 'cliente', 'tipo', 'numero control', 'monto', 'fecha emision'])
 
-        queryset = self.get_queryset()
         if queryset.exists():  # Check if queryset has any data
             for item in queryset:
                 writer.writerow([

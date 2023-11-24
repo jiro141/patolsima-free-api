@@ -158,29 +158,22 @@ class FacturaoffsetAdmin(SimpleHistoryAdmin):
     def created_at_formatted(self,obj:Factura):
         return date_to_admin_readable(obj.created_at)
     
-# class NotasCreditoAdmin(SimpleHistoryAdmin):
-#     list_display = (
-#         "id",
-#         "n_notacredito",
-#         "n_factura",
-#         "created_at_formatted",
-#     )
+class NotasCreditoAdmin(SimpleHistoryAdmin):
+    list_display = (
+        "n_notacredito",
+        "n_factura",
+        "fecha_generacion",
+    )
     
-#     @admin.display(ordering="created_at", description="Creado el")
-#     def created_at_formatted(self,obj:Factura):
-#         return date_to_admin_readable(obj.created_at)
     
-# class NotasDebitoAdmin(SimpleHistoryAdmin):
-#     list_display = (
-#         "id",
-#         "n_notadebito",
-#         "n_factura",
-#         "created_at_formatted",
-#     )
+class NotasDebitoAdmin(SimpleHistoryAdmin):
+    list_display = (
+
+        "n_notadebito",
+        "n_factura",
+        "fecha_generacion",
+    )
     
-#     @admin.display(ordering="created_at", description="Creado el")
-#     def created_at_formatted(self,obj:Factura):
-#         return date_to_admin_readable(obj.created_at)
 
 
 admin.site.register(Cliente, ClienteAdmin)
@@ -189,5 +182,5 @@ admin.site.register(Factura, FacturaAdmin)
 admin.site.register(Recibo, ReciboAdmin)
 admin.site.register(CambioUSDBS, CambioUSDAdmin)
 admin.site.register(FacturaOffset, FacturaoffsetAdmin)
-# admin.site.register(NotasCredito,NotasCreditoAdmin)
-# admin.site.register(NotasDebito,NotasDebitoAdmin)
+admin.site.register(NotasCredito,NotasCreditoAdmin)
+admin.site.register(NotasDebito,NotasDebitoAdmin)
