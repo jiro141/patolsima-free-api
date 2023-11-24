@@ -10,8 +10,9 @@
     <p class="total_item total_item_left texto_pegao">Total Bs:</p>
     <p class="total_item total_item_right texto_pegao">
         {% if tipo_documento == "NOTA DE DEBITO" %}\
-        {% else %}
             {{ monto }}
+        {% else %}
+            {{ total_bs }}
         {% endif %}
     </p>
 
