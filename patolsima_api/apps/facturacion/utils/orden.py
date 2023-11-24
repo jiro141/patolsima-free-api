@@ -86,7 +86,8 @@ def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Rec
             cliente=instancia_de_documento.orden.cliente.razon_social,
             tipo = "FACTURA",
             monto = instancia_de_documento.monto,
-            n_control = instancia_de_documento.n_factura
+            n_control = Transaccion.objects.filter("n_control").last(),
+            n_documento = instancia_de_documento.n_factura
             )
         
         instancia_de_documento.fecha_generacion = datetime.now()

@@ -17,6 +17,7 @@ class Transaccion( AuditableMixin, ArchivableMixing):
     cliente = models.CharField(max_length=50)
     tipo = models.CharField(max_length=32)
     n_control = models.PositiveIntegerField(unique=True, db_index=True)
+    n_documento= models.PositiveIntegerField(default=0)
     monto = models.DecimalField(
         max_digits=14, decimal_places=2, default=Decimal("0.00")
     )

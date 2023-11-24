@@ -48,7 +48,8 @@ def generar_notacredito(orden:Orden) -> NotasCredito:
             cliente=nota_credito.orden.cliente.razon_social,
             tipo = "NOTA CREDITO",
             monto = nota_credito.monto*-1,
-            n_control = nota_credito.n_notacredito
+            n_control = Transaccion.objects.filter("n_control").last(),
+            n_documento = nota_credito.n_notacredito
             )
     factura.delete()
     return nota_credito
@@ -80,7 +81,8 @@ def generar_notadebito(orden:Orden,monto,**kwargs) -> NotasDebito:
             cliente=nota_debito.orden.cliente.razon_social,
             tipo = "NOTA DEBITO",
             monto = nota_debito.monto,
-            n_control = lastest_nrecord
+            n_control = Transaccion.objects.filter("n_control").last(),
+            n_documento = nota_debito.nota_debito
             )
 
     return nota_debito

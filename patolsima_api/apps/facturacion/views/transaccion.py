@@ -38,13 +38,13 @@ class TransaccionesViewSet(ModelViewSet):
                 headers={"Content-Disposition": 'attachment; filename="reporte.csv"'},
                 )
         writer = csv.writer(response)
-        writer.writerow(['rif/ci', 'cliente', 'tipo', 'numero control', 'monto', 'fecha emision'])
+        writer.writerow(['numero transaccion','rif/ci', 'cliente', 'tipo','numero control', 'monto', 'fecha emision'])
 
         if queryset.exists():  # Check if queryset has any data
             for item in queryset:
                 writer.writerow([
-                    item.rifci, item.cliente, item.tipo,
-                    item.n_control, item.monto, item.fecha_emision
+                    item.n_control,item.rifci, item.cliente, item.tipo,
+                    item.n_documento, item.monto, item.fecha_emision
                 ])
         else:
             writer.writerow(['No data found'])  # Indicate if there is no data in CSV
