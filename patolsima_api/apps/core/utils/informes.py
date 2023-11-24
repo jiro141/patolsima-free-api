@@ -102,6 +102,7 @@ def render_informe(informe: Informe, preview_only: bool = False) -> str:
                     if muestra.tipo_de_muestra
                 ]
             ),
+            "muestra_recibida":informe.muestra_recibida
         },
         templates=INFORME_REGULAR_TEMPLATES,
         destination=filename,
