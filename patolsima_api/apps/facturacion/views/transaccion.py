@@ -9,6 +9,8 @@ from patolsima_api.apps.facturacion.models.transaccion import Transaccion
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from datetime import date
+from django.http import JsonResponse
+from patolsima_api.apps.facturacion.models.recibo_y_factura import Factura, FacturaOffset
 
 
 class TransaccionesViewSet(ModelViewSet):
@@ -50,3 +52,18 @@ class TransaccionesViewSet(ModelViewSet):
             writer.writerow(['No data found'])  # Indicate if there is no data in CSV
 
         return response
+    
+    @action(detail=False, methods=['get'])
+    def ultimafactura(self, request):
+        lastF = Factura.objects.filter().last()
+        lastoffset = FacturaOffset.objects.order_by('factura_offset').last()
+
+        if lastF and lastoffset:
+            if lastF.id >= lastoffset.id:
+                data = {"n_factura": lastF.n_factura}  # Replace 'n_factura' with the appropriate field name from Transaccion model
+            else:
+                data = {"n_factura": lastoffset.n_factura_offset}  # Replace 'n_factura_offset' with the appropriate field name from FacturaOffset model
+        else:
+            data = {"n_factura": None}  # Or set a default value if there's no data
+
+        return JsonResponse(data)
