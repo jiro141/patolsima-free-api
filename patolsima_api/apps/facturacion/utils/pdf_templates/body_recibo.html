@@ -106,7 +106,7 @@
                 <p class="cliente_left_container_item"><strong>Dirección:</strong> {{ cliente.direccion }}</p>
             </div>
             <div class="cliente_right_container">
-                <p class="cliente_right_container_item"><strong>No. de {{documento_tipo}}:</strong> {% if documento_tipo != 'Factura' %}{{ orden.id }}{% else %}{{ numero_documento }}{% endif %}</p>
+                <p class="cliente_right_container_item"><strong>No. de {{tipo_documento}}:</strong> {{numero_documento}}</p>
                 <p class="cliente_right_container_item"><strong>Fecha de Emisión:</strong> {{ fecha_emision }}</p>
                 {% if cliente.telefono_celular %}
                     <p class="cliente_right_container_item"><strong>Teléfono:</strong> {{ cliente.telefono_celular }}</p>
@@ -154,6 +154,13 @@
         {% else %}
             {% include 'factura_recibo_total.html' with context %}
         {% endif %}
+
+        {% if tipo_documento == 'Nota debito' %}
+        <p>Documento que altera el  Comprobante que modifica FACTURA NRO {{n_factura}} emitida el {{fecha_factura}}</p>
+    {% endif %}
+    {% if tipo_documento == 'Nota credito' %}
+        <p>Comprobante que modifica FACTURA NRO {{n_factura}} emitida el {{fecha_factura}}<p>
+    {% endif %}
 
         <br>
         <br>

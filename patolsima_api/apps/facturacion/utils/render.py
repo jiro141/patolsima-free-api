@@ -75,7 +75,7 @@ def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str) -> str:
         extra_args={
             "wkhtmltopdf_options": {
                 "--page-size": "A5",
-                "--orientation": "Landscape",
+                "--orientation": "Portrait",
                 "--header-spacing": "5",
                 "--footer-spacing": "5",
                 "--margin-left": "50px",
@@ -165,7 +165,7 @@ def render_notacredito(registro: Union[NotasCredito, Recibo], tipo: str) -> str:
         extra_args={
             "wkhtmltopdf_options": {
                 "--page-size": "A5",
-                "--orientation": "Landscape",
+                "--orientation": "Portrait",
                 "--header-spacing": "5",
                 "--footer-spacing": "5",
                 "--margin-left": "50px",
@@ -213,7 +213,7 @@ def render_notadebito(registro: NotasDebito,tipo:str) -> str:
         extra_args={
             "wkhtmltopdf_options": {
                 "--page-size": "A5",
-                "--orientation": "Landscape",
+                "--orientation": "Portrait",
                 "--header-spacing": "5",
                 "--footer-spacing": "5",
                 "--margin-left": "50px",
