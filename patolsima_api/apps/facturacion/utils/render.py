@@ -150,6 +150,7 @@ def render_notacredito(registro: Union[NotasCredito, Recibo], tipo: str) -> str:
         "pagos": registro.orden.pagos.all().order_by("created_at"),
         "tipo_documento": tipo.capitalize(),
         "numero_documento": numero_documento,
+        "n_factura":registro.n_factura,
         "fecha_emision": registro.fecha_generacion.astimezone(CARACAS_TIMEZONE)
         .date()
         .isoformat(),
@@ -183,6 +184,7 @@ def render_notadebito(registro: NotasDebito,tipo:str) -> str:
     :return: the path of the PDF file in the filesystem
     """
     numero_documento = registro.n_notadebito 
+    feche_factura = Factura.objects.get(orden=registro.orden).fecha_generacion.astimezone(CARACAS_TIMEZONE)
     filename = f"{tipo}_{registro.orden.id}_{int(time.time())}"
     context = {
         "current_work_path_python": os.getcwd(),
@@ -194,7 +196,9 @@ def render_notadebito(registro: NotasDebito,tipo:str) -> str:
         "pagos": registro.orden.pagos.all().order_by("created_at"),
         "tipo_documento": tipo.capitalize(),
         "numero_documento": numero_documento,
+        "n_factura":registro.n_factura,
         "monto":registro.monto,
+        "fecha_factura":feche_factura,
         "fecha_emision": registro.fecha_generacion.astimezone(CARACAS_TIMEZONE)
         .date()
         .isoformat(),
