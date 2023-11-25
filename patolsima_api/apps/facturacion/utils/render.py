@@ -151,7 +151,7 @@ def render_notacredito(registro: Union[NotasCredito, Recibo], tipo: str) -> str:
         "tipo_documento": tipo.capitalize(),
         "numero_documento": numero_documento,
         "n_factura":registro.n_factura,
-        "fecha_emision": registro.fecha_generacion.astimezone(CARACAS_TIMEZONE)
+        "fecha_emision": registro.fecha_generacion.astimezone(CARACAS_TIMEZONE).date()
         .date()
         .isoformat(),
         **registro.orden.balance,
@@ -199,7 +199,7 @@ def render_notadebito(registro: NotasDebito,tipo:str) -> str:
         "n_factura":registro.n_factura,
         "monto":registro.monto,
         "fecha_factura":feche_factura,
-        "fecha_emision": registro.fecha_generacion.astimezone(CARACAS_TIMEZONE)
+        "fecha_emision": registro.fecha_generacion.astimezone(CARACAS_TIMEZONE).date()
         .date()
         .isoformat(),
         **registro.orden.balance,
