@@ -93,8 +93,10 @@ def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Rec
         
         instancia_de_documento.fecha_generacion = datetime.now()
 
+        n_documento = instancia_de_documento.n_factura if tipo_documento!="recibo" else None
+
         instancia_de_documento.s3_file = upload_from_local_filesystem(
-            render_recibo_factura(instancia_de_documento, tipo_documento),
+            render_recibo_factura(instancia_de_documento, tipo_documento, n_documento),
             path_prefix=f"ordenes/{orden.id}",
             delete_original_after_upload=True,
         )
