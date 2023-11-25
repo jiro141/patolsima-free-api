@@ -144,9 +144,9 @@ def render_notacredito(registro: Union[NotasCredito, Recibo], tipo: str) -> str:
         "current_work_path_python": os.getcwd(),
         "cliente": registro.orden.cliente,
         "orden": registro.orden,
-        "items_orden": registro.orden.items_orden.all().order_by(
-            "estudio__tipo", "estudio__codigo"
-        ),
+        # "items_orden": registro.orden.items_orden.all().order_by(
+        #     "estudio__tipo", "estudio__codigo"
+        # ),
         "pagos": registro.orden.pagos.all().order_by("created_at"),
         "tipo_documento": tipo.capitalize(),
         "numero_documento": numero_documento,
@@ -190,9 +190,9 @@ def render_notadebito(registro: NotasDebito,tipo:str) -> str:
         "current_work_path_python": os.getcwd(),
         "cliente": registro.orden.cliente,
         "orden": registro.orden,
-        "items_orden": registro.orden.items_orden.all().order_by(
-            "estudio__tipo", "estudio__codigo"
-        ),
+        # "items_orden": registro.orden.items_orden.all().order_by(
+        #     "estudio__tipo", "estudio__codigo"
+        # ),
         "pagos": registro.orden.pagos.all().order_by("created_at"),
         "tipo_documento": tipo.capitalize(),
         "numero_documento": numero_documento,
