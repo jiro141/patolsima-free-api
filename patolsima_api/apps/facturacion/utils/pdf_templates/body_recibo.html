@@ -118,35 +118,80 @@
             </div>
     
             <br>
-    
+            {% if tipo_documento != 'Nota debito' or tipo_documento == 'Nota credito'%}
             <table class="tabla_precios">
-            <thead class="tabla_precios_header">
-                <tr>
-                    <th class="table_content table_header_content">Descripción</th>
-                    <th class="table_content table_header_content">Precio (Bs)</th>
-                    <th class="table_content table_header_content">Cantidad</th>
-                    <th class="table_content table_header_content">Detalles</th>
-                </tr>
-            </thead>
-            <tbody class="tabla_precios_body">
-                {% for item_orden in items_orden %}
+                <thead class="tabla_precios_header">
                     <tr>
-                        <td class="table_content">{{ fix_tipo_estudio(item_orden.estudio.tipo) }}</td>
-                        <td class="table_content">
-                            {% if tipo_documento == 'Nota credito' %}
-                                {{ item_orden.monto_bs*-1 }}
-                            {% else %}
-                                {{ item_orden.monto_bs }}
-                            {% endif %}
-                            
-                        </td>
-                        <td class="table_content">1</td>
-                        <td class="table_content">{{ item_orden.estudio.codigo }}</td>
-                        <td class="table_content"></td>
+                        <th class="table_content table_header_content">Descripción</th>
+                        <th class="table_content table_header_content">Precio (Bs)</th>
+                        <th class="table_content table_header_content">Cantidad</th>
+                        <th class="table_content table_header_content">Detalles</th>
                     </tr>
-                {% endfor %}
-            </tbody>
+                </thead>
+                <tbody class="tabla_precios_body">
+                    {% for item_orden in items_orden %}
+                        <tr>
+                            <td class="table_content">{{ fix_tipo_estudio(item_orden.estudio.tipo) }}</td>
+                            <td class="table_content">
+                                {% if tipo_documento == 'Nota credito' %}
+                                    {{ item_orden.monto_bs*-1 }}
+                                {% else %}
+                                    {{ item_orden.monto_bs }}
+                                {% endif %}
+                                
+                            </td>
+                            <td class="table_content">1</td>
+                            <td class="table_content">{{ item_orden.estudio.codigo }}</td>
+                            <td class="table_content"></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
             </table>
+            
+            {% endif %}
+
+            {% if tipo_documento == 'Nota debito'%}
+            <table class="tabla_precios">
+                <thead class="tabla_precios_header">
+                    <tr>
+                        <th class="table_content table_header_content">Descripción</th>
+                    </tr>
+                </thead>
+                <tbody class="tabla_precios_body">
+                    {% for item_orden in items_orden %}
+                        <tr>
+                            <td class="table_content">{{ fix_tipo_estudio(item_orden.estudio.tipo) }}</td>
+                            <td class="table_content">
+                                Documento que altera el  Comprobante que modifica FACTURA NRO {{n_factura}} emitida el {{fecha_factura}}   
+                            </td>
+
+                            <td class="table_content"></td>
+                        </tr>
+                </tbody>
+            </table>
+            <p></p>
+            {% endif %}
+            {% if tipo_documento == 'Nota credito'%}
+            <table class="tabla_precios">
+                <thead class="tabla_precios_header">
+                    <tr>
+                        <th class="table_content table_header_content">Descripción</th>
+                    </tr>
+                </thead>
+                <tbody class="tabla_precios_body">
+                    {% for item_orden in items_orden %}
+                        <tr>
+                            <td class="table_content">{{ fix_tipo_estudio(item_orden.estudio.tipo) }}</td>
+                            <td class="table_content">
+                                Comprobante que modifica FACTURA NRO {{n_factura}} emitida el {{fecha_factura}}   
+                            </td>
+
+                            <td class="table_content"></td>
+                        </tr>
+                </tbody>
+            </table>
+            <p></p>
+            {% endif %}
     
             <br>
     
@@ -154,13 +199,6 @@
                 {% include 'nota_de_pago_total.html' with context %}
             {% else %}
                 {% include 'factura_recibo_total.html' with context %}
-            {% endif %}
-    
-            {% if tipo_documento == 'Nota debito' %}
-            <p>Documento que altera el  Comprobante que modifica FACTURA NRO {{n_factura}} emitida el {{fecha_factura}}</p>
-            {% endif %}
-            {% if tipo_documento == 'Nota credito' %}
-                <p>Comprobante que modifica FACTURA NRO {{n_factura}} emitida el {{fecha_factura}}<p>
             {% endif %}
     
             <br>
