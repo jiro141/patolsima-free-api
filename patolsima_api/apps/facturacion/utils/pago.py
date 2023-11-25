@@ -85,7 +85,7 @@ def generar_notadebito(orden:Orden,monto,**kwargs) -> NotasDebito:
             tipo = "NOTA DEBITO",
             monto = nota_debito.monto,
             n_control = n_control,
-            n_documento = nota_debito.nota_debito
+            n_documento = nota_debito.n_notadebito
             )
 
     return nota_debito
