@@ -57,13 +57,18 @@ class TransaccionesViewSet(ModelViewSet):
     def ultimafactura(self, request):
         lastF = Factura.objects.filter().last()
         lastoffset = FacturaOffset.objects.order_by('factura_offset').last()
-
+        f_transaccion = Transaccion.objects.filter(tipo="FACTURA").order_by("n_control").last() 
         if lastF and lastoffset:
             if lastF.id >= lastoffset.id:
-                data = {"n_factura": lastF.n_factura}  # Replace 'n_factura' with the appropriate field name from Transaccion model
+                n_factura = lastF.n_factura  
             else:
-                data = {"n_factura": lastoffset.n_factura_offset}  # Replace 'n_factura_offset' with the appropriate field name from FacturaOffset model
-        else:
-            data = {"n_factura": None}  # Or set a default value if there's no data
+                n_factura = lastoffset.n_factura_offset  
+        
+        if f_transaccion!=None:
+             if f_transaccion.n_control >= n_factura:
+                n_factura=f_transaccion.n_documento
+            
+            
+        data = {"n_factura": n_factura}  # Or set a default value if there's no data
 
         return JsonResponse(data)
