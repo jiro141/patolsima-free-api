@@ -132,7 +132,7 @@
                 <tr>
                     <td class="table_content">{{ fix_tipo_estudio(item_orden.estudio.tipo) }}</td>
                     <td class="table_content">
-                        {% if tipo_documento == 'NOTA DE CREDITO' %}
+                        {% if tipo_documento == 'Nota credito' %}
                             {{ item_orden.monto_bs*-1 }}
                         {% else %}
                             {{ item_orden.monto_bs }}

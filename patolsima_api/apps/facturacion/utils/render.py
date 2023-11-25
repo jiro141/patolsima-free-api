@@ -18,14 +18,12 @@ RECIBO_TEMPLATES = {
 
 NOTA_CREDITO_TEMPLATES = {
     "body": {"pre_render": True, "template_obj": recibo_body_template},
-    "header": {"pre_render": True, "template_obj": recibo_header_template},
-    "footer": {"pre_render": True, "template_obj": recibo_footer_template},
+
 }
 
 NOTA_DEBITO_TEMPLATES = {
     "body": {"pre_render": True, "template_obj": recibo_body_template},
-    "header": {"pre_render": True, "template_obj": recibo_header_template},
-    "footer": {"pre_render": True, "template_obj": recibo_footer_template},
+
 }
 
 # Factura does not contain header or footer because Patolsima already owns the format in paper with those elements
