@@ -197,8 +197,6 @@
                 {% include 'factura_recibo_total.html' with context %}
             {% endif %}
     
-            <br>
-    
             <div class="texto_pegao">
                 <div class="texto_abajo_container_left">
                     <p>Por favor llamar antes de venir</p>
@@ -294,7 +292,6 @@
                 </thead>
                 <tbody class="tabla_precios_body">
                         <tr>
-                            <td class="table_content">{{ fix_tipo_estudio(item_orden.estudio.tipo) }}</td>
                             <td class="table_content">
                                 Comprobante que modifica FACTURA NRO {{n_factura}} emitida el {{fecha_factura}}   
                             </td>
