@@ -48,7 +48,7 @@ def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str, n_documen
     """
 
     factura = Factura.objects.get(orden=registro.orden)
-    numero_documento = registro.id if tipo == "recibo" else n_documento
+    numero_documento = registro.id if tipo == "recibo" else "pajudo"
     documento_tipo = "Orden" if tipo == "recibo" else "Factura"
     orden = numero_documento if documento_tipo == "Factura" else registro.orden
     filename = f"{tipo}_{registro.orden.id}_{int(time.time())}"
