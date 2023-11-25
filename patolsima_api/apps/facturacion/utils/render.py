@@ -139,6 +139,7 @@ def render_notacredito(registro: Union[NotasCredito, Recibo], tipo: str) -> str:
     :return: the path of the PDF file in the filesystem
     """
     numero_documento = registro.n_notacredito 
+    fecha_factura = Factura.objects.get(orden=registro.orden).fecha_generacion.astimezone(CARACAS_TIMEZONE).date()
     filename = f"{tipo}_{registro.orden.id}_{int(time.time())}"
     context = {
         "current_work_path_python": os.getcwd(),
@@ -151,7 +152,8 @@ def render_notacredito(registro: Union[NotasCredito, Recibo], tipo: str) -> str:
         "tipo_documento": tipo.capitalize(),
         "numero_documento": numero_documento,
         "n_factura":registro.n_factura,
-        "fecha_emision": registro.fecha_generacion.astimezone(CARACAS_TIMEZONE).date()
+        "fecha_factura":fecha_factura,
+        "fecha_emision": registro.fecha_generacion.astimezone(CARACAS_TIMEZONE)
         .date()
         .isoformat(),
         **registro.orden.balance,
@@ -184,7 +186,7 @@ def render_notadebito(registro: NotasDebito,tipo:str) -> str:
     :return: the path of the PDF file in the filesystem
     """
     numero_documento = registro.n_notadebito 
-    feche_factura = Factura.objects.get(orden=registro.orden).fecha_generacion.astimezone(CARACAS_TIMEZONE)
+    fecha_factura = Factura.objects.get(orden=registro.orden).fecha_generacion.astimezone(CARACAS_TIMEZONE).date()
     filename = f"{tipo}_{registro.orden.id}_{int(time.time())}"
     context = {
         "current_work_path_python": os.getcwd(),
@@ -198,8 +200,8 @@ def render_notadebito(registro: NotasDebito,tipo:str) -> str:
         "numero_documento": numero_documento,
         "n_factura":registro.n_factura,
         "monto":registro.monto,
-        "fecha_factura":feche_factura,
-        "fecha_emision": registro.fecha_generacion.astimezone(CARACAS_TIMEZONE).date()
+        "fecha_factura":fecha_factura,
+        "fecha_emision": registro.fecha_generacion.astimezone(CARACAS_TIMEZONE)
         .date()
         .isoformat(),
         **registro.orden.balance,
