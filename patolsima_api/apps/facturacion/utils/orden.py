@@ -71,7 +71,7 @@ def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Rec
         else:
             n_factura = latest_ofrecord + 1
 
-        f_transaccion = Transaccion.objects.filter(tipo="FACTURA").order_by("-id").last()
+        f_transaccion = Transaccion.objects.filter(tipo="FACTURA").order_by("n_control").last()
 
 
         if f_transaccion!=None:
