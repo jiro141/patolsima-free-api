@@ -9,7 +9,7 @@ from patolsima_api.apps.facturacion.models import CambioUSDBS
 def actualizar_cambio_usd_bs() -> CambioUSDBS:
     precio_dolar_bcv = settings.BCV_HANDLER.get_rate("USD")
     return CambioUSDBS.objects.create(
-        bs_e=Decimal(precio_dolar_bcv).quantize(Decimal(".0000001"))
+        bs_e=Decimal(precio_dolar_bcv).quantize(Decimal(".00001"))
     )
 
 
