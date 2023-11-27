@@ -1,6 +1,6 @@
 from datetime import datetime
 from django.db import transaction
-from patolsima_api.apps.facturacion.models.recibo_y_factura import FacturaOffset
+from patolsima_api.apps.facturacion.models.recibo_y_factura import FacturaOffset, NotasCredito
 from patolsima_api.apps.facturacion.models.transaccion import Transaccion
 from rest_framework.serializers import ValidationError
 from patolsima_api.apps.facturacion.models import Orden, Factura, Recibo
@@ -77,7 +77,10 @@ def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Rec
         if f_transaccion!=None:
              if f_transaccion.n_control >= n_factura:
                 n_factura=f_transaccion.n_documento + 1
+
         instancia_de_documento, created = (Factura).objects.get_or_create(orden=orden,n_factura=n_factura, defaults=kwargs)
+        if NotasCredito.objects.get(n_factura=instancia_de_documento.n_factura):
+            instancia_de_documento, created = Factura.objects.create(orden=orden, n_factura=n_factura, defaults=kwargs)
         instancia_de_documento.monto = orden.importe_orden_bs
         n_controlobject = Transaccion.objects.last()
         n_control = n_controlobject.n_control + 1
