@@ -5,6 +5,7 @@ from patolsima_api.apps import facturacion
 from patolsima_api.apps.facturacion.models import Pago, NotaPago
 from patolsima_api.apps.facturacion.models.orden import Orden
 from patolsima_api.apps.facturacion.models.recibo_y_factura import NotasCredito, NotasDebito, Factura
+from patolsima_api.apps.uploaded_file_management.models import UploadedFile
 from patolsima_api.apps.uploaded_file_management.utils.upload import (
     upload_from_local_filesystem,
 )
@@ -33,6 +34,7 @@ def generar_notacredito(orden:Orden) -> NotasCredito:
     factura = Factura.objects.get(orden=orden)
     monto = factura.monto
     n_factura = factura.n_factura
+    s3_file = UploadedFile.objects.get(file_name=factura.s3_file.file_name)
     
     with transaction.atomic() as current_transaction:
         nota_credito, created = NotasCredito.objects.get_or_create(orden=orden,n_factura=n_factura, monto=monto, defaults={})
@@ -53,6 +55,7 @@ def generar_notacredito(orden:Orden) -> NotasCredito:
             n_control = n_control,
             n_documento = nota_credito.n_notacredito
             )
+    s3_file.delete()
     factura.delete()
     return nota_credito
 
