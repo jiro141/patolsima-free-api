@@ -49,7 +49,7 @@ def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str) -> str:
     numero_documento = registro.id if tipo == "recibo" else factura.n_factura
     documento_tipo = "Orden" if tipo == "recibo" else "Factura"
     orden = numero_documento if documento_tipo == "Factura" else registro.orden
-    filename = f"{tipo}_{registro.orden.id}_{int(time.time())}"
+    filename = f"{tipo}_{numero_documento}_{int(time.time())}"
     context = {
         "current_work_path_python": os.getcwd(),
         "cliente": registro.orden.cliente,
@@ -140,7 +140,7 @@ def render_notacredito(registro: Union[NotasCredito, Recibo], tipo: str) -> str:
     """
     numero_documento = registro.n_notacredito 
     fecha_factura = Factura.objects.get(orden=registro.orden).fecha_generacion.astimezone(CARACAS_TIMEZONE).date()
-    filename = f"{tipo}_{registro.orden.id}_{int(time.time())}"
+    filename = f"{tipo}_{numero_documento}_{int(time.time())}"
     context = {
         "current_work_path_python": os.getcwd(),
         "cliente": registro.orden.cliente,
@@ -187,7 +187,7 @@ def render_notadebito(registro: NotasDebito,tipo:str) -> str:
     """
     numero_documento = registro.n_notadebito 
     fecha_factura = Factura.objects.get(orden=registro.orden).fecha_generacion.astimezone(CARACAS_TIMEZONE).date()
-    filename = f"{tipo}_{registro.orden.id}_{int(time.time())}"
+    filename = f"{tipo}_{numero_documento}_{int(time.time())}"
     context = {
         "current_work_path_python": os.getcwd(),
         "cliente": registro.orden.cliente,
