@@ -96,7 +96,7 @@ def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Rec
 
         instancia_de_documento.s3_file = upload_from_local_filesystem(
             render_recibo_factura(instancia_de_documento, tipo_documento),
-            path_prefix=f"ordenes/{orden.id}",
+            path_prefix=f"ordenes/{instancia_de_documento.n_factura}",
             delete_original_after_upload=True,
         )
         instancia_de_documento.save()
