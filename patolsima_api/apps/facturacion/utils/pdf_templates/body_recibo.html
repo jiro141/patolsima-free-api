@@ -118,7 +118,7 @@
             </div>
     
             <br>
-            {% if tipo_documento != 'Nota debito' or tipo_documento == 'Nota credito'%}
+            {% if tipo_documento != 'Nota debito' and tipo_documento != 'Nota credito'%}
             <table class="tabla_precios">
                 <thead class="tabla_precios_header">
                     <tr>
@@ -133,12 +133,7 @@
                         <tr>
                             <td class="table_content">{{ fix_tipo_estudio(item_orden.estudio.tipo) }}</td>
                             <td class="table_content">
-                                {% if tipo_documento == 'Nota credito' %}
-                                    {{ item_orden.monto_bs*-1 }}
-                                {% else %}
-                                    {{ item_orden.monto_bs }}
-                                {% endif %}
-                                
+                                    {{ item_orden.monto_bs }}   
                             </td>
                             <td class="table_content">1</td>
                             <td class="table_content">{{ item_orden.estudio.codigo }}</td>
@@ -212,121 +207,119 @@
 
         </div>
         <br>
-        <br>
+
 
         {% if tipo_documento == 'Factura' or tipo_documento == "Nota debito" or tipo_documento == 'Nota credito' %}
-        <div>
-            <div class="cliente_container texto_pegao">
-                <div class="cliente_left_container">
-                    <p class="cliente_left_container_item razon_social_item"><strong>Nombre y Apellido o Razón Social:</strong> {{ cliente.razon_social }}</p>
-                    <p class="cliente_left_container_item"><strong>R.I.F./C.I.:</strong> {{ cliente.ci_rif }}</p>
-                    <p class="cliente_left_container_item"><strong>Dirección:</strong> {{ cliente.direccion }}</p>
+
+            <div>
+                <div class="cliente_container texto_pegao">
+                    <div class="cliente_left_container">
+                        <p class="cliente_left_container_item razon_social_item"><strong>Nombre y Apellido o Razón Social:</strong> {{ cliente.razon_social }}</p>
+                        <p class="cliente_left_container_item"><strong>R.I.F./C.I.:</strong> {{ cliente.ci_rif }}</p>
+                        <p class="cliente_left_container_item"><strong>Dirección:</strong> {{ cliente.direccion }}</p>
+                    </div>
+                    <div class="cliente_right_container">
+                        <p class="cliente_right_container_item"><strong>No. de {{tipo_documento}}:</strong> {{numero_documento}}</p>
+                        <p class="cliente_right_container_item"><strong>Fecha de Emisión:</strong> {{ fecha_emision }}</p>
+                        {% if cliente.telefono_celular %}
+                            <p class="cliente_right_container_item"><strong>Teléfono:</strong> {{ cliente.telefono_celular }}</p>
+                        {% else %}
+                            <p class="cliente_right_container_item"><strong>Teléfono:</strong> {{ cliente.telefono_fijo }}</p>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="cliente_right_container">
-                    <p class="cliente_right_container_item"><strong>No. de {{tipo_documento}}:</strong> {{numero_documento}}</p>
-                    <p class="cliente_right_container_item"><strong>Fecha de Emisión:</strong> {{ fecha_emision }}</p>
-                    {% if cliente.telefono_celular %}
-                        <p class="cliente_right_container_item"><strong>Teléfono:</strong> {{ cliente.telefono_celular }}</p>
-                    {% else %}
-                        <p class="cliente_right_container_item"><strong>Teléfono:</strong> {{ cliente.telefono_fijo }}</p>
-                    {% endif %}
+        
+                <br>
+                {% if tipo_documento != 'Nota debito' and tipo_documento != 'Nota credito'%}
+                <table class="tabla_precios">
+                    <thead class="tabla_precios_header">
+                        <tr>
+                            <th class="table_content table_header_content">Descripción</th>
+                            <th class="table_content table_header_content">Precio (Bs)</th>
+                            <th class="table_content table_header_content">Cantidad</th>
+                            <th class="table_content table_header_content">Detalles</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tabla_precios_body">
+                        {% for item_orden in items_orden %}
+                            <tr>
+                                <td class="table_content">{{ fix_tipo_estudio(item_orden.estudio.tipo) }}</td>
+                                <td class="table_content">
+                                        {{ item_orden.monto_bs }}   
+                                </td>
+                                <td class="table_content">1</td>
+                                <td class="table_content">{{ item_orden.estudio.codigo }}</td>
+                                <td class="table_content"></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+                {% endif %}
+
+                {% if tipo_documento == 'Nota debito'%}
+                <table class="tabla_precios">
+                    <thead class="tabla_precios_header">
+                        <tr>
+                            <th class="table_content table_header_content">Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tabla_precios_body">
+                            <tr>
+                                <td class="table_content">
+                                    Comprobante que modifica FACTURA NRO {{n_factura}} emitida el {{fecha_factura}}   
+                                </td>
+
+                                <td class="table_content"></td>
+                            </tr>
+                    </tbody>
+                </table>
+                <p></p>
+                {% endif %}
+                {% if tipo_documento == 'Nota credito'%}
+                <table class="tabla_precios">
+                    <thead class="tabla_precios_header">
+                        <tr>
+                            <th class="table_content table_header_content">Descripción</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tabla_precios_body">
+                            <tr>
+                                <td class="table_content">
+                                    Comprobante que modifica FACTURA NRO {{n_factura}} emitida el {{fecha_factura}}   
+                                </td>
+
+                                <td class="table_content"></td>
+                            </tr>
+                    </tbody>
+                </table>
+                <p></p>
+                {% endif %}
+        
+                <br>
+        
+                {% if tipo_documento == 'Nota de Pago' %}
+                    {% include 'nota_de_pago_total.html' with context %}
+                {% else %}
+                    {% include 'factura_recibo_total.html' with context %}
+                {% endif %}
+        
+                <div class="texto_pegao">
+                    <div class="texto_abajo_container_left">
+                        <p>Por favor llamar antes de venir</p>
+                        <p>Llamar el dia:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/</p>
+                        La fecha expuesta es aproximada
+                    </div>
+                    <div class="texto_abajo_container_right">
+                        {% if tipo_documento == 'Recibo' %}
+                            <p><b>Copia sin derecho a<br>credito fiscal</b></p>
+                        {% endif %}
+                    </div>
                 </div>
+
             </div>
-    
             <br>
-            {% if tipo_documento != 'Nota debito' or tipo_documento == 'Nota credito'%}
-            <table class="tabla_precios">
-                <thead class="tabla_precios_header">
-                    <tr>
-                        <th class="table_content table_header_content">Descripción</th>
-                    </tr>
-                </thead>
-                <tbody class="tabla_precios_body">
-                    {% for item_orden in items_orden %}
-                        <tr>
-                            <td class="table_content">
-                                {% if tipo_documento == 'Nota credito' %}
-                                    {{ item_orden.monto_bs*-1 }}
-                                {% else %}
-                                    {{ item_orden.monto_bs }}
-                                {% endif %}
-                                
-                            </td>
-                            <td class="table_content">1</td>
-                            <td class="table_content">{{ item_orden.estudio.codigo }}</td>
-                            <td class="table_content"></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            
-            {% endif %}
-
-            {% if tipo_documento == 'Nota debito'%}
-            <table class="tabla_precios">
-                <thead class="tabla_precios_header">
-                    <tr>
-                        <th class="table_content table_header_content">Descripción</th>
-                    </tr>
-                </thead>
-                <tbody class="tabla_precios_body">
-                        <tr>
-                            <td class="table_content">
-                                Documento que altera el  Comprobante que modifica FACTURA NRO {{n_factura}} emitida el {{fecha_factura}}   
-                            </td>
-
-                            <td class="table_content"></td>
-                        </tr>
-                </tbody>
-            </table>
-            <p></p>
-            {% endif %}
-            {% if tipo_documento == 'Nota credito'%}
-            <table class="tabla_precios">
-                <thead class="tabla_precios_header">
-                    <tr>
-                        <th class="table_content table_header_content">Descripción</th>
-                    </tr>
-                </thead>
-                <tbody class="tabla_precios_body">
-                        <tr>
-                            <td class="table_content">
-                                Comprobante que modifica FACTURA NRO {{n_factura}} emitida el {{fecha_factura}}   
-                            </td>
-
-                            <td class="table_content"></td>
-                        </tr>
-                </tbody>
-            </table>
-            <p></p>
-            {% endif %}
-    
-            <br>
-    
-            {% if tipo_documento == 'Nota de Pago' %}
-                {% include 'nota_de_pago_total.html' with context %}
-            {% else %}
-                {% include 'factura_recibo_total.html' with context %}
-            {% endif %}
-    
-            <br>
-            <br>
-            <br>
-    
-            <div class="texto_abajo_container texto_pegao">
-                <div class="texto_abajo_container_left">
-                    <p>Por favor llamar antes de venir</p>
-                    <p>Llamar el dia:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/</p>
-                    La fecha expuesta es aproximada
-                </div>
-                <div class="texto_abajo_container_right">
-                    {% if tipo_documento == 'Recibo' %}
-                        <p><b>Copia sin derecho a<br>credito fiscal</b></p>
-                    {% endif %}
-                </div>
-            </div>
-
-        </div>
+        
         {% endif %}
     </body>
 </html>

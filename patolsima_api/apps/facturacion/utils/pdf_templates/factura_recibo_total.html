@@ -1,18 +1,26 @@
 <div class="texto_total">
     <p class="total_item total_item_left texto_pegao">Sub-Total Bs:</p>
     <p class="total_item total_item_right texto_pegao"> 
-        {% if tipo_documento == "NOTA DE DEBITO" %}
+        {% if tipo_documento == "Nota debito" %}
             {{monto}}
         {% else %}
-            {{ total_bs }}
+            {% if tipo_documento == "Nota credito" %}
+                {{ total_bs }}*-1
+            {% else %}
+                {{ total_bs }}
+            {% endif %}
         {% endif %}
     </p>
     <p class="total_item total_item_left texto_pegao">Total Bs:</p>
     <p class="total_item total_item_right texto_pegao">
-        {% if tipo_documento == "NOTA DE DEBITO" %}\
+        {% if tipo_documento == "Nota debito" %}\
             {{ monto }}
         {% else %}
-            {{ total_bs }}
+            {% if tipo_documento == "Nota credito" %}
+                {{ total_bs }}*-1
+            {% else %}
+                {{ total_bs }}
+            {% endif %}
         {% endif %}
     </p>
 

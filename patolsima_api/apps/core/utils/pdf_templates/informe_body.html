@@ -152,8 +152,9 @@
             {% if muestra_recibida %}
                 <strong>Muestra Recibida:</strong> {{ muestra_recibida }}
             {% endif %}
+            {% if estudio.tipo == "INMUNOSTOQUIMICA" %}
                 {% include 'body_inmunostoquimica.html' with context %}
-
+            {% endif %}
                 {% include 'body_regular.html' with context %}
 
 
