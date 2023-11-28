@@ -60,10 +60,10 @@ def generar_notacredito(orden:Orden) -> NotasCredito:
             )
     Factura.objects.filter(orden=orden).delete(force=True)
     factura.delete(force=True)
-    original_orden = Orden.objects.get(pk=orden.pk)
+    original_orden = orden
     orden_fields = model_to_dict(original_orden, exclude=['id'])
-    cliente_id = orden_fields.pop('cliente')  # Remove 'cliente' field from dictionary
-    cliente_instance = Cliente.objects.get(pk=cliente_id)
+    orden_fields = orden_fields.pop('cliente')  # Remove 'cliente' field from dictionary
+    cliente_instance = orden.cliente
     orden_fields['cliente'] = cliente_instance
     new_orden = Orden.objects.create(**orden_fields)
         
