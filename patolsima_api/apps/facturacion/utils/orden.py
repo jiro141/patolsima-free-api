@@ -114,4 +114,4 @@ def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Rec
         delete_original_after_upload=True,
     )
     instancia_de_documento.save()
-    return instancia_de_documento
+    # return instancia_de_documento
