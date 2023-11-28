@@ -57,6 +57,7 @@ def generar_notacredito(orden:Orden) -> NotasCredito:
             n_documento = nota_credito.n_notacredito
             )
     factura.delete(force=True)
+    Factura.objects.filter(orden=orden).delete(force=True)
     return nota_credito
 
 
