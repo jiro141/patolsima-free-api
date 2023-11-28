@@ -55,7 +55,6 @@ def generar_notacredito(orden:Orden) -> NotasCredito:
             n_control = n_control,
             n_documento = nota_credito.n_notacredito
             )
-    s3_file.delete()
     factura.delete()
     return nota_credito
 
