@@ -22,7 +22,7 @@ class AbstractRecibo(AuditableMixin):
 
 class Factura(AbstractRecibo):
     n_factura = models.PositiveIntegerField(unique=True, db_index=True)
-    history = HistoricalRecords()
+
     monto = models.DecimalField(
         max_digits=14, decimal_places=2, default=Decimal("0.00")
     )
