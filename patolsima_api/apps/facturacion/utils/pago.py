@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.db import transaction
 from patolsima_api.apps import facturacion
 from patolsima_api.apps.facturacion.models import Pago, NotaPago
+from patolsima_api.apps.facturacion.models.cliente import Cliente
 from patolsima_api.apps.facturacion.models.orden import Orden
 from patolsima_api.apps.facturacion.models.recibo_y_factura import NotasCredito, NotasDebito, Factura
 from patolsima_api.apps.uploaded_file_management.models import UploadedFile
@@ -61,6 +62,9 @@ def generar_notacredito(orden:Orden) -> NotasCredito:
     factura.delete(force=True)
     original_orden = Orden.objects.get(pk=orden.pk)
     orden_fields = model_to_dict(original_orden, exclude=['id'])
+    cliente_id = orden_fields.pop('cliente')  # Remove 'cliente' field from dictionary
+    cliente_instance = Cliente.objects.get(pk=cliente_id)
+    orden_fields['cliente'] = cliente_instance
     new_orden = Orden.objects.create(**orden_fields)
         
     original_orden.delete()
