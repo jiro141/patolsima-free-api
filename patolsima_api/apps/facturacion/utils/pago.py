@@ -59,7 +59,9 @@ def generar_notacredito(orden:Orden) -> NotasCredito:
     factura.delete(force=True)
     Factura.objects.filter(orden=orden).delete(force=True)
     from django.db import connection
-    connection.cursor().execute('RESET QUERY CACHE;')
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT pg_reload_conf();")
 
     return nota_credito
 
