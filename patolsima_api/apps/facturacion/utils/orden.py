@@ -78,9 +78,11 @@ def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Rec
              if f_transaccion.n_control >= n_factura:
                 n_factura=f_transaccion.n_documento + 1
 
-        instancia_de_documento, created = (Factura).objects.get_or_create(orden=orden,n_factura=n_factura, defaults=kwargs)
-        if NotasCredito.objects.get(n_factura=instancia_de_documento.n_factura):
-            instancia_de_documento, created = Factura.objects.create(orden=orden, n_factura=n_factura, defaults=kwargs)
+        if Factura.objects.get(orden=orden):
+            instancia_de_documento = (Factura).objects.get(orden=orden)
+            return instancia_de_documento
+        else:
+            instancia_de_documento, created = (Factura).objects.create(orden=orden,n_factura=n_factura, defaults=kwargs)
         instancia_de_documento.monto = orden.importe_orden_bs
         n_controlobject = Transaccion.objects.last()
         n_control = n_controlobject.n_control + 1
