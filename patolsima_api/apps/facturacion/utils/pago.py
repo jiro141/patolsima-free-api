@@ -12,6 +12,7 @@ from patolsima_api.apps.uploaded_file_management.utils.upload import (
 from patolsima_api.apps.facturacion.utils.render import render_nota_de_pago, render_notadebito, render_notacredito
 from patolsima_api.apps.facturacion.models.transaccion import Transaccion
 from patolsima_api.utils import historical_records
+from django.forms.models import model_to_dict
 
 
 def generar_nota_de_pago(pago: Pago) -> NotaPago:
