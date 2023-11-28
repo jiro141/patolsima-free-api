@@ -37,6 +37,7 @@ class Orden(AuditableMixin, ArchivableMixing):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     confirmada = models.BooleanField(default=False)
     pagada = models.BooleanField(default=False)
+    history = HistoricalRecords()
 
     lista_ordenes = OrdenListManager()
 
