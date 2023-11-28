@@ -11,6 +11,7 @@ from patolsima_api.apps.uploaded_file_management.utils.upload import (
 )
 from patolsima_api.apps.facturacion.utils.render import render_nota_de_pago, render_notadebito, render_notacredito
 from patolsima_api.apps.facturacion.models.transaccion import Transaccion
+from patolsima_api.utils import historical_records
 
 
 def generar_nota_de_pago(pago: Pago) -> NotaPago:
@@ -55,6 +56,7 @@ def generar_notacredito(orden:Orden) -> NotasCredito:
             n_control = n_control,
             n_documento = nota_credito.n_notacredito
             )
+    historical_records.objects.filter(factura=factura).delete()
     factura.delete()
     return nota_credito
 
