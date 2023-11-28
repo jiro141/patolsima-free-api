@@ -57,6 +57,8 @@ def generar_notacredito(orden:Orden) -> NotasCredito:
             n_documento = nota_credito.n_notacredito
             )
     factura.delete()
+    from django.core.cache import cache
+    cache.clear()
     return nota_credito
 
 
