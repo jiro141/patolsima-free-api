@@ -45,10 +45,6 @@ def archivar_orden(orden: Orden):
 @transaction.atomic
 def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Recibo:
 
-    from django.db import connection
-
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT pg_reload_conf();")
 
     if not orden.pagada:
         raise ValidationError("La orden no ha sido pagada todavia.")
