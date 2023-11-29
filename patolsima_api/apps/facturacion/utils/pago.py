@@ -12,8 +12,8 @@ from patolsima_api.apps.uploaded_file_management.utils.upload import (
 )
 from patolsima_api.apps.facturacion.utils.render import render_nota_de_pago, render_notadebito, render_notacredito
 from patolsima_api.apps.facturacion.models.transaccion import Transaccion
-from patolsima_api.utils import historical_records
-from django.forms.models import model_to_dict
+from simple_history.models import HistoricalRecords
+
 
 
 def generar_nota_de_pago(pago: Pago) -> NotaPago:
@@ -60,6 +60,8 @@ def generar_notacredito(orden:Orden) -> NotasCredito:
             )
     Factura.objects.filter(orden=orden).delete(force=True)
     factura.delete(force=True)
+    history_manager = HistoricalRecords.objects.filter(history_type=type(orden), object_id=orden.pk)
+    history_manager.delete()
 
     return nota_credito
 
