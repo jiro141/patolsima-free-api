@@ -60,8 +60,8 @@ def generar_notacredito(orden:Orden) -> NotasCredito:
             )
     Factura.objects.filter(orden=orden).delete(force=True)
     factura.delete(force=True)
-    history_manager = HistoricalRecords.objects.filter(history_type=type(orden), object_id=orden.pk)
-    history_manager.delete()
+    Orden.objects.filter(pk=orden.pk).update(history=None)
+
 
     return nota_credito
 
