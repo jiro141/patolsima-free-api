@@ -55,6 +55,16 @@ def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Fac
     if tipo_documento == "recibo":
         instancia_de_documento, created = (Recibo).objects.get_or_create(orden=orden, defaults=kwargs)
 
+        instancia_de_documento.fecha_generacion = datetime.now()
+
+        instancia_de_documento.s3_file = upload_from_local_filesystem(
+            render_recibo_factura(instancia_de_documento, tipo_documento),
+            path_prefix=f"ordenes/{orden.id}",
+            delete_original_after_upload=True,
+        )
+        instancia_de_documento.save()
+        return instancia_de_documento
+
     if tipo_documento !="recibo":
         latest_factura = Factura.objects.order_by('id').last()
 
@@ -105,15 +115,3 @@ def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Fac
         )
         instancia_de_documento.save()
         return Factura.objects.get(n_factura=instancia_de_documento.n_factura)
-        
-        
-
-    instancia_de_documento.fecha_generacion = datetime.now()
-
-    instancia_de_documento.s3_file = upload_from_local_filesystem(
-        render_recibo_factura(instancia_de_documento, tipo_documento),
-        path_prefix=f"ordenes/{orden.id}",
-        delete_original_after_upload=True,
-    )
-    instancia_de_documento.save()
-    return instancia_de_documento
