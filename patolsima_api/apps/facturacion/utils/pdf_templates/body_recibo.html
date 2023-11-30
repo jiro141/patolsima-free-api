@@ -192,18 +192,20 @@
                 {% include 'factura_recibo_total.html' with context %}
             {% endif %}
     
-            <div class="texto_pegao">
-                <div class="texto_abajo_container_left">
-                    <p>Por favor llamar antes de venir</p>
-                    <p>Llamar el dia:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/</p>
-                    La fecha expuesta es aproximada
+            {% if tipo_documento == 'Factura' %}
+                <div class="texto_pegao">
+                    <div class="texto_abajo_container_left">
+                        <p>Por favor llamar antes de venir</p>
+                        <p>Llamar el dia:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/</p>
+                        La fecha expuesta es aproximada
+                    </div>
+                    <div class="texto_abajo_container_right">
+                        {% if tipo_documento == 'Recibo' %}
+                            <p><b>Copia sin derecho a<br>credito fiscal</b></p>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="texto_abajo_container_right">
-                    {% if tipo_documento == 'Recibo' %}
-                        <p><b>Copia sin derecho a<br>credito fiscal</b></p>
-                    {% endif %}
-                </div>
-            </div>
+            {% endif %}
 
         </div>
         <br>
