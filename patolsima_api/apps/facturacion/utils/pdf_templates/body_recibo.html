@@ -96,6 +96,10 @@
                 margin-left: 80px;
             }
 
+            .page-break {
+                page-break-after: always;
+            }
+
         </style>
     </head>
     <body>
@@ -208,17 +212,9 @@
             {% endif %}
 
         </div>
-        <br>
-        <br>
-        {% if  tipo_documento == "Nota debito" or tipo_documento == 'Nota credito'%}
-            <br>
-        {% endif %}
 
-
-
+        <div class="page-break"></div>
         {% if tipo_documento == 'Factura' or tipo_documento == "Nota debito" or tipo_documento == 'Nota credito' %}
-        <br>
-        <br>
             <div>
                 <div class="cliente_container texto_pegao">
                     <div class="cliente_left_container">
@@ -328,7 +324,6 @@
                 {% endif %}
 
             </div>
-            <br>
         
         {% endif %}
     </body>
