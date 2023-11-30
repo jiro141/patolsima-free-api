@@ -8,7 +8,7 @@ from .pago import Pago
 
 
 class AbstractRecibo(AuditableMixin):
-    orden = models.OneToOneField(Orden, on_delete=models.CASCADE)
+    orden = models.OneToOneField(Orden, on_delete=models.CASCADE, null=True)
     s3_file = models.OneToOneField(UploadedFile, on_delete=models.CASCADE, null=True)
     fecha_generacion = models.DateTimeField(null=True, blank=True, db_index=True)
 
