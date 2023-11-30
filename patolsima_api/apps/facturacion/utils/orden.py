@@ -49,8 +49,8 @@ def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Fac
     if not orden.pagada:
         raise ValidationError("La orden no ha sido pagada todavia.")
 
-    if hasattr(orden, tipo_documento) and getattr(orden, tipo_documento).s3_file:
-        return getattr(orden, tipo_documento)
+    # if hasattr(orden, tipo_documento) and getattr(orden, tipo_documento).s3_file:
+    #     return getattr(orden, tipo_documento)
 
     if tipo_documento == "recibo":
         instancia_de_documento, created = (Recibo).objects.get_or_create(orden=orden, defaults=kwargs)
