@@ -31,7 +31,4 @@ class Migration(migrations.Migration):
             name='orden',
             field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, to='facturacion.orden'),
         ),
-        migrations.DeleteModel(
-            name='HistoricalFactura',
-        ),
     ]
