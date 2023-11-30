@@ -40,7 +40,7 @@ def generar_notacredito(orden:Orden) -> NotasCredito:
     s3_file = UploadedFile.objects.get(file_name=factura.s3_file.file_name)
     
     with transaction.atomic() as current_transaction:
-        nota_credito, created = NotasCredito.objects.get_or_create(orden=None,n_factura=n_factura, monto=monto, defaults={})
+        nota_credito, created = NotasCredito.objects.get_or_create(orden=orden,n_factura=n_factura, monto=monto, defaults={})
         nota_credito.fecha_generacion = timezone.now()
         nota_credito.s3_file = upload_from_local_filesystem(
             render_notacredito(nota_credito,"Nota Credito"),
