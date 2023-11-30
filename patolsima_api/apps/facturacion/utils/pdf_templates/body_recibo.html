@@ -213,8 +213,10 @@
 
         </div>
 
-        <div class="page-break"></div>
+        <div>
+       
         {% if tipo_documento == 'Factura' or tipo_documento == "Nota debito" or tipo_documento == 'Nota credito' %}
+            <div class="page-break"></div>
             <div>
                 <div class="cliente_container texto_pegao">
                     <div class="cliente_left_container">
@@ -326,5 +328,7 @@
             </div>
         
         {% endif %}
+        </div>
+
     </body>
 </html>
