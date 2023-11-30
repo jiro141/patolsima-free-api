@@ -58,9 +58,7 @@ def generar_notacredito(orden:Orden) -> NotasCredito:
             n_control = n_control,
             n_documento = nota_credito.n_notacredito
             )
-    Factura.objects.filter(orden=orden).delete(force=True)
-    factura.delete(force=True)
-    Orden.objects.filter(pk=orden.pk).update(history=None)
+    Factura.objects.filter(orden=orden).update(s3_file=None)
 
 
     return nota_credito
