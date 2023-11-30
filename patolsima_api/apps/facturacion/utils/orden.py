@@ -65,7 +65,7 @@ def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Fac
         instancia_de_documento.save()
         return instancia_de_documento
 
-    if tipo_documento !="recibo":
+    if tipo_documento =="factura":
         latest_factura = Factura.objects.order_by('id').last()
 
         if latest_factura and latest_factura.n_factura is not None:
