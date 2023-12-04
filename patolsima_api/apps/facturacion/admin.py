@@ -13,7 +13,7 @@ from patolsima_api.apps.facturacion.models import (
     CambioUSDBS,
 )
 
-from patolsima_api.apps.facturacion.models.recibo_y_factura import NotasCredito, NotasDebito
+from patolsima_api.apps.facturacion.models.recibo_y_factura import NotaCreditoOffset, NotaDebitoOffset, NotasCredito, NotasDebito
 
 from patolsima_api.apps.facturacion.models.recibo_y_factura import FacturaOffset
 from patolsima_api.utils.admin import date_to_admin_readable
@@ -155,7 +155,7 @@ class FacturaoffsetAdmin(SimpleHistoryAdmin):
     )
     
     @admin.display(ordering="created_at", description="Creado el")
-    def created_at_formatted(self,obj:Factura):
+    def created_at_formatted(self,obj:FacturaOffset):
         return date_to_admin_readable(obj.created_at)
     
 class NotasCreditoAdmin(SimpleHistoryAdmin):
@@ -173,7 +173,25 @@ class NotasDebitoAdmin(SimpleHistoryAdmin):
         "n_factura",
         "fecha_generacion",
     )
-    
+
+class NotaCreditoffsetAdmin(SimpleHistoryAdmin):
+    list_display = (
+        "id",
+        "notacredito_offset",
+        "created_at_formatted",
+    )   
+    @admin.display(ordering="created_at", description="Creado el")
+    def created_at_formatted(self,obj:NotaCreditoOffset):
+        return date_to_admin_readable(obj.created_at)
+class NotaDebitoffsetAdmin(SimpleHistoryAdmin):
+    list_display = (
+        "id",
+        "notadebito_offset",
+        "created_at_formatted",
+    )   
+    @admin.display(ordering="created_at", description="Creado el")
+    def created_at_formatted(self,obj:NotaDebitoOffset):
+        return date_to_admin_readable(obj.created_at)
 
 
 admin.site.register(Cliente, ClienteAdmin)
@@ -182,5 +200,8 @@ admin.site.register(Factura, FacturaAdmin)
 admin.site.register(Recibo, ReciboAdmin)
 admin.site.register(CambioUSDBS, CambioUSDAdmin)
 admin.site.register(FacturaOffset, FacturaoffsetAdmin)
+admin.site.register(NotaCreditoOffset, NotaCreditoffsetAdmin)
+admin.site.register(NotaDebitoOffset, NotaDebitoffsetAdmin)
 admin.site.register(NotasCredito,NotasCreditoAdmin)
 admin.site.register(NotasDebito,NotasDebitoAdmin)
+ 

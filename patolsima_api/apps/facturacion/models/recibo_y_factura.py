@@ -35,10 +35,18 @@ class Recibo(AbstractRecibo):
     @property
     def pdf_reder_context(self):
         return {"n_recibo": self.id}
+    
 
 class FacturaOffset(AuditableMixin):
     factura_offset = models.PositiveIntegerField()
     
+
+class NotaCreditoOffset(AuditableMixin):
+    notacredito_offset = models.PositiveIntegerField()
+    
+
+class NotaDebitoOffset(AuditableMixin):
+    notadebito_offset = models.PositiveIntegerField()
     
 
 

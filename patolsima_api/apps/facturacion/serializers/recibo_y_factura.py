@@ -4,7 +4,7 @@ from patolsima_api.apps.uploaded_file_management.serializers import (
     UploadedFileSerializer,
 )
 
-from patolsima_api.apps.facturacion.models.recibo_y_factura import NotasCredito, NotasDebito, FacturaOffset
+from patolsima_api.apps.facturacion.models.recibo_y_factura import NotaCreditoOffset, NotaDebitoOffset, NotasCredito, NotasDebito, FacturaOffset
 
 
 class ReciboSerializer(serializers.ModelSerializer):
@@ -34,6 +34,14 @@ class FacturaCreateSerializer(serializers.Serializer):
 class FacturaOffsetSerializer(serializers.ModelSerializer):
     class Meta:
         model = FacturaOffset
+        fields = '__all__'
+class NotaCreditoOffsetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NotaCreditoOffset
+        fields = '__all__'
+class NotaDebitosetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NotaDebitoOffset
         fields = '__all__'
 
 class NotaCreditoSerializer(serializers.ModelSerializer):
