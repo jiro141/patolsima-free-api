@@ -40,7 +40,7 @@ def generar_notacredito(orden:Orden,monto) -> NotasCredito:
     s3_file = UploadedFile.objects.get(file_name=factura.s3_file.file_name)
     
     with transaction.atomic() as current_transaction:
-        # latest_notacredito = NotasCredito.objects.order_by('id').last()
+        latest_notacredito = NotasCredito.objects.order_by().last()
 
         if latest_notacredito and latest_notacredito.n_notacredito is not None:
             latest_frecord = latest_notacredito.n_notacredito
