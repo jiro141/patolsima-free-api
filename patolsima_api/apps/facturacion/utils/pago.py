@@ -32,15 +32,15 @@ def generar_nota_de_pago(pago: Pago) -> NotaPago:
     return nota_pago
 
 
-def generar_notacredito(orden:Orden) -> NotasCredito:
+def generar_notacredito(orden:Orden,monto) -> NotasCredito:
 
     factura = Factura.objects.get(orden=orden)
-    monto = factura.monto
+    monto = monto
     n_factura = factura.n_factura
     s3_file = UploadedFile.objects.get(file_name=factura.s3_file.file_name)
     
     with transaction.atomic() as current_transaction:
-        latest_notacredito = NotasCredito.objects.order_by('id').last()
+        # latest_notacredito = NotasCredito.objects.order_by('id').last()
 
         if latest_notacredito and latest_notacredito.n_notacredito is not None:
             latest_frecord = latest_notacredito.n_notacredito
