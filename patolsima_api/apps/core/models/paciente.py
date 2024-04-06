@@ -24,7 +24,7 @@ class Paciente(AuditableMixin, PersonalInfoMixin, CIMixin):
         ]
 
     def __str__(self):
-        return f"({self.id})({self.ci}) {self.apellidos} {self.nombres}"
+        return f"({self.id})({self.ci}) {self.nombres} {self.apellidos} "
 
     @property
     def edad(self):

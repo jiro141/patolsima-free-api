@@ -54,7 +54,7 @@ class Estudio(AuditableMixin, ArchivableMixing):
         BIOPSIA = "BIOPSIA"
         CITOLOGIA_GINECOLOGICA = "CITOLOGIA_GINECOLOGICA"
         CITOLOGIA_ESPECIAL = "CITOLOGIA_ESPECIAL"
-        INMUNOSTOQUIMICA = "INMUNOSTOQUIMICA"
+        INMUNOSTOQUIMICA = "INMUNOHISTOQUIMICA"
 
     class Prioridad(models.TextChoices):
         ALTA = "ALTA"

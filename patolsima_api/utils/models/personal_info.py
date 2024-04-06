@@ -7,7 +7,7 @@ class NombreMixin(models.Model):
 
     @property
     def nombre_completo(self):
-        return f"{self.apellidos} {self.nombres}"
+        return f"{self.nombres} {self.apellidos}"
 
     @property
     def nombre_completo_nombre_primero(self):
