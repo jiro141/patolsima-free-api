@@ -106,7 +106,7 @@
         <div>
             <div class="cliente_container texto_pegao">
                 <div class="cliente_left_container">
-                    <p class="cliente_left_container_item razon_social_item"><strong>Nombre y Apellido o Razón Social:</strong> {{ cliente.razon_social }}</p>
+                    <p class="cliente_left_container_item razon_social_item"><strong>Apellido y Nombre o Razón Social:</strong> {{ cliente.razon_social }}</p>
                     <p class="cliente_left_container_item"><strong>R.I.F./C.I.:</strong> {{ cliente.ci_rif }}</p>
                     <p class="cliente_left_container_item"><strong>Dirección:</strong> {{ cliente.direccion }}</p>
                 </div>
@@ -218,7 +218,7 @@
             <div>
                 <div class="cliente_container texto_pegao">
                     <div class="cliente_left_container">
-                        <p class="cliente_left_container_item razon_social_item"><strong>Nombre y Apellido o Razón Social:</strong> {{ cliente.razon_social }}</p>
+                        <p class="cliente_left_container_item razon_social_item"><strong>Apellido y Nombre o Razón Social:</strong> {{ cliente.razon_social }}</p>
                         <p class="cliente_left_container_item"><strong>R.I.F./C.I.:</strong> {{ cliente.ci_rif }}</p>
                         <p class="cliente_left_container_item"><strong>Dirección:</strong> {{ cliente.direccion }}</p>
                     </div>
@@ -310,7 +310,8 @@
         
                 {% if tipo_documento == 'Factura' %}
                     <div class="texto_pegao">
-                            La fecha expuesta es aproximada
+                        <p>Su muestra estará el dia ___/___/___ .</p>
+                        <p>Por favor llamar antes de venir</p>
                         </div>
                         <div class="texto_abajo_container_right">
                             {% if tipo_documento == 'Recibo' %}
