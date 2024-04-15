@@ -23,7 +23,9 @@
         <div class="footer">
             <p>Su muestra estará el dia ___/___/___ .</p>
             <p>Por favor llamar antes de venir</p>
-            <!-- <div><img src="{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/Objeto-inteligente-vectorial.gif" alt=""></div> -->
+            {% if tipo_documento == 'recibo' %}
+                <div><img src="{{ current_work_path_python }}/patolsima_api/apps/facturacion/utils/pdf_templates/images/Objeto-inteligente-vectorial.gif" alt=""></div>
+            {% endif %}
         </div>
     </body>
 </html>
