@@ -188,8 +188,7 @@
             <p></p>
             {% endif %}
     
-            <br>
-    
+
             {% if tipo_documento == 'Nota de Pago' %}
                 {% include 'nota_de_pago_total.html' with context %}
             {% else %}
@@ -201,7 +200,8 @@
                     <div class="texto_abajo_container_left">
                         <p>Su muestra estará el dia ___/___/___ .</p>
                         <p>Por favor llamar antes de venir</p>
-                        <p>La fecha expuesta es aproximada</p>
+                        <p>La fecha expuesta es aproximada<p>
+
                     </div>
                     <div class="texto_abajo_container_right">
                         {% if tipo_documento == 'Recibo' %}
@@ -306,11 +306,11 @@
                     {% include 'factura_recibo_total.html' with context %}
                 {% endif %}
         
-                {% if tipo_documento == 'Factura' and tipo_documento == 'Recibo' %}
+                {% if tipo_documento == 'Factura' or tipo_documento == 'Recibo' %}
                     <div class="texto_pegao">
                         <p>Su muestra estará el dia ___/___/___ .</p>
                         <p>Por favor llamar antes de venir</p>
-                        <p>La fecha expuesta es aproximada</p>
+
                         </div>
                         <div class="texto_abajo_container_right">
                             {% if tipo_documento == 'Recibo' %}
