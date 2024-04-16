@@ -196,12 +196,11 @@
                 {% include 'factura_recibo_total.html' with context %}
             {% endif %}
     
-            {% if tipo_documento == 'Factura' %}
+            {% if tipo_documento == 'Factura' or tipo_documento == 'recibo' %}
                 <div class="texto_pegao">
                     <div class="texto_abajo_container_left">
+                        <p>Su muestra estará el dia ___/___/___ .</p>
                         <p>Por favor llamar antes de venir</p>
-                        <p>Llamar el dia:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/</p>
-                        La fecha expuesta es aproximada
                     </div>
                     <div class="texto_abajo_container_right">
                         {% if tipo_documento == 'Recibo' %}
@@ -306,7 +305,7 @@
                     {% include 'factura_recibo_total.html' with context %}
                 {% endif %}
         
-                {% if tipo_documento == 'Factura' %}
+                {% if tipo_documento == 'Factura' and tipo_documento == 'recibo' %}
                     <div class="texto_pegao">
                         <p>Su muestra estará el dia ___/___/___ .</p>
                         <p>Por favor llamar antes de venir</p>
