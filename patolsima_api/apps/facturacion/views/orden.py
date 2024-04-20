@@ -119,7 +119,7 @@ class OrdenViewSet(ModelViewSet):
 
 class ItemOrdenViewSet(ModelViewSet):
     permission_classes = [DjangoModelPermissions]
-    queryset = ItemOrden.objects.order_by("created_at")
+    queryset = ItemOrden.objects.order_by("id")
     serializer_class = ItemOrdenSerializer
 
     def list(self, request, *args, **kwargs):
