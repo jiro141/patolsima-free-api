@@ -31,7 +31,7 @@ from patolsima_api.utils.responses import method_not_allowed
 
 class OrdenViewSet(ModelViewSet):
     permission_classes = [DjangoModelPermissions]
-    queryset = Orden.objects.order_by("-created_at")
+    queryset = Orden.objects.order_by("created_at")
     serializer_class = OrdenSerializer
     filter_backends = (SearchFilter, DjangoFilterBackend)
     search_fields = ("cliente__razon_social", "cliente__ci_rif")
@@ -39,7 +39,7 @@ class OrdenViewSet(ModelViewSet):
 
     def list(self, request: Request, *args, **kwargs):
         self.serializer_class = OrdenListSerializer
-        self.queryset = Orden.lista_ordenes.order_by("-created_at")
+        self.queryset = Orden.lista_ordenes.order_by("created_at")
         return super().list(request, *args, **kwargs)
 
     def create(self, request: Request, *args, **kwargs):
