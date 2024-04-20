@@ -38,8 +38,8 @@ class OrdenViewSet(ModelViewSet):
     filterset_fields = ("confirmada", "pagada", "archived")
 
     def list(self, request: Request, *args, **kwargs):
-        self.serializer_class = OrdenSerializer
-        self.queryset = Orden.lista_ordenes.order_by("created_at")
+        self.serializer_class = OrdenListSerializer
+        self.queryset = Orden.lista_ordenes.order_by("id")
         return super().list(request, *args, **kwargs)
 
     def create(self, request: Request, *args, **kwargs):
