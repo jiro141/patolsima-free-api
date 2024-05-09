@@ -1,6 +1,7 @@
 import pytz
 import time
 from typing import Union
+from patolsima_api.apps.core.models.muestra import Muestra
 from patolsima_api.apps.facturacion.models import Orden, Factura, Recibo, NotaPago, Pago
 from patolsima_api.apps.facturacion.utils.jinja_templates import *
 from patolsima_api.utils.render_pdf import render_pdf
@@ -38,7 +39,7 @@ NOTA_DE_PAGO_TEMPLATES = {
 }
 
 
-def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str,description: str) -> str:
+def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str) -> str:
     """
     This method takes a Factura/Recibo instance and renders its associated pdf.
     :param registro: Factura/Recibo instance. The Orden instance associated must be pagada=True.
@@ -50,7 +51,7 @@ def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str,descriptio
     orden = numero_documento if documento_tipo == "Factura" else registro.orden
     filename = f"{tipo}_{numero_documento}_{int(time.time())}"
     context = {
-        "current_work_path_python": os.getcwd(),
+        "current_work_path_python": os.getcwd(), 
         "cliente": registro.orden.cliente,
         "orden": orden,
         "documento_tipo": documento_tipo,
@@ -60,7 +61,6 @@ def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str,descriptio
         "pagos": registro.orden.pagos.all().order_by("created_at"),
         "tipo_documento": tipo.capitalize(),
         "numero_documento": numero_documento,
-        "description": description,
         "fecha_emision": registro.fecha_generacion.astimezone(CARACAS_TIMEZONE)
         .date()
         .isoformat(),

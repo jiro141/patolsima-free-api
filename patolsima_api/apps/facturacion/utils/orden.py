@@ -43,7 +43,7 @@ def archivar_orden(orden: Orden):
 
 
 @transaction.atomic
-def generar_recibo_o_factura(orden: Orden, tipo_documento: str, description: str, **kwargs) -> Factura:
+def generar_recibo_o_factura(orden: Orden, tipo_documento: str, **kwargs) -> Factura:
 
 
     if not orden.pagada:

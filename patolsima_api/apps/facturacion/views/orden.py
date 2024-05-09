@@ -65,8 +65,7 @@ class OrdenViewSet(ModelViewSet):
             data={
                 "confirm": ReciboSerializer(
                     generar_recibo_o_factura(self.get_object(), 
-                                             "recibo",
-                                             description = request_data.get("description"),
+                                             "recibo", 
                                              )
                 ).data
             },
@@ -82,7 +81,6 @@ class OrdenViewSet(ModelViewSet):
                     generar_recibo_o_factura(
                         self.get_object(),
                         "factura",
-                        description = request_data.get("description"),
                         # n_factura=request_data.get("n_factura"),
                     )
                 ).data
