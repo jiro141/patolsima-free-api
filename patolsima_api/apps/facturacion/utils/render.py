@@ -38,7 +38,7 @@ NOTA_DE_PAGO_TEMPLATES = {
 }
 
 
-def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str) -> str:
+def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str,description: str) -> str:
     """
     This method takes a Factura/Recibo instance and renders its associated pdf.
     :param registro: Factura/Recibo instance. The Orden instance associated must be pagada=True.
@@ -60,6 +60,7 @@ def render_recibo_factura(registro: Union[Factura, Recibo], tipo: str) -> str:
         "pagos": registro.orden.pagos.all().order_by("created_at"),
         "tipo_documento": tipo.capitalize(),
         "numero_documento": numero_documento,
+        "description": description,
         "fecha_emision": registro.fecha_generacion.astimezone(CARACAS_TIMEZONE)
         .date()
         .isoformat(),
