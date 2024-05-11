@@ -60,12 +60,15 @@ class OrdenViewSet(ModelViewSet):
 
     @action(detail=True, methods=["post"])
     def recibo(self, request: Request, pk=None):
+        request_data = request.data
+        muestras = request_data.get("muestras", [])
         return Response(
             status=200,
             data={
                 "confirm": ReciboSerializer(
                     generar_recibo_o_factura(self.get_object(), 
                                              "recibo", 
+                                             muestras=muestras
                                              )
                 ).data
             },
@@ -73,7 +76,8 @@ class OrdenViewSet(ModelViewSet):
 
     @action(detail=True, methods=["post"])
     def factura(self, request: Request, pk=None):
-        request_data = FacturaCreateSerializer(request.data).data
+        request_data = request.data
+        muestras = request_data.get("muestras", [])
         return Response(
             status=200,
             data={
@@ -81,6 +85,7 @@ class OrdenViewSet(ModelViewSet):
                     generar_recibo_o_factura(
                         self.get_object(),
                         "factura",
+                        muestras=muestras,
                         # n_factura=request_data.get("n_factura"),
                     )
                 ).data
