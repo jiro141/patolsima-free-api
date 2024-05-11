@@ -61,7 +61,7 @@ class OrdenViewSet(ModelViewSet):
     @action(detail=True, methods=["post"])
     def recibo(self, request: Request, pk=None):
         request_data = request.data
-        muestras = request_data.get("muestras", [])
+        muestras = request_data.get("muestras", {}) 
         return Response(
             status=200,
             data={
