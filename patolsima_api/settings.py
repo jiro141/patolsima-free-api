@@ -198,14 +198,27 @@ DEFAULT_BINARY_STREAMS_CHUNK_SIZE = int(
 CAMBIO_USD_BS_PROPERTY_NAME = "bs_e"
 BCV_HANDLER = BCV_handler(lazy_load=True)
 
-# PDFKIT
+# # PDFKIT
+# PDFKIT_CONFIGURATION = pdfkit.configuration(
+#     wkhtmltopdf=os.environ.get(
+#         "WKHTMLTOPDF_EXECUTABLE_PATH", "/usr/local/bin/wkhtmltopdf"
+#     )
+# )
+# PDFKIT_RENDER_PATH = os.environ.get("PDFKIT_RENDER_PATH", f"{os.getcwd()}/var/pdfkit")
+# PDFKIT_VERBOSE_OUTPUT = bool(int(os.environ.get("PDFKIT_VERBOSE_OUTPUT", 0)))
+# En PythonAnywhere, la ruta correcta suele ser esta:
 PDFKIT_CONFIGURATION = pdfkit.configuration(
     wkhtmltopdf=os.environ.get(
-        "WKHTMLTOPDF_EXECUTABLE_PATH", "/usr/local/bin/wkhtmltopdf"
+        "WKHTMLTOPDF_EXECUTABLE_PATH", "/usr/bin/wkhtmltopdf"
     )
 )
+
+# Directorio donde se guardarán los archivos PDF generados
 PDFKIT_RENDER_PATH = os.environ.get("PDFKIT_RENDER_PATH", f"{os.getcwd()}/var/pdfkit")
+
+# Activar o desactivar la salida detallada de wkhtmltopdf
 PDFKIT_VERBOSE_OUTPUT = bool(int(os.environ.get("PDFKIT_VERBOSE_OUTPUT", 0)))
+
 
 # API Host
 API_HOST = os.environ.get("API_HOST", "http://localhost:8000")
