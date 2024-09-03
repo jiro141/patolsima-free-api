@@ -33,7 +33,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 CORS_ORIGIN_ALLOW_ALL = True
-CSRF_TRUSTED_ORIGINS = ["https://*.herokuapp.com","http://localhost"]
+CSRF_TRUSTED_ORIGINS = ["*"]
 
 
 # Application definition
@@ -98,12 +98,19 @@ WSGI_APPLICATION = "patolsima_api.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     "default": dj_database_url.config(conn_max_age=600, conn_health_checks=True)
+# }
+# DATABASES["default"][
+#     "CONN_MAX_AGE"
+# ] = 0  # Supress DB connection error when a lot of clients still active
+
 DATABASES = {
-    "default": dj_database_url.config(conn_max_age=600, conn_health_checks=True)
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",  # o usa os.path.join(BASE_DIR, "db.sqlite3") si no estás en Django 3.1+
+    }
 }
-DATABASES["default"][
-    "CONN_MAX_AGE"
-] = 0  # Supress DB connection error when a lot of clients still active
 
 
 # Password validation
