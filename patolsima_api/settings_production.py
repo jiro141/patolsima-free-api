@@ -1,3 +1,7 @@
+"""
+Settings de produccion para PythonAnywhere.
+Copia este archivo como settings_production.py en patolsima_api/
+"""
 import os
 from pathlib import Path
 import dj_database_url
@@ -8,25 +12,32 @@ from patolsima_api.utils.pyBCV import Currency as BCV_handler
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get(
     "SECRET_KEY", "django-insecure-98o2t0se_#p1l#j*)&@x%dt3nt2u)xj1@e!2*9%8zs=d(rfzn3"
 )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
-CORS_ORIGIN_ALLOW_ALL = True
+ALLOWED_HOSTS = [
+    "ernestomolina.pythonanywhere.com",
+    "localhost",
+    "127.0.0.1",
+]
+
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOWED_ORIGINS = [
+    "https://ernestomolina.pythonanywhere.com",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
 CSRF_TRUSTED_ORIGINS = [
-    'https://ernestomolina.pythonanywhere.com'
+    "https://ernestomolina.pythonanywhere.com",
 ]
 
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -61,12 +72,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "patolsima_api.urls"
 
-# Updated TEMPLATES settings to ensure correct template loading
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [os.path.join(BASE_DIR, 'templates')],
-        "APP_DIRS": False,  # Must be False when loaders are explicitly defined
+        "APP_DIRS": False,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.debug",
@@ -75,8 +85,8 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
             ],
             "loaders": [
-                "django.template.loaders.filesystem.Loader",  # Load templates from DIRS
-                "django.template.loaders.app_directories.Loader",  # Load templates from app directories
+                "django.template.loaders.filesystem.Loader",
+                "django.template.loaders.app_directories.Loader",
             ],
         },
     },
@@ -84,28 +94,33 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "patolsima_api.wsgi.application"
 
-# Database
+# Database - Usa PostgreSQL en PythonAnywhere
+# Configura estas variables de entorno en PythonAnywhere
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",  # or use os.path.join(BASE_DIR, "db.sqlite3") if not on Django 3.1+
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("DB_NAME", "patolsima"),
+        "USER": os.environ.get("DB_USER", "ernestomolina"),
+        "PASSWORD": os.environ.get("DB_PASSWORD", ""),
+        "HOST": os.environ.get("DB_HOST", "ernestomolina.mysql.pythonanywhere-services.com"),
+        "PORT": os.environ.get("DB_PORT", "3306"),
     }
 }
 
+# Si prefieres usar SQLite en PythonAnywhere (mas simple, pero no recomendado)
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 REST_FRAMEWORK = {
@@ -117,8 +132,8 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
     "EXCEPTION_HANDLER": "patolsima_api.utils.error_handling.general_error_handler",
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissions',
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.DjangoModelPermissions",
     ],
 }
 
@@ -134,12 +149,13 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Environment-specific settings
-ENV = os.environ.get("env")
+ENV = os.environ.get("env", "production")
 
 # S3 HANDLING
 AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
@@ -160,10 +176,10 @@ DEFAULT_BINARY_STREAMS_CHUNK_SIZE = int(
 CAMBIO_USD_BS_PROPERTY_NAME = "bs_e"
 BCV_HANDLER = BCV_handler(lazy_load=True)
 
-# PDFKIT configuration
+# PDFKIT configuration - ajustar ruta en PythonAnywhere
 PDFKIT_CONFIGURATION = pdfkit.configuration(
     wkhtmltopdf=os.environ.get(
-        "WKHTMLTOPDF_EXECUTABLE_PATH", "/usr/bin/wkhtmltopdf"
+        "WKHTMLTOPDF_EXECUTABLE_PATH", "/usr/local/bin/wkhtmltopdf"
     )
 )
 
@@ -171,9 +187,29 @@ PDFKIT_RENDER_PATH = os.environ.get("PDFKIT_RENDER_PATH", f"{os.getcwd()}/var/pd
 PDFKIT_VERBOSE_OUTPUT = bool(int(os.environ.get("PDFKIT_VERBOSE_OUTPUT", 0)))
 
 # API Host
-API_HOST = os.environ.get("API_HOST", "http://localhost:8000")
+API_HOST = os.environ.get("API_HOST", "https://ernestomolina.pythonanywhere.com")
 
 # Uploaded file expiration time
 UPLOADED_FILE_EXPIRATION_TIME_SECONDS = int(
     os.environ.get("UPLOADED_FILE_EXPIRATION_TIME_SECONDS", "3600")
 )
+
+# Logging
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "WARNING",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs", "django.log"),
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["file"],
+            "level": "WARNING",
+            "propagate": True,
+        },
+    },
+}
