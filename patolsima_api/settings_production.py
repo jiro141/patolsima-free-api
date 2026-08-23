@@ -200,20 +200,19 @@ UPLOADED_FILE_EXPIRATION_TIME_SECONDS = int(
     os.environ.get("UPLOADED_FILE_EXPIRATION_TIME_SECONDS", "3600")
 )
 
-# Logging
+# Logging - usar console en lugar de archivo para PythonAnywhere
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "handlers": {
-        "file": {
+        "console": {
             "level": "WARNING",
-            "class": "logging.FileHandler",
-            "filename": os.path.join(BASE_DIR, "logs", "django.log"),
+            "class": "logging.StreamHandler",
         },
     },
     "loggers": {
         "django": {
-            "handlers": ["file"],
+            "handlers": ["console"],
             "level": "WARNING",
             "propagate": True,
         },
