@@ -21,20 +21,20 @@ SECRET_KEY = os.environ.get(
 DEBUG = False
 
 ALLOWED_HOSTS = [
-    "ernestomolina.pythonanywhere.com",
+    "patolsima.pythonanywhere.com",
     "localhost",
     "127.0.0.1",
 ]
 
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOWED_ORIGINS = [
-    "https://ernestomolina.pythonanywhere.com",
+    "https://patolsima.pythonanywhere.com",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://ernestomolina.pythonanywhere.com",
+    "https://patolsima.pythonanywhere.com",
 ]
 
 # Application definition
@@ -187,7 +187,7 @@ PDFKIT_RENDER_PATH = os.environ.get("PDFKIT_RENDER_PATH", f"{os.getcwd()}/var/pd
 PDFKIT_VERBOSE_OUTPUT = bool(int(os.environ.get("PDFKIT_VERBOSE_OUTPUT", 0)))
 
 # API Host
-API_HOST = os.environ.get("API_HOST", "https://ernestomolina.pythonanywhere.com")
+API_HOST = os.environ.get("API_HOST", "https://patolsima.pythonanywhere.com")
 
 # Uploaded file expiration time
 UPLOADED_FILE_EXPIRATION_TIME_SECONDS = int(
