@@ -176,15 +176,21 @@ DEFAULT_BINARY_STREAMS_CHUNK_SIZE = int(
 CAMBIO_USD_BS_PROPERTY_NAME = "bs_e"
 BCV_HANDLER = BCV_handler(lazy_load=True)
 
-# PDFKIT configuration - ajustar ruta en PythonAnywhere
-PDFKIT_CONFIGURATION = pdfkit.configuration(
-    wkhtmltopdf=os.environ.get(
-        "WKHTMLTOPDF_EXECUTABLE_PATH", "/usr/local/bin/wkhtmltopdf"
+# PDFKIT configuration - wkhtmltopdf no disponible en PythonAnywhere
+# Se usa solo para generacion de PDFs en local
+try:
+    PDFKIT_CONFIGURATION = pdfkit.configuration(
+        wkhtmltopdf=os.environ.get(
+            "WKHTMLTOPDF_EXECUTABLE_PATH", "/usr/local/bin/wkhtmltopdf"
+        )
     )
-)
-
-PDFKIT_RENDER_PATH = os.environ.get("PDFKIT_RENDER_PATH", f"{os.getcwd()}/var/pdfkit")
-PDFKIT_VERBOSE_OUTPUT = bool(int(os.environ.get("PDFKIT_VERBOSE_OUTPUT", 0)))
+    PDFKIT_RENDER_PATH = os.environ.get("PDFKIT_RENDER_PATH", f"{os.getcwd()}/var/pdfkit")
+    PDFKIT_VERBOSE_OUTPUT = bool(int(os.environ.get("PDFKIT_VERBOSE_OUTPUT", 0)))
+except IOError:
+    # wkhtmltopdf no instalado (ej: PythonAnywhere free tier)
+    PDFKIT_CONFIGURATION = None
+    PDFKIT_RENDER_PATH = os.environ.get("PDFKIT_RENDER_PATH", f"{os.getcwd()}/var/pdfkit")
+    PDFKIT_VERBOSE_OUTPUT = False
 
 # API Host
 API_HOST = os.environ.get("API_HOST", "https://patolsima.pythonanywhere.com")
