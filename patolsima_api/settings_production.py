@@ -29,12 +29,14 @@ ALLOWED_HOSTS = [
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ALLOWED_ORIGINS = [
     "https://patolsima.pythonanywhere.com",
+    "https://patolsimaprueba.netlify.app",
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://patolsima.pythonanywhere.com",
+    "https://patolsimaprueba.netlify.app",
 ]
 
 # Application definition
